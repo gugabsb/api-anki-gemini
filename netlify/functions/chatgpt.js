@@ -3,12 +3,12 @@ const axios = require("axios");
 
 exports.handler = async function (event, context) {
   try {
-    console.log("🔍 Recebendo requisição...");
-    console.log("🔍 event: ", JSON.stringify(event, null, 2)); // Log detalhado
+    //console.log("🔍 Recebendo requisição...");
+    //console.log("🔍 event: ", JSON.stringify(event, null, 2)); // Log detalhado
 
     // Tratamento para requisições OPTIONS (CORS)
     if (event.httpMethod === "OPTIONS") {
-      console.log("✅ Requisição OPTIONS recebida. Respondendo com cabeçalhos CORS.");
+      //console.log("✅ Requisição OPTIONS recebida. Respondendo com cabeçalhos CORS.");
       return {
         statusCode: 200,
         headers: {
@@ -33,7 +33,7 @@ exports.handler = async function (event, context) {
       };
     }
 
-    console.log("✅ event.body recebido:", event.body);
+    //console.log("✅ event.body recebido:", event.body);
 
     let requestBody;
     try {
@@ -66,7 +66,7 @@ exports.handler = async function (event, context) {
       }
     }
 
-    console.log("✅ Parâmetros processados com sucesso!");
+    //console.log("✅ Parâmetros processados com sucesso!");
 
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
@@ -75,7 +75,7 @@ exports.handler = async function (event, context) {
       contents: [{ parts: [{ text: `Questão: ${texto}. O Gabarito da questão é: ${resp}. ${textoAlternativas}` }] }],
     };
 
-    console.log("🚀 Enviando requisição para API Gemini...");
+    //console.log("🚀 Enviando requisição para API Gemini...");
 
     const response = await axios.post(url, payload, { headers: { "Content-Type": "application/json" } });
 
@@ -85,7 +85,7 @@ exports.handler = async function (event, context) {
     }
 
     const resposta = response.data.candidates[0].content.parts[0].text;
-    console.log("✅ Resposta recebida com sucesso!");
+    //console.log("✅ Resposta recebida com sucesso!");
 
     return {
       statusCode: 200,
