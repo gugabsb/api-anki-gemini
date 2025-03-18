@@ -1,3 +1,6 @@
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const axios = require("axios");
+
 exports.handler = async function (event, context) {
   try {
     const apiKey = process.env.GEMINI_API_KEY;
@@ -6,6 +9,7 @@ exports.handler = async function (event, context) {
     }
 
     console.log("🔍 Recebendo requisição...");
+    console.log("🔍 event: ", JSON.stringify(event, null, 2)); // Log detalhado
 
     if (!event.body) {
       console.error("❌ Erro: event.body está vazio!");
