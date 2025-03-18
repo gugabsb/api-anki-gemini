@@ -3,13 +3,27 @@ const axios = require("axios");
 
 exports.handler = async function (event, context) {
   try {
+    console.log("🔍 Recebendo requisição...");
+    console.log("🔍 event: ", JSON.stringify(event, null, 2)); // Log detalhado
+
+    // Tratamento para requisições OPTIONS (CORS)
+    if (event.httpMethod === "OPTIONS") {
+      console.log("✅ Requisição OPTIONS recebida. Respondendo com cabeçalhos CORS.");
+      return {
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type",
+        },
+        body: "",
+      };
+    }
+
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       throw new Error("API key not found");
     }
-
-    console.log("🔍 Recebendo requisição...");
-    console.log("🔍 event: ", JSON.stringify(event, null, 2)); // Log detalhado
 
     if (!event.body) {
       console.error("❌ Erro: event.body está vazio!");
@@ -46,7 +60,7 @@ exports.handler = async function (event, context) {
     if (respAlternativas !== "0") {
       const matches = respAlternativas.match(/;/g);
       if (matches !== null && matches.length > 2) {
-        textoAlternativas = `Adicionalemente explique sucintamente o motivo das outras alternativas estarem erradas. A única certa é ${resp}. Seguem todas as alternativas: ${respAlternativas}`;
+        textoAlternativas = `Adicionalmente, explique sucintamente o motivo das outras alternativas estarem erradas. A única certa é ${resp}. Seguem todas as alternativas: ${respAlternativas}`;
       } else {
         textoAlternativas = "Comente sobre o conteúdo da questão.";
       }
@@ -75,12 +89,19 @@ exports.handler = async function (event, context) {
 
     return {
       statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*", // Permite requisições de qualquer origem
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ resposta }),
     };
   } catch (error) {
     console.error("❌ Erro inesperado:", error);
     return {
       statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
       body: JSON.stringify({ error: error.message }),
     };
   }
