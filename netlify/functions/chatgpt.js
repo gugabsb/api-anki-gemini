@@ -3,11 +3,17 @@ const axios = require("axios");
 
 exports.handler = async function (event, context) {
   try {
-    const apiKey = process.env.GEMINI_API_KEY; // Obtém a chave da variável de ambiente
+    const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       throw new Error("API key not found");
     }
+
+    if (!event.body) {
+      throw new Error("Request body is empty");
+    }
+
     const { texto, respAlternativas, resp } = JSON.parse(event.body);
+
     let textoAlternativas = "";
     if (respAlternativas !== "0") {
       const matches = respAlternativas.match(/;/g);
@@ -21,11 +27,16 @@ exports.handler = async function (event, context) {
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
     const requestBody = {
-      system_instruction: { parts: { text: "Você é um professor que elabora questões de concurso, agora está ajudando estudantes a estudarem considerando questões aplicadas em outras provas, responda de forma impessoal." } },
+      system_instruction: { parts: { text: "Você é um professor que elabora questões de concurso..." } },
       contents: [{ parts: [{ text: `Questão: ${texto}. O Gabarito da questão é: ${resp}. ${textoAlternativas}` }] }],
     };
 
     const response = await axios.post(url, requestBody, { headers: { "Content-Type": "application/json" } });
+
+    if (!response.data || !response.data.candidates) {
+      throw new Error("Resposta inesperada da API do Gemini");
+    }
+
     const resposta = response.data.candidates[0].content.parts[0].text;
 
     return {
