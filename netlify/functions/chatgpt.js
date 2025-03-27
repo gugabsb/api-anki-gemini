@@ -1,11 +1,10 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const axios = require("axios");
-// Importação correta para a v3.x
-const { NetlifyKVStore } = require("@netlify/functions");
+const netlify = require("@netlify/functions");
 
 exports.handler = async function (event, context) {
   try {
-    const kv = new NetlifyKVStore();
+    const kv = netlify.kv;
     // Tratamento para requisições OPTIONS (CORS)
     if (event.httpMethod === "OPTIONS") {
       return {
