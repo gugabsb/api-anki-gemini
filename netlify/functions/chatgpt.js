@@ -56,7 +56,6 @@ exports.handler = async function (event, context) {
     
     // Verificar se já existe resposta em cache
     const cachedResponse = await kv.get(`question:${id}`);
-    
     if (cachedResponse) {
       console.log("✅ Retornando resposta do cache para ID:", id);
       return {
