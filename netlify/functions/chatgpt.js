@@ -1,6 +1,6 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const axios = require("axios");
-const { get, set } = require("@netlify/kv");
+const { getBlob, setBlob } = require("@netlify/blobs");
 
 exports.handler = async function (event, context) {
   try {
@@ -52,7 +52,7 @@ exports.handler = async function (event, context) {
     }
 
     // Verificar se já existe resposta em cache
-    const cachedResponse = await get(`question:${id}`);
+    const cachedResponse = await getBlob(`question:${id}`);
     if (cachedResponse) {
       console.log("✅ Retornando resposta do cache para ID:", id);
       return {
@@ -92,7 +92,7 @@ exports.handler = async function (event, context) {
     const resposta = response.data.candidates[0].content.parts[0].text;
     
     // Armazenar no cache para futuras requisições
-    await set(`question:${id}`, resposta);
+    await setBlob(`question:${id}`, resposta);
     console.log("✅ Resposta armazenada no cache para ID:", id);
 
     return {
