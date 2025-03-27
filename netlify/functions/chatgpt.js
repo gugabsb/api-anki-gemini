@@ -1,4 +1,4 @@
-const { NetlifyKV } = require("@netlify/functions");
+const { kv } = require("@netlify/functions"); // Alteração aqui
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const axios = require("axios");
 
@@ -51,11 +51,8 @@ exports.handler = async function (event, context) {
       };
     }
 
-    // Inicializar o KV Store
-    const kv = new NetlifyKV();
-    
     // Verificar se já existe resposta em cache
-    const cachedResponse = await kv.get(`question:${id}`);
+    const cachedResponse = await kv.get(`question:${id}`).then(res => res?.value);
     if (cachedResponse) {
       console.log("✅ Retornando resposta do cache para ID:", id);
       return {
@@ -95,7 +92,7 @@ exports.handler = async function (event, context) {
     const resposta = response.data.candidates[0].content.parts[0].text;
     
     // Armazenar no cache para futuras requisições
-    await kv.set(`question:${id}`, resposta);
+    await kv.set(`question:${id}`, { value: resposta });
     console.log("✅ Resposta armazenada no cache para ID:", id);
 
     return {
