@@ -3,7 +3,10 @@ const axios = require("axios");
 import { getStore } from "@netlify/blobs";
 
 // Cria um store global chamado "cacheStore"
-const store = getStore("cacheStore");
+const store = getStore("cacheStore", {
+  siteID: process.env.NETLIFY_SITE_ID,
+  token: process.env.NETLIFY_AUTH_TOKEN,
+});
 
 
 exports.handler = async function (event, context) {
