@@ -4,7 +4,6 @@ const { get, set } = require("@netlify/kv");
 
 exports.handler = async function (event, context) {
   try {
-    const kv = netlify.kv;
     // Tratamento para requisições OPTIONS (CORS)
     if (event.httpMethod === "OPTIONS") {
       return {
