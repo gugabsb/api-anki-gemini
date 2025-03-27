@@ -1,4 +1,4 @@
-import { NetlifyKV } from "@netlify/functions";
+const { NetlifyKV } = require("@netlify/functions");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const axios = require("axios");
 
