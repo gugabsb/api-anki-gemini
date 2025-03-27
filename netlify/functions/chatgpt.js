@@ -1,14 +1,11 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const axios = require("axios");
+const { NetlifyKV } = require('@netlify/functions');
 
 exports.handler = async function (event, context) {
   try {
-    //console.log("🔍 Recebendo requisição...");
-    //console.log("🔍 event: ", JSON.stringify(event, null, 2)); // Log detalhado
-
     // Tratamento para requisições OPTIONS (CORS)
     if (event.httpMethod === "OPTIONS") {
-      //console.log("✅ Requisição OPTIONS recebida. Respondendo com cabeçalhos CORS.");
       return {
         statusCode: 200,
         headers: {
@@ -33,8 +30,6 @@ exports.handler = async function (event, context) {
       };
     }
 
-    //console.log("✅ event.body recebido:", event.body);
-
     let requestBody;
     try {
       requestBody = JSON.parse(event.body);
@@ -46,13 +41,31 @@ exports.handler = async function (event, context) {
       };
     }
 
-    const { texto, respAlternativas, resp } = requestBody;
+    const { texto, respAlternativas, resp, id } = requestBody;
 
-    if (!texto || !resp) {
+    if (!texto || !resp || !id) {
       console.error("❌ Erro: Parâmetros inválidos!", requestBody);
       return {
         statusCode: 400,
-        body: JSON.stringify({ error: "Missing required parameters" }),
+        body: JSON.stringify({ error: "Missing required parameters (texto, resp, id)" }),
+      };
+    }
+
+    // Inicializar o KV Store
+    const kv = new NetlifyKV();
+    
+    // Verificar se já existe resposta em cache
+    const cachedResponse = await kv.get(`question:${id}`);
+    
+    if (cachedResponse) {
+      console.log("✅ Retornando resposta do cache para ID:", id);
+      return {
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ resposta: cachedResponse, cached: true }),
       };
     }
 
@@ -66,16 +79,12 @@ exports.handler = async function (event, context) {
       }
     }
 
-    //console.log("✅ Parâmetros processados com sucesso!");
-
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
     const payload = {
       system_instruction: { parts: { text: "Você é um professor que elabora questões de concurso..." } },
       contents: [{ parts: [{ text: `Questão: ${texto}. O Gabarito da questão é: ${resp}. ${textoAlternativas}` }] }],
     };
-
-    //console.log("🚀 Enviando requisição para API Gemini...");
 
     const response = await axios.post(url, payload, { headers: { "Content-Type": "application/json" } });
 
@@ -85,15 +94,18 @@ exports.handler = async function (event, context) {
     }
 
     const resposta = response.data.candidates[0].content.parts[0].text;
-    //console.log("✅ Resposta recebida com sucesso!");
+    
+    // Armazenar no cache para futuras requisições
+    await kv.set(`question:${id}`, resposta);
+    console.log("✅ Resposta armazenada no cache para ID:", id);
 
     return {
       statusCode: 200,
       headers: {
-        "Access-Control-Allow-Origin": "*", // Permite requisições de qualquer origem
+        "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ resposta }),
+      body: JSON.stringify({ resposta, cached: false }),
     };
   } catch (error) {
     console.error("❌ Erro inesperado:", error);
