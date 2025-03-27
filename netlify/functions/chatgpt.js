@@ -1,6 +1,6 @@
+import { NetlifyKV } from "@netlify/functions";
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const axios = require("axios");
-const { NetlifyKV } = require('@netlify/functions');
 
 exports.handler = async function (event, context) {
   try {
