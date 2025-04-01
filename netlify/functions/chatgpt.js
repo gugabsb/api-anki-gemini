@@ -1,16 +1,12 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const axios = require("axios");
-import { getStore } from "@netlify/blobs";
-
-// Cria um store global chamado "cacheStore"
-const store = getStore("cacheStore", {
-  siteID: process.env.NETLIFY_SITE_ID,
-  token: process.env.NETLIFY_AUTH_TOKEN,
-});
+const { Redis } = require("@upstash/redis");
+const redis = new Redis({ url: process.env.UPSTASH_URL, token: process.env.UPSTASH_TOKEN });
 
 
 exports.handler = async function (event, context) {
   try {
+
     // Tratamento para requisições OPTIONS (CORS)
     if (event.httpMethod === "OPTIONS") {
       return {
@@ -59,7 +55,7 @@ exports.handler = async function (event, context) {
     }
 
     // Verificar se já existe resposta em cache
-    const cachedResponse = await store.get(`question:${id}`);
+    const cachedResponse = await redis.get(`question:${id}`);
     if (cachedResponse) {
       console.log("✅ Retornando resposta do cache para ID:", id);
       return {
@@ -91,15 +87,20 @@ exports.handler = async function (event, context) {
 
     const response = await axios.post(url, payload, { headers: { "Content-Type": "application/json" } });
 
-    if (!response.data || !response.data.candidates) {
-      console.error("❌ Resposta inesperada da API do Gemini", response.data);
+    // Verificação detalhada da estrutura de resposta
+    if (!response.data?.candidates || 
+        !Array.isArray(response.data.candidates) || 
+        !response.data.candidates[0]?.content?.parts ||
+        !Array.isArray(response.data.candidates[0].content.parts)) {
+      console.error("❌ Estrutura de resposta inesperada da API do Gemini", response.data);
       throw new Error("Resposta inesperada da API do Gemini");
     }
-
+    
     const resposta = response.data.candidates[0].content.parts[0].text;
     
+    
     // Armazenar no cache para futuras requisições
-    await store.set(`question:${id}`, resposta);
+    await redis.set(`question:${id}`, resposta);
     console.log("✅ Resposta armazenada no cache para ID:", id);
 
     return {
