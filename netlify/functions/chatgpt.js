@@ -44,9 +44,9 @@ exports.handler = async function (event, context) {
       };
     }
 
-    const { texto, respAlternativas, resp, id } = requestBody;
+    const { texto, respAlternativas, resp, id, hash } = requestBody;
 
-    if (!texto || !resp || !id) {
+    if (!texto || !resp || !id || !hash) {
       console.error("❌ Erro: Parâmetros inválidos!", requestBody);
       return {
         statusCode: 400,

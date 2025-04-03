@@ -38,24 +38,17 @@ exports.handler = async function (event, context) {
             };
         }
 
-        const {id, issue, usuario} = requestBody;
+        const {id, issue, hash} = requestBody;
 
-        if (!id) {
+        if (!id || !hash || !issue) {
             console.error("❌ Erro: Parâmetros inválidos!", requestBody);
             return {
                 statusCode: 400,
-                body: JSON.stringify({ error: "Missing required parameters (id)" }),
+                body: JSON.stringify({ error: "Missing required parameters (id, hash, issue)" }),
             };
         }
 
         if (issue) {
-            // Verifica se o usuário está vazio
-            if (usuario == "" || usuario == null){
-                nomeUsuario = 'Anônimo';
-            }else{
-                nomeUsuario = usuario;
-            }
-
             //cria data e hora
             const agora = new Date();
             const dia = String(agora.getDate()).padStart(2, '0');
@@ -69,7 +62,7 @@ exports.handler = async function (event, context) {
                 JSON.stringify({
                   data: dtformatada,
                   issue: issue,
-                  usuario: nomeUsuario
+                  hash: hash
                 })
               );
             console.log("✅ Issue armazenada no bd para ID:", id);

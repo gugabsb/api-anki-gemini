@@ -39,7 +39,7 @@ exports.handler = async function (event, context) {
             };
         }
 
-        const {id, texto, usuario} = requestBody;
+        const {id, texto, usuario, hash} = requestBody;
 
         if (!id) {
             console.error("❌ Erro: Parâmetros inválidos!", requestBody);
@@ -74,7 +74,8 @@ exports.handler = async function (event, context) {
                 JSON.stringify({
                   data: dtformatada,
                   texto: textoFormatado,
-                  usuario: nomeUsuario
+                  usuario: nomeUsuario,
+                  hash: hash
                 })
               );
             console.log("✅ Comentários armazenados no bd para ID:", id);
