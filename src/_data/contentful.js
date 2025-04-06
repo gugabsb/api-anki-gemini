@@ -1,12 +1,27 @@
-require('dotenv').config();
-const contentful = require('contentful');
+import { createClient } from 'contentful';
+import * as dotenv from 'dotenv';
 
-module.exports = async () => {
-  const client = contentful.createClient({
+dotenv.config();
+
+export default async function() {
+  const client = createClient({
     space: process.env.CONTENTFUL_SPACE_ID,
     accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
   });
 
-  const entries = await client.getEntries({ content_type: 'flashcardDeck' });
-  return entries.items;
-};
+  try {
+    const entries = await client.getEntries({ 
+        content_type: 'flashcardDeck' // Ajuste para seu content type
+    });
+
+    // Adicione no try-catch
+    if (!entries?.items) {
+        console.warn('Nenhum deck encontrado no Contentful');
+        return [];
+    }
+    return entries.items;
+  } catch (error) {
+    console.error('Erro ao buscar dados do Contentful:', error);
+    return [];
+  }
+}

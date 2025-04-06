@@ -1,15 +1,20 @@
 ---
-layout: base.njk
-title: Decks para MPU 2025
+layout: "layouts/base.njk"
+title: "Decks MPU 2025"
 ---
+<script>
+  const provaDate = new Date('2025-05-04');
+  const daysLeft = Math.ceil((provaDate - new Date()) / (1000 * 60 * 60 * 24));
+  document.getElementById('countdown').textContent = `${daysLeft} dias restantes!`;
+</script>
 
-<h1>Decks Estude Com Anki</h1>
-
-{% for deck in contentful %}
-  <div class="deck">
-    <h2>{{ deck.fields.title }}</h2>
-    <p>{{ deck.fields.description }}</p>
-    <p>Preço: R$ {{ deck.fields.price }}</p>
-    <button>Comprar Agora</button>
-  </div>
-{% endfor %}
+{% block content %}
+  <h1>{{ title }}</h1>
+  
+  {% for deck in contentful %}
+    <div class="deck">
+      <h2>{{ deck.fields.title }}</h2>
+      <p>{{ deck.fields.description }}</p>
+    </div>
+  {% endfor %}
+{% endblock %}
