@@ -8,6 +8,8 @@
   <meta property="og:image" content="/assets/mpu-anki-share.jpg">
 </head>
 <body>
-  {% block content %}{% endblock %}
+  {% block content %}
+    {{ content | safe }}
+  {% endblock %}
 </body>
 </html>

@@ -19,6 +19,8 @@ export default async function() {
         console.warn('Nenhum deck encontrado no Contentful');
         return [];
     }
+    // Adicione no final da função, antes do return
+    console.log('Dados do Contentful:', entries.items.map(d => d.fields.title));
     return entries.items;
   } catch (error) {
     console.error('Erro ao buscar dados do Contentful:', error);
