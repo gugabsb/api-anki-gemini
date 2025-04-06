@@ -1,0 +1,15 @@
+---
+layout: base.njk
+title: Decks para MPU 2025
+---
+
+<h1>Decks Estude Com Anki</h1>
+
+{% for deck in contentful %}
+  <div class="deck">
+    <h2>{{ deck.fields.title }}</h2>
+    <p>{{ deck.fields.description }}</p>
+    <p>Preço: R$ {{ deck.fields.price }}</p>
+    <button>Comprar Agora</button>
+  </div>
+{% endfor %}

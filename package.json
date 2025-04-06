@@ -1,8 +1,21 @@
 {
   "dependencies": {
+    "@11ty/eleventy": "^3.0.0",
+    "@contentful/rich-text-html-renderer": "^17.0.0",
     "@google/generative-ai": "^0.24.0",
     "@netlify/functions": "^3.0.4",
     "@upstash/redis": "^1.34.6",
-    "axios": "^1.8.4"
-  }
+    "axios": "^1.8.4",
+    "dotenv": "^16.4.7"
+  },
+  "name": "api-anki-gemini",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }

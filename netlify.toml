@@ -1,5 +1,15 @@
 [build]
   functions = "netlify/functions"
+  command = "npm run build"
+  publish = "_site"
 
 [functions]
   node_bundler = "esbuild"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# Variáveis do Contentful (adicione no painel do Netlify também)
+[context.production.environment]
+  CONTENTFUL_SPACE_ID = "htr81xo4v7n5"
+  CONTENTFUL_ACCESS_TOKEN = "xGr1_pOyVRsW_mDMlWqMh7EYhAW2CIkVvbF-1Y3lryw"
