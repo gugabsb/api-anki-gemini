@@ -1,0 +1,29 @@
+---
+layout: layouts/base.njk  # Caminho relativo à pasta _includes
+title: "Login"
+permalink: auth/login/    # Opcional: para URL limpa
+---
+
+<button id="googleLogin">Entrar com Google</button>
+
+<script>
+  document.getElementById('googleLogin').addEventListener('click', async () => {
+    try {
+      // Garante inicialização
+      const supabase = window.supabaseClient.init();
+      if (!supabase) throw new Error('Biblioteca não carregada');
+      
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: window.location.origin + '/auth/callback'
+        }
+      });
+      
+      if (error) throw error;
+    } catch (error) {
+      console.error('Falha no login:', error);
+      alert('Erro: ' + error.message);
+    }
+  });
+</script>

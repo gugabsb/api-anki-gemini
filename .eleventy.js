@@ -5,7 +5,7 @@ export default function(eleventyConfig) {
         includes: "_includes",
         output: "_site"
       },
-      templateFormats: ["njk", "md", "11ty.js"],
+      templateFormats: ["njk", "md", "11ty.js", "html"],
       markdownTemplateEngine: "njk"
     };
   }

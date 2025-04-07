@@ -1,0 +1,152 @@
+---
+layout: layouts/base.njk
+title: "Área do Aluno"
+---
+
+<div class="dashboard-container">
+  <h1>Bem-vindo à sua Área</h1>
+  
+  <div id="user-data">
+    <!-- Dados serão carregados via JS -->
+  </div>
+
+  <div id="decks-list" class="decks-grid">
+    <!-- Decks serão carregados aqui -->
+  </div>
+
+  <button id="logout-btn" class="btn-logout">Sair</button>
+</div>
+
+<script>
+  // Função de download melhorada
+  async function downloadDeck(deckId) {
+    try {
+      const supabase = window.supabaseClient.init();
+      const { data: { session }, error } = await supabase.auth.getSession();
+      
+      if (error || !session) throw new Error('Sessão inválida');
+
+      const response = await fetch(`/.netlify/functions/download/${deckId}`, {
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok && response.redirected) {
+        window.location.href = response.url;
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Falha no download');
+      }
+    } catch (error) {
+      console.error('Erro no download:', error);
+      alert(error.message);
+    }
+  }
+
+  // Inicialização da página
+  (async function() {
+    try {
+      const supabase = window.supabaseClient.init();
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      
+      if (authError || !user) throw new Error('Não autenticado');
+
+      // Exibe dados do usuário
+      document.getElementById('user-data').innerHTML = `
+        <p>Logado como: <strong>${user.email}</strong></p>
+        ${user.user_metadata?.avatar_url ? 
+          `<img src="${user.user_metadata.avatar_url}" alt="Avatar" class="avatar">` : ''}
+      `;
+
+      // Carrega decks
+      const { data: decks, error: decksError } = await supabase
+        .from('user_decks')
+        .select('id, name, description, created_at')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+
+      if (decksError) throw decksError;
+
+      const decksContainer = document.getElementById('decks-list');
+      decksContainer.innerHTML = decks.length > 0 
+        ? decks.map(deck => `
+            <div class="deck-card">
+              <h3>${deck.name}</h3>
+              <p>${deck.description || 'Sem descrição'}</p>
+              <button 
+                onclick="downloadDeck('${deck.id}')" 
+                class="btn-download"
+                data-id="${deck.id}"
+              >
+                Baixar
+              </button>
+            </div>
+          `).join('')
+        : '<p>Nenhum deck disponível ainda.</p>';
+
+      // Logout
+      document.getElementById('logout-btn').addEventListener('click', async () => {
+        await supabase.auth.signOut();
+        window.location.href = '/auth/login';
+      });
+
+    } catch (error) {
+      console.error('Erro no dashboard:', error);
+      window.location.href = `/auth/login?error=${encodeURIComponent(error.message)}`;
+    }
+  })();
+</script>
+
+<style>
+  .dashboard-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem;
+  }
+  
+  .decks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+  
+  .deck-card {
+    border: 1px solid #4F4F4F;
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: transform 0.2s;
+  }
+  
+  .deck-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-left: 1rem;
+  }
+  
+  .btn-logout {
+    background: #FF3B30;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn-download {
+    background: #01BBFE;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 1rem;
+  }
+</style>

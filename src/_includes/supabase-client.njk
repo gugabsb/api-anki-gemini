@@ -1,0 +1,21 @@
+<script>
+  window.supabaseClient = (function() {
+    let client;
+    
+    return {
+      init: function() {
+        if (!client) {
+          client = supabase.createClient(
+            'https://plupzqjkynaprsluelwt.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsdXB6cWpreW5hcHJzbHVlbHd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwMjgyMzksImV4cCI6MjA1OTYwNDIzOX0.GDJmALkTV7J6bYWtJyjEKq5XeX-nL5dIDm-us3ntRLI'
+          );
+        }
+        return client;
+      },
+      getClient: function() {
+        if (!client) throw new Error("Supabase não inicializado");
+        return client;
+      }
+    };
+  })();
+</script>

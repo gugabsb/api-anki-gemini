@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Estude Com Anki - MPU 2025</title>
+  <meta name="description" content="Decks otimizados para o concurso do MPU 2025 usando o método científico de repetição espaçada">
+  <style>
+    :root {
+      --azul-primario: #01BBFE;
+      --cinza-escuro: #363636;
+      --cinza-medio: #4F4F4F;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--cinza-escuro);
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .deck-card {
+      background: var(--cinza-medio);
+      border-left: 4px solid var(--azul-primario);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+  </style>
+
+  <!-- Carrega o SDK do Supabase primeiro -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+<!-- Inicialização segura do cliente -->
+<script>
+  // Singleton pattern com verificação
+  window.supabaseClient = {
+    _client: null,
+    init: function() {
+      if (!this._client && window.supabase) {
+        this._client = supabase.createClient(
+          'https://plupzqjkynaprsluelwt.supabase.co',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsdXB6cWpreW5hcHJzbHVlbHd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwMjgyMzksImV4cCI6MjA1OTYwNDIzOX0.GDJmALkTV7J6bYWtJyjEKq5XeX-nL5dIDm-us3ntRLI'
+        );
+      }
+      return this._client;
+    },
+    getClient: function() {
+      if (!this._client) {
+        throw new Error('Supabase não inicializado. Chame init() primeiro.');
+      }
+      return this._client;
+    }
+  };
+
+  // Pré-inicializa quando possível
+  document.addEventListener('DOMContentLoaded', () => {
+    window.supabaseClient.init();
+  });
+</script>
+
+</head>
+<body>
+  <header style="background: linear-gradient(to right, var(--cinza-escuro), var(--cinza-medio)); padding: 40px 0; text-align: center;">
+    <div class="container">
+      <h1>ESTUDE COM ANKI - MPU 2025</h1>
+      <p>Decks otimizados para sua aprovação no concurso de 04/05/2025</p>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 40px 0;">
+    
+<script>
+  (async () => {
+    try {
+      const supabase = window.supabaseClient.getClient();
+      const { data: { user }, error } = await supabase.auth.getUser();
+      
+      if (!user) throw new Error('Não autenticado');
+      
+      // Carrega dados do usuário
+      const { data: decks } = await supabase
+        .from('user_decks')
+        .select('*')
+        .eq('user_id', user.id);
+      
+      renderDecks(decks);
+    } catch (error) {
+      window.location.href = '/auth/login';
+    }
+  })();
+</script>
+  </main>
+
+  <footer style="background: var(--cinza-medio); padding: 20px; text-align: center;">
+    <p>© 2025 Estude Com Anki - Todos os direitos reservados</p>
+  </footer>
+</body>
+</html>

@@ -6,10 +6,32 @@
 [functions]
   node_bundler = "esbuild"
 
-[build.environment]
-  NODE_VERSION = "18"
-
 # Variáveis do Contentful (adicione no painel do Netlify também)
 [context.production.environment]
   CONTENTFUL_SPACE_ID = "htr81xo4v7n5"
   CONTENTFUL_ACCESS_TOKEN = "xGr1_pOyVRsW_mDMlWqMh7EYhAW2CIkVvbF-1Y3lryw"
+
+[[redirects]]
+  from = "/download/*"
+  to = "/.netlify/functions/download"
+  status = 200
+  force = true
+
+[build.environment]
+  NODE_VERSION = "18"
+  SUPABASE_URL = "https://plupzqjkynaprsluelwt.supabase.co"
+  SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsdXB6cWpreW5hcHJzbHVlbHd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwMjgyMzksImV4cCI6MjA1OTYwNDIzOX0.GDJmALkTV7J6bYWtJyjEKq5XeX-nL5dIDm-us3ntRLI"
+
+  [dev]
+  framework = "#custom"
+  command = "npx eleventy --serve --port=8082"  # Comando para iniciar seu servidor
+  targetPort = 8082  # Porta do Eleventy
+  functionsPort = 8888  # Porta das functions
+  autoLaunch = true  # Abre o browser automaticamente
+
+  [[headers]]
+  for = "/.netlify/functions/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Headers = "Authorization, Content-Type"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"

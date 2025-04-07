@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Área do Aluno | Estude Com Anki - MPU 2025</title>
+  <meta name="description" content="Decks otimizados para o concurso do MPU 2025 usando o método científico de repetição espaçada">
+  <style>
+    :root {
+      --azul-primario: #01BBFE;
+      --cinza-escuro: #363636;
+      --cinza-medio: #4F4F4F;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--cinza-escuro);
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .deck-card {
+      background: var(--cinza-medio);
+      border-left: 4px solid var(--azul-primario);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .dashboard {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+
+    .deck-card {
+      border: 1px solid #4F4F4F;
+      padding: 1rem;
+      border-radius: 8px;
+    }    
+  </style>
+
+<!-- Configuração centralizada do Supabase -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script>
+  // Singleton pattern robusto
+  window.supabaseClient = {
+    _instance: null,
+    
+    init: function() {
+      if (!this._instance) {
+        this._instance = supabase.createClient(
+          'https://plupzqjkynaprsluelwt.supabase.co',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsdXB6cWpreW5hcHJzbHVlbHd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwMjgyMzksImV4cCI6MjA1OTYwNDIzOX0.GDJmALkTV7J6bYWtJyjEKq5XeX-nL5dIDm-us3ntRLI'
+        );
+        
+        // Verificação crítica
+        if (!this._instance.auth) {
+          console.error('Módulo auth não carregado');
+          throw new Error('Falha na inicialização do Supabase');
+        }
+      }
+      return this._instance;
+    }
+  };
+
+  // Pré-inicialização
+  document.addEventListener('DOMContentLoaded', () => {
+    try {
+      window.supabaseClient.init();
+    } catch (error) {
+      console.error('Erro na inicialização:', error);
+    }
+  });
+</script>
+
+</head>
+<body>
+  <header style="background: linear-gradient(to right, var(--cinza-escuro), var(--cinza-medio)); padding: 40px 0; text-align: center;">
+    <div class="container">
+      <h1>ESTUDE COM ANKI - MPU 2025</h1>
+      <p>Decks otimizados para sua aprovação no concurso de 04/05/2025</p>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 40px 0;">
+    
+<div class="dashboard">
+  <h1>Bem-vindo, <span id="user-email"></span>!</h1>
+  
+  <section class="decks">
+    <h2>Seus Decks</h2>
+    <div id="deck-list" class="grid">
+      <!-- Decks serão carregados via JS -->
+    </div>
+  </section>
+
+  <button id="logout-btn" class="btn-danger">Sair</button>
+</div>
+
+<script>
+  // 1. Inicializa Supabase
+  const supabase = window.supabaseClient.init();
+
+  // 2. Carrega dados do usuário
+  async function loadUserData() {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return window.location.href = '/auth/login'
+
+    document.getElementById('user-email').textContent = user.email
+    fetchDecks(user.id)
+  }
+
+  // 3. Busca decks no banco de dados
+  async function fetchDecks(userId) {
+    const { data: decks, error } = await supabase
+      .from('user_decks')
+      .select('*')
+      .eq('user_id', userId)
+
+    if (error) console.error(error)
+    else renderDecks(decks)
+  }
+
+  // 4. Renderiza decks na tela
+  function renderDecks(decks) {
+    const container = document.getElementById('deck-list')
+    container.innerHTML = decks.map(deck => `
+      <div class="deck-card">
+        <h3>${deck.name}</h3>
+        <a href="/download/${deck.id}" class="btn">Baixar</a>
+      </div>
+    `).join('')
+  }
+
+  // 5. Logout
+  document.getElementById('logout-btn').addEventListener('click', async () => {
+    await supabase.auth.signOut()
+    window.location.href = '/auth/login'
+  })
+
+  // Inicialização
+  document.addEventListener('DOMContentLoaded', loadUserData)
+</script>
+  </main>
+
+  <footer style="background: var(--cinza-medio); padding: 20px; text-align: center;">
+    <p>© 2025 Estude Com Anki - Todos os direitos reservados</p>
+  </footer>
+</body>
+</html>

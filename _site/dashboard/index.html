@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Área do Aluno | Estude Com Anki - MPU 2025</title>
+  <meta name="description" content="Decks otimizados para o concurso do MPU 2025 usando o método científico de repetição espaçada">
+  <style>
+    :root {
+      --azul-primario: #01BBFE;
+      --cinza-escuro: #363636;
+      --cinza-medio: #4F4F4F;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--cinza-escuro);
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .deck-card {
+      background: var(--cinza-medio);
+      border-left: 4px solid var(--azul-primario);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .dashboard {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+
+  .dashboard-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem;
+  }
+  
+  .decks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+  
+  .deck-card {
+    border: 1px solid #4F4F4F;
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: transform 0.2s;
+  }
+  
+  .deck-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-left: 1rem;
+  }
+  
+  .btn-logout {
+    background: #FF3B30;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  </style>
+
+<!-- Configuração centralizada do Supabase -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script>
+  // Singleton pattern robusto
+  window.supabaseClient = {
+    _instance: null,
+    
+    init: function() {
+      if (!this._instance) {
+        this._instance = supabase.createClient(
+          'https://plupzqjkynaprsluelwt.supabase.co',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsdXB6cWpreW5hcHJzbHVlbHd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwMjgyMzksImV4cCI6MjA1OTYwNDIzOX0.GDJmALkTV7J6bYWtJyjEKq5XeX-nL5dIDm-us3ntRLI'
+        );
+        
+        // Verificação crítica
+        if (!this._instance.auth) {
+          console.error('Módulo auth não carregado');
+          throw new Error('Falha na inicialização do Supabase');
+        }
+      }
+      return this._instance;
+    }
+  };
+
+  // Pré-inicialização
+  document.addEventListener('DOMContentLoaded', () => {
+    try {
+      window.supabaseClient.init();
+    } catch (error) {
+      console.error('Erro na inicialização:', error);
+    }
+  });
+</script>
+
+</head>
+<body>
+  <header style="background: linear-gradient(to right, var(--cinza-escuro), var(--cinza-medio)); padding: 40px 0; text-align: center;">
+    <div class="container">
+      <h1>ESTUDE COM ANKI - MPU 2025</h1>
+      <p>Decks otimizados para sua aprovação no concurso de 04/05/2025</p>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 40px 0;">
+    
+<div class="dashboard-container">
+  <h1>Bem-vindo à sua Área</h1>
+  
+  <div id="user-data">
+    <!-- Dados serão carregados via JS -->
+  </div>
+
+  <div id="decks-list" class="decks-grid">
+    <!-- Decks serão carregados aqui -->
+  </div>
+
+  <button id="logout-btn" class="btn-logout">Sair</button>
+</div>
+
+<script>
+  // Função de download melhorada
+  async function downloadDeck(deckId) {
+    try {
+      const supabase = window.supabaseClient.init();
+      const { data: { session }, error } = await supabase.auth.getSession();
+      
+      if (error || !session) throw new Error('Sessão inválida');
+
+      const response = await fetch(`/.netlify/functions/download/${deckId}`, {
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok && response.redirected) {
+        window.location.href = response.url;
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Falha no download');
+      }
+    } catch (error) {
+      console.error('Erro no download:', error);
+      alert(error.message);
+    }
+  }
+
+  // Inicialização da página
+  (async function() {
+    try {
+      const supabase = window.supabaseClient.init();
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      
+      if (authError || !user) throw new Error('Não autenticado');
+
+      // Exibe dados do usuário
+      document.getElementById('user-data').innerHTML = `
+        <p>Logado como: <strong>${user.email}</strong></p>
+        ${user.user_metadata?.avatar_url ? 
+          `<img src="${user.user_metadata.avatar_url}" alt="Avatar" class="avatar">` : ''}
+      `;
+
+      // Carrega decks
+      const { data: decks, error: decksError } = await supabase
+        .from('user_decks')
+        .select('id, name, description, created_at')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+
+      if (decksError) throw decksError;
+
+      const decksContainer = document.getElementById('decks-list');
+      decksContainer.innerHTML = decks.length > 0 
+        ? decks.map(deck => `
+            <div class="deck-card">
+              <h3>${deck.name}</h3>
+              <p>${deck.description || 'Sem descrição'}</p>
+              <button 
+                onclick="downloadDeck('${deck.id}')" 
+                class="btn-download"
+                data-id="${deck.id}"
+              >
+                Baixar
+              </button>
+            </div>
+          `).join('')
+        : '<p>Nenhum deck disponível ainda.</p>';
+
+      // Logout
+      document.getElementById('logout-btn').addEventListener('click', async () => {
+        await supabase.auth.signOut();
+        window.location.href = '/auth/login';
+      });
+
+    } catch (error) {
+      console.error('Erro no dashboard:', error);
+      window.location.href = `/auth/login?error=${encodeURIComponent(error.message)}`;
+    }
+  })();
+</script>
+
+<style>
+  .dashboard-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem;
+  }
+  
+  .decks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+  
+  .deck-card {
+    border: 1px solid #4F4F4F;
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: transform 0.2s;
+  }
+  
+  .deck-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-left: 1rem;
+  }
+  
+  .btn-logout {
+    background: #FF3B30;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn-download {
+    background: #01BBFE;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 1rem;
+  }
+</style>
+  </main>
+
+  <footer style="background: var(--cinza-medio); padding: 20px; text-align: center;">
+    <p>© 2025 Estude Com Anki - Todos os direitos reservados</p>
+  </footer>
+</body>
+</html>
