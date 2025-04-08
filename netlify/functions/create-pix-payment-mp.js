@@ -1,60 +1,80 @@
-const mercadopago = require('mercadopago');
+const axios = require('axios');
 const { createClient } = require('@supabase/supabase-js');
 
-mercadopago.configure({
-  access_token: process.env.MERCADOPAGO_ACCESS_TOKEN
-});
+// Supabase configurado com Service Role Key
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_KEY,
+  { auth: { persistSession: false } }
+);
 
-exports.handler = async function(event, context) {
-  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
-
-  // Verificar autenticação
-  const { user } = context.clientContext;
-  if (!user) {
-    return { statusCode: 401, body: JSON.stringify({ error: 'Não autorizado' }) };
-  }
-
+exports.handler = async (event) => {
   try {
-    const { deck_id, deck_price, deck_name, deck_file_path, deck_description } = JSON.parse(event.body);
+    const body = JSON.parse(event.body);
+    const { deck_id, deck_price, deck_name, user_id, user_email } = body;
 
-    // Criar preferência de pagamento
-    const paymentData = {
-      transaction_amount: parseFloat(deck_price),
-      description: `Deck: ${deck_name}`,
-      payment_method_id: 'pix',
-      payer: {
-        email: user.email,
-        first_name: user.user_metadata?.full_name || user.email.split('@')[0],
-      },
-      metadata: {
-        user_id: user.sub,
+    const mpAccessToken = process.env.MERCADOPAGO_ACCESS_TOKEN;
+
+    if (!mpAccessToken) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: 'MERCADOPAGO_ACCESS_TOKEN não está definido' })
+      };
+    }
+
+    const idempotencyKey = `${user_id}-${deck_id}`; // ou use UUID aleatório
+
+    const { data } = await axios.post(
+    'https://api.mercadopago.com/v1/payments',
+    {
+        transaction_amount: Number(deck_price),
+        description: `Compra do deck: ${deck_name}`,
+        payment_method_id: 'pix',
+        payer: { email: user_email },
+        notification_url: 'https://app.estudecomanki.com.br/.netlify/functions/webhook-pix',
+        metadata: { deckId: deck_id, userId: user_id }
+    },
+    {
+        headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${mpAccessToken}`,
+        'X-Idempotency-Key': idempotencyKey
+        }
+    }
+    );
+
+    const qrData = data?.point_of_interaction?.transaction_data;
+
+    if (!qrData?.qr_code_base64) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: 'QR Code não encontrado na resposta', data })
+      };
+    }
+
+
+    await supabase.from('transactions').insert({
+        payment_id: data.id,
+        user_id: user_id,
         deck_id: deck_id,
-        deck_name: deck_name,
-        deck_file_path: deck_file_path,
-        deck_description: deck_description
-      },
-      notification_url: `${process.env.URL}/.netlify/functions/mp-webhook`,
-      date_of_expiration: new Date(Date.now() + 30 * 60 * 1000).toISOString() // 30 minutos para pagar
-    };
-
-    const response = await mercadopago.payment.create(paymentData);
+        amount: deck_price,
+        status: 'pending',
+        pix_code: qrData?.qr_code,
+        pix_expiration: data.date_of_expiration,
+        metadata: data
+      });
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        id: response.body.id,
-        qr_code_base64: response.body.point_of_interaction?.transaction_data?.qr_code_base64,
-        pix_code: response.body.point_of_interaction?.transaction_data?.emv,
-        expiration_date: response.body.date_of_expiration
+        qr_code: qrData.qr_code,
+        qr_code_base64: qrData.qr_code_base64
       })
     };
-  } catch (error) {
+  } catch (err) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ 
-        error: error.message,
-        full_error: error 
-      })
+      body: JSON.stringify({ error: err.message || 'Erro desconhecido', detalhe: err.response?.data })
     };
   }
 };

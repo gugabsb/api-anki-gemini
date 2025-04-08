@@ -15,16 +15,21 @@ export default function(eleventyConfig) {
   eleventyConfig.addFilter("map", function(array, property) {
     if (!array) return [];
     return array.map(item => {
-      // Acesso seguro a propriedades aninhadas
       return property.split('.').reduce((obj, key) => obj?.[key], item);
     });
   });
 
   eleventyConfig.addFilter("findById", function(arr, id) {
+    console.log("LOG|XXXXXXXXXXXXXXXXXXXXXX");
+
     if (!Array.isArray(arr)) {
       console.error('Dados inválidos:', arr);
       return null;
     }
+ 
+    console.log(arr);
+    console.log(id);
+    
     return arr.find(item => item.sys.id === id);
   });
   
@@ -39,6 +44,7 @@ export default function(eleventyConfig) {
     watch: ["_site/**/*.html"]
   });
 
+  
   return {
       dir: {
           input: "src/pages",
@@ -46,6 +52,7 @@ export default function(eleventyConfig) {
           output: "_site",
           data: "../_data"
       },
+      dynamicPermalinks: true,
       templateFormats: ["njk", "md", "11ty.js", "html"],
       markdownTemplateEngine: "njk",
       htmlTemplateEngine: "njk",

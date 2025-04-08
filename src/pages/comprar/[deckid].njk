@@ -1,7 +1,7 @@
 ---
 layout: "layouts/base.njk"
 pagination:
-  data: contentful
+  data: decks.items
   size: 1
   alias: deckid
   resolve: values
@@ -10,15 +10,77 @@ pagination:
 permalink: "/comprar/{{ deckid.sys.id }}/"
 ---
 
-{% set deck = contentful | findById(deckid.sys.id) %}
 
-{% if deck %}
-  {% include "../../_includes/partials/comprar-deck.njk" %}
+{# Filtro para encontrar o deck pelo ID #}
+{% set currentDeck = deckid %}
+
+{% if currentDeck %}
+<div class="deck-container">
+    <h1>{{ currentDeck.fields.title }}</h1>
+    
+    {# Imagem (com fallback) #}
+    {% if currentDeck.fields.image %}
+      <img src="{{ currentDeck.fields.image.fields.file.url }}" 
+           alt="{{ currentDeck.fields.title }}"
+           class="deck-image">
+    {% endif %}
+    
+    <p>{{ currentDeck.fields.description }}</p>
+    <p>Preço: R$ {{ currentDeck.fields.price }}</p>
+    
+    <button id="buy-button" onclick="comprarDeck(
+    '{{ currentDeck.sys.id }}',
+    '{{ currentDeck.fields.price }}',
+    '{{ currentDeck.fields.title }}',
+    'da7bb259-1ce4-42e4-b3d1-ed18ae34648a',
+    'gugabsb@gmail.com'
+    )">
+      Comprar com PIX
+    </button>
+</div>
+<div id="qrcodepix" class="qrcodepix">
+
+</div>
+<script>
+
+async function comprarDeck(deck_id, deck_price, deck_name, user_id, user_email) {
+    const supabase = window.supabaseClient.init();
+    const user = await supabase.auth.getUser();
+    const res = await fetch('/.netlify/functions/create-pix-payment-mp', {
+        method: 'POST',
+        body: JSON.stringify({ deck_id, deck_price, deck_name, user_id, user_email }),
+        headers: { 'Content-Type': 'application/json' }
+    });
+
+    const text = await res.text(); // 👈 parse como texto primeiro
+    //console.log('🔍 Resposta bruta da função:', text);
+
+    try {
+    
+        const data = JSON.parse(text);
+        const img = document.createElement('img');
+        img.src = `data:image/png;base64,${data.qr_code_base64}`;
+        document.getElementById('qrcodepix').appendChild(img);
+        alert('Escaneie o QR Code para pagar com PIX!');
+    
+    } catch (err) {
+        console.error('Erro ao converter resposta em JSON:', err);
+    }
+
+}
+</script>
+<style>
+    .qrcodepix img{
+        width: 200px;
+        height: 200px;
+        text-align: center;
+    }
+
+</style>
+
 {% else %}
   <div class="error">
-    <h2>Debug Info:</h2>
-    <p>ID buscado: {{ deckid.sys.id }}</p>
-    <p>Total de decks: {{ contentful.length }}</p>
-    <pre>{{ contentful | dump | safe }}</pre>
+    <p>Deck não encontrado</p>
+    <a href="/">Voltar</a>
   </div>
 {% endif %}
