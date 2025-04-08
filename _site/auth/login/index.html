@@ -18,6 +18,12 @@
       margin: 0;
       padding: 0;
     }
+    .container.header{
+      background-image: url('/assets/images/logo-eca-50px-ppt.png');
+      background-repeat: no-repeat;
+      background-position: right;
+    }
+
     .container {
       max-width: 1200px;
       margin: 0 auto;
@@ -80,6 +86,38 @@
     border-radius: 4px;
     cursor: pointer;
   }
+
+  .bt-login{
+    float: right;
+  }
+
+  /* Loader para botão */
+  .loader {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .deck-card {
+      padding: 1rem;
+    }
+    
+    .purchase-button {
+      padding: 0.5rem 1rem;
+    }
+  }
   </style>
 
 <!-- Configuração centralizada do Supabase -->
@@ -118,161 +156,99 @@
 
 </head>
 <body>
-  <header style="background: linear-gradient(to right, var(--cinza-escuro), var(--cinza-medio)); padding: 40px 0; text-align: center;">
-    <div class="container">
-      <h1>ESTUDE COM ANKI - MPU 2025</h1>
+  <button id="login" onclick="location.href='/auth/login'" class="bt-login">Login</button>
+
+  <header style="background: linear-gradient(to right, var(--cinza-escuro), var(--cinza-medio)); padding: 20px 0; text-align: center;">
+    <div class="container header">
+      <h1>Estude Com Anki</h1>
       <p>Decks otimizados para sua aprovação no concurso de 04/05/2025</p>
     </div>
   </header>
 
   <main class="container" style="padding: 40px 0;">
     
-<div class="auth-container">
-  <!-- Login por Email/Senha -->
-  <div class="email-login">
-    <h2>Login com Email</h2>
-    <form id="emailLoginForm">
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" id="email" required>
-      </div>
-      <div class="form-group">
-        <label for="password">Senha:</label>
-        <input type="password" id="password" minlength="6" required>
-      </div>
-      <button type="submit" class="btn-login">Entrar</button>
-      <p class="auth-link">
-        Não tem conta? <a href="/auth/signup">Cadastre-se</a>
-      </p>
-    </form>
+<h1>Entrar na Área do Aluno</h1>
+
+<!-- Login por Email/Senha -->
+<form id="email-login-form">
+  <label for="email">Email:</label><br>
+  <input type="email" id="email" required><br><br>
+
+  <label for="password">Senha:</label><br>
+  <input type="password" id="password" required><br><br>
+
+  <button type="submit" >Entrar</button>
+  <p class="auth-link">
+    <a href="#" onclick="resetPassword()">Esqueceu sua senha?</a>
+  </p>
+
+  <p class="auth-link" >
+    Não tem conta? <a href="/auth/signup">Cadastre-se</a>
+  </p>
+
+</form>
+
+
+<!-- Login com Google -->
+<div id="google-signin-container" style="position:block">
+  <div id="g_id_onload"
+       data-client_id="507152061466-a022pk2hegf7i8mvvdu0ob3m82akjgl8.apps.googleusercontent.com"
+       data-context="signin"
+       data-callback="handleCredentialResponse"
+       data-auto_prompt="false">
   </div>
 
-  <!-- Divisor OU -->
-  <div class="auth-divider">
-    <span>OU</span>
-  </div>
-
-  <!-- Login Social (Existente) -->
-  <div class="social-login">
-    <button id="googleLogin" class="btn-social">
-      <img src="/assets/images/google-icon.svg" alt="Google">
-      Continuar com Google
-    </button>
+  <div class="g_id_signin"
+       data-type="standard"
+       data-size="large"
+       data-theme="outline"
+       data-text="sign_in_with"
+       data-shape="rectangular"
+       data-logo_alignment="left">
   </div>
 </div>
-
-<script>
-  // Login por Email/Senha
-  document.getElementById('emailLoginForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const supabase = window.supabaseClient.init();
-
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
-
-      if (error) throw error;
-      
-      window.location.href = '/dashboard';
-    } catch (error) {
-      console.error('Erro no login:', error);
-      alert(error.message);
-    }
-  });
-
-  // Login Social (Existente)
-  document.getElementById('googleLogin').addEventListener('click', () => {
-    const supabase = window.supabaseClient.init();
-    supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo: 'https://app.estudecomanki.com.br/.netlify/functions/auth-callback', }
-    });
-  });
-</script>
+<p id="error-message" style="color: red; margin-top: 1rem;"></p>
 
 <style>
-  .auth-container {
+  #google-signin-container {
+    margin: 2rem 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  form {
     max-width: 400px;
-    margin: 2rem auto;
-    padding: 2rem;
-    border: 1px solid #4F4F4F;
-    border-radius: 8px;
-  }
-
-  .form-group {
-    margin-bottom: 1rem;
-  }
-
-  label {
-    display: block;
-    margin-bottom: 0.5rem;
+    margin: 0 auto;
   }
 
   input {
     width: 100%;
-    padding: 0.75rem 0 0.75rem 0;
-    border: 1px solid #363636;
-    border-radius: 4px;
-    background: #4F4F4F;
-    color: white;
-    text-align: center;
+    padding: 0.5rem;
+    margin-top: 0.25rem;
   }
 
-  .btn-login {
-    width: 100%;
-    padding: 0.75rem 0 0.75rem 0;
+  button {
+    width:100px;
+    width:20%;
+    padding: 0.5rem;
+    margin-top: 0.25rem;
     background: #01BBFE;
-    color: white;
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 1rem;
-  }
-
-  .auth-divider {
-    display: flex;
-    align-items: center;
-    margin: 1.5rem 0;
-    color: #aaa;
-  }
-
-  .auth-divider::before,
-  .auth-divider::after {
-    content: "";
-    flex: 1;
-    border-bottom: 1px solid #4F4F4F;
-  }
-
-  .auth-divider span {
-    padding: 0 1rem;
-  }
-
-  .btn-social {
-    width: 100%;
-    padding: 0.75rem;
-    background: #363636;
     color: white;
-    border: 1px solid #4F4F4F;
     border-radius: 4px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
+    font-weight: bold;
   }
 
-  .btn-social img {
-    height: 20px;
-  }
-
-  .auth-link {
-    margin-top: 1rem;
+  h1 {
     text-align: center;
+    margin: 2rem 0;
+  }
+  .auth-link {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: #b0b0b0;
+    font-size: 0.9rem;
   }
 
   .auth-link a {
@@ -283,8 +259,81 @@
 
   .auth-link a:hover {
     text-decoration: underline;
+  }
+
+
+  .auth-link a:hover {
+    text-decoration: underline;
   }  
-</style>
+
+  .auth-divider {
+    display: flex;
+    align-items: center;
+    margin: 1.5rem 0;
+    color: #aaa;
+  }
+  </style>
+
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+<script>
+  // Google Login
+  window.handleCredentialResponse = async function(response) {
+    const id_token = response.credential;
+    const supabase = window.supabaseClient.init();
+
+    const { error } = await supabase.auth.signInWithIdToken({
+      provider: 'google',
+      token: id_token,
+    });
+
+    if (error) {
+      console.error('Erro no login com Google:', error);
+      document.getElementById('error-message').textContent = 'Erro ao entrar com Google: ' + error.message;
+    } else {
+      window.location.href = '/dashboard';
+    }
+  };
+
+  // Email/Senha Login
+  document.getElementById('email-login-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const supabase = window.supabaseClient.init();
+
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      console.error('Erro no login com email/senha:', error);
+      document.getElementById('error-message').textContent = 'Erro ao entrar: ' + error.message;
+    } else {
+      window.location.href = '/dashboard';
+    }
+  });
+</script>
+
+<script>
+  async function resetPassword() {
+    const email = prompt("Digite seu email para redefinir a senha:");
+    if (!email) return;
+
+    const supabase = window.supabaseClient.init();
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: 'https://app.estudecomanki.com.br/auth/reset'
+    });
+
+    if (error) {
+      alert("Erro ao enviar email de redefinição: " + error.message);
+    } else {
+      alert("Enviamos um link para redefinir sua senha! Verifique seu email.");
+    }
+  }
+</script>
+
   </main>
 
   <footer style="background: var(--cinza-medio); padding: 20px; text-align: center;">

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estude Com Anki - MPU 2025</title>
+  <meta name="description" content="Decks otimizados para o concurso do MPU 2025 usando o método científico de repetição espaçada">
+  <style>
+    :root {
+      --azul-primario: #01BBFE;
+      --cinza-escuro: #363636;
+      --cinza-medio: #4F4F4F;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--cinza-escuro);
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+    .container.header{
+      background-image: url('/assets/images/logo-eca-50px-ppt.png');
+      background-repeat: no-repeat;
+      background-position: right;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .deck-card {
+      background: var(--cinza-medio);
+      border-left: 4px solid var(--azul-primario);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .dashboard {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+
+  .dashboard-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem;
+  }
+  
+  .decks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+  
+  .deck-card {
+    border: 1px solid #4F4F4F;
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: transform 0.2s;
+  }
+  
+  .deck-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-left: 1rem;
+  }
+  
+  .btn-logout {
+    background: #FF3B30;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .bt-login{
+    float: right;
+  }
+
+  /* Loader para botão */
+  .loader {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .deck-card {
+      padding: 1rem;
+    }
+    
+    .purchase-button {
+      padding: 0.5rem 1rem;
+    }
+  }
+  </style>
+
+<!-- Configuração centralizada do Supabase -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script>
+  // Singleton pattern robusto
+  window.supabaseClient = {
+    _instance: null,
+    
+    init: function() {
+      if (!this._instance) {
+        this._instance = supabase.createClient(
+          'https://plupzqjkynaprsluelwt.supabase.co',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsdXB6cWpreW5hcHJzbHVlbHd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwMjgyMzksImV4cCI6MjA1OTYwNDIzOX0.GDJmALkTV7J6bYWtJyjEKq5XeX-nL5dIDm-us3ntRLI'
+        );
+        
+        // Verificação crítica
+        if (!this._instance.auth) {
+          console.error('Módulo auth não carregado');
+          throw new Error('Falha na inicialização do Supabase');
+        }
+      }
+      return this._instance;
+    }
+  };
+
+  // Pré-inicialização
+  document.addEventListener('DOMContentLoaded', () => {
+    try {
+      window.supabaseClient.init();
+    } catch (error) {
+      console.error('Erro na inicialização:', error);
+    }
+  });
+</script>
+
+</head>
+<body>
+  <button id="login" onclick="location.href='/auth/login'" class="bt-login">Login</button>
+
+  <header style="background: linear-gradient(to right, var(--cinza-escuro), var(--cinza-medio)); padding: 20px 0; text-align: center;">
+    <div class="container header">
+      <h1>Estude Com Anki</h1>
+      <p>Decks otimizados para sua aprovação no concurso de 04/05/2025</p>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 40px 0;">
+    
+
+
+
+  <div class="container" style="padding: 2rem;">
+  <div class="purchase-flow">
+    <!-- Etapa 1: Detalhes do Deck -->
+    <div id="deck-details" class="deck-details-section">
+      <h2 style="color: var(--azul-primario); margin-bottom: 1.5rem;">Finalizar Compra</h2>
+      
+      <div class="deck-card" style="max-width: 600px; margin-bottom: 2rem;">
+        <h3>Teste 1</h3>
+        <p>[object Object]</p>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+          <span style="font-size: 1.5rem; font-weight: bold; color: var(--azul-primario);">
+            R$ 100
+          </span>
+          <button id="start-purchase" class="purchase-button">
+            Comprar com PIX
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Etapa 2: Pagamento PIX (inicialmente oculto) -->
+    <div id="pix-payment" style="display: none; max-width: 600px; background: var(--cinza-medio); padding: 2rem; border-radius: 8px;">
+      <h3 style="color: var(--azul-primario); margin-bottom: 1.5rem;">Pagamento via PIX</h3>
+      
+      <div style="text-align: center; margin-bottom: 1.5rem;">
+        <img id="pix-qrcode" src="" alt="QR Code PIX" style="max-width: 250px; margin: 0 auto 1rem; display: block;">
+        <p id="pix-code" style="word-break: break-all; background: rgba(0,0,0,0.2); padding: 0.5rem; border-radius: 4px;"></p>
+      </div>
+      
+      <div style="margin-bottom: 1.5rem;">
+        <p style="display: flex; justify-content: space-between;">
+          <span>Valor:</span>
+          <span style="font-weight: bold;">R$ <span id="pix-amount">100</span></span>
+        </p>
+        <p style="display: flex; justify-content: space-between;">
+          <span>Válido até:</span>
+          <span id="pix-expiration" style="font-weight: bold;"></span>
+        </p>
+      </div>
+      
+      <div class="payment-instructions">
+        <h4 style="color: var(--azul-primario); margin-bottom: 0.5rem;">Como pagar:</h4>
+        <ol style="padding-left: 1.2rem;">
+          <li>Abra seu app de banco ou carteira digital</li>
+          <li>Selecione a opção PIX</li>
+          <li>Escaneie o QR Code ou copie o código</li>
+          <li>Confira os dados e finalize o pagamento</li>
+        </ol>
+      </div>
+      
+      <div id="payment-status" style="margin-top: 1.5rem; padding: 1rem; border-radius: 4px; display: none;"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .purchase-button {
+    background: var(--azul-primario);
+    color: var(--cinza-escuro);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .purchase-button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+  
+  .deck-details-section {
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .payment-success {
+    background: rgba(0, 200, 83, 0.1);
+    border-left: 4px solid #00C853;
+    padding: 1rem;
+    margin-top: 1.5rem;
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const startButton = document.getElementById('start-purchase');
+  const deckDetails = document.getElementById('deck-details');
+  const pixPayment = document.getElementById('pix-payment');
+  
+  startButton.addEventListener('click', async () => {
+    try {
+      // Mostrar estado de carregamento
+      startButton.disabled = true;
+      startButton.innerHTML = '<span class="loader"></span> Processando...';
+      
+      // Obter ID do deck da URL
+      const pathParts = window.location.pathname.split('/');
+      const deckId = pathParts[pathParts.length - 1];
+      
+      // Chamar função Netlify para criar pagamento
+      const response = await fetch('/.netlify/functions/create-pix-payment-mp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          deck_id: deckId,
+          deck_price: 100,
+          deck_name: 'Teste 1',
+          deck_file_path: '',
+          deck_description: '[object Object]'
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Erro ao processar pagamento');
+      }
+      
+      const paymentData = await response.json();
+      
+      // Exibir dados do PIX
+      document.getElementById('pix-qrcode').src = `data:image/png;base64,${paymentData.qr_code_base64}`;
+      document.getElementById('pix-code').textContent = paymentData.pix_code;
+      document.getElementById('pix-amount').textContent = 100;
+      document.getElementById('pix-expiration').textContent = new Date(paymentData.expiration_date).toLocaleString();
+      
+      // Alternar para visualização de pagamento
+      deckDetails.style.display = 'none';
+      pixPayment.style.display = 'block';
+      
+      // Verificar status do pagamento periodicamente
+      const checkPayment = async () => {
+        const statusResponse = await fetch(`/.netlify/functions/check-payment?paymentId=${paymentData.id}`);
+        const statusData = await statusResponse.json();
+        
+        if (statusData.status === 'approved') {
+          clearInterval(paymentInterval);
+          document.getElementById('payment-status').innerHTML = `
+            <div class="payment-success">
+              <h4 style="color: #00C853; margin-top: 0;">Pagamento confirmado!</h4>
+              <p>Seu deck já está disponível na sua área do aluno.</p>
+              <a href="/area-do-aluno" class="purchase-button" style="display: inline-block; margin-top: 0.5rem;">
+                Acessar Área do Aluno
+              </a>
+            </div>
+          `;
+          document.getElementById('payment-status').style.display = 'block';
+        }
+      };
+      
+      const paymentInterval = setInterval(checkPayment, 5000); // Verificar a cada 5 segundos
+      
+    } catch (error) {
+      console.error('Erro:', error);
+      startButton.disabled = false;
+      startButton.textContent = 'Comprar com PIX';
+      alert('Ocorreu um erro ao processar seu pagamento. Por favor, tente novamente.');
+    }
+  });
+});
+</script>
+
+  </main>
+
+  <footer style="background: var(--cinza-medio); padding: 20px; text-align: center;">
+    <p>© 2025 Estude Com Anki - Todos os direitos reservados</p>
+  </footer>
+</body>
+</html>

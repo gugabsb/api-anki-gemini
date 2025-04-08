@@ -1,0 +1,24 @@
+---
+layout: "layouts/base.njk"
+pagination:
+  data: contentful
+  size: 1
+  alias: deckid
+  resolve: values
+  filter:
+    - item
+permalink: "/comprar/{{ deckid.sys.id }}/"
+---
+
+{% set deck = contentful | findById(deckid.sys.id) %}
+
+{% if deck %}
+  {% include "../../_includes/partials/comprar-deck.njk" %}
+{% else %}
+  <div class="error">
+    <h2>Debug Info:</h2>
+    <p>ID buscado: {{ deckid.sys.id }}</p>
+    <p>Total de decks: {{ contentful.length }}</p>
+    <pre>{{ contentful | dump | safe }}</pre>
+  </div>
+{% endif %}

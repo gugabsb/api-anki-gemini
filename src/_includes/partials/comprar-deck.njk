@@ -1,0 +1,167 @@
+<div class="container" style="padding: 2rem;">
+  <div class="purchase-flow">
+    <!-- Etapa 1: Detalhes do Deck -->
+    <div id="deck-details" class="deck-details-section">
+      <h2 style="color: var(--azul-primario); margin-bottom: 1.5rem;">Finalizar Compra</h2>
+      
+      <div class="deck-card" style="max-width: 600px; margin-bottom: 2rem;">
+        <h3>{{ deck.fields.title }}</h3>
+        <p>{{ deck.fields.description }}</p>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+          <span style="font-size: 1.5rem; font-weight: bold; color: var(--azul-primario);">
+            R$ {{ deck.fields.price | default("49,90") }}
+          </span>
+          <button id="start-purchase" class="purchase-button">
+            Comprar com PIX
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Etapa 2: Pagamento PIX (inicialmente oculto) -->
+    <div id="pix-payment" style="display: none; max-width: 600px; background: var(--cinza-medio); padding: 2rem; border-radius: 8px;">
+      <h3 style="color: var(--azul-primario); margin-bottom: 1.5rem;">Pagamento via PIX</h3>
+      
+      <div style="text-align: center; margin-bottom: 1.5rem;">
+        <img id="pix-qrcode" src="" alt="QR Code PIX" style="max-width: 250px; margin: 0 auto 1rem; display: block;">
+        <p id="pix-code" style="word-break: break-all; background: rgba(0,0,0,0.2); padding: 0.5rem; border-radius: 4px;"></p>
+      </div>
+      
+      <div style="margin-bottom: 1.5rem;">
+        <p style="display: flex; justify-content: space-between;">
+          <span>Valor:</span>
+          <span style="font-weight: bold;">R$ <span id="pix-amount">{{ deck.fields.price | default("49,90") }}</span></span>
+        </p>
+        <p style="display: flex; justify-content: space-between;">
+          <span>Válido até:</span>
+          <span id="pix-expiration" style="font-weight: bold;"></span>
+        </p>
+      </div>
+      
+      <div class="payment-instructions">
+        <h4 style="color: var(--azul-primario); margin-bottom: 0.5rem;">Como pagar:</h4>
+        <ol style="padding-left: 1.2rem;">
+          <li>Abra seu app de banco ou carteira digital</li>
+          <li>Selecione a opção PIX</li>
+          <li>Escaneie o QR Code ou copie o código</li>
+          <li>Confira os dados e finalize o pagamento</li>
+        </ol>
+      </div>
+      
+      <div id="payment-status" style="margin-top: 1.5rem; padding: 1rem; border-radius: 4px; display: none;"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .purchase-button {
+    background: var(--azul-primario);
+    color: var(--cinza-escuro);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .purchase-button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+  
+  .deck-details-section {
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .payment-success {
+    background: rgba(0, 200, 83, 0.1);
+    border-left: 4px solid #00C853;
+    padding: 1rem;
+    margin-top: 1.5rem;
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const startButton = document.getElementById('start-purchase');
+  const deckDetails = document.getElementById('deck-details');
+  const pixPayment = document.getElementById('pix-payment');
+  
+  startButton.addEventListener('click', async () => {
+    try {
+      // Mostrar estado de carregamento
+      startButton.disabled = true;
+      startButton.innerHTML = '<span class="loader"></span> Processando...';
+      
+      // Obter ID do deck da URL
+      const pathParts = window.location.pathname.split('/');
+      const deckId = pathParts[pathParts.length - 1];
+      
+      // Chamar função Netlify para criar pagamento
+      const response = await fetch('/.netlify/functions/create-pix-payment-mp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          deck_id: deckId,
+          deck_price: {{ deck.fields.price | default("49.90") }},
+          deck_name: '{{ deck.fields.title }}',
+          deck_file_path: '{{ deck.fields.filePath }}',
+          deck_description: '{{ deck.fields.description }}'
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Erro ao processar pagamento');
+      }
+      
+      const paymentData = await response.json();
+      
+      // Exibir dados do PIX
+      document.getElementById('pix-qrcode').src = `data:image/png;base64,${paymentData.qr_code_base64}`;
+      document.getElementById('pix-code').textContent = paymentData.pix_code;
+      document.getElementById('pix-amount').textContent = {{ deck.fields.price | default("49.90") }};
+      document.getElementById('pix-expiration').textContent = new Date(paymentData.expiration_date).toLocaleString();
+      
+      // Alternar para visualização de pagamento
+      deckDetails.style.display = 'none';
+      pixPayment.style.display = 'block';
+      
+      // Verificar status do pagamento periodicamente
+      const checkPayment = async () => {
+        const statusResponse = await fetch(`/.netlify/functions/check-payment?paymentId=${paymentData.id}`);
+        const statusData = await statusResponse.json();
+        
+        if (statusData.status === 'approved') {
+          clearInterval(paymentInterval);
+          document.getElementById('payment-status').innerHTML = `
+            <div class="payment-success">
+              <h4 style="color: #00C853; margin-top: 0;">Pagamento confirmado!</h4>
+              <p>Seu deck já está disponível na sua área do aluno.</p>
+              <a href="/area-do-aluno" class="purchase-button" style="display: inline-block; margin-top: 0.5rem;">
+                Acessar Área do Aluno
+              </a>
+            </div>
+          `;
+          document.getElementById('payment-status').style.display = 'block';
+        }
+      };
+      
+      const paymentInterval = setInterval(checkPayment, 5000); // Verificar a cada 5 segundos
+      
+    } catch (error) {
+      console.error('Erro:', error);
+      startButton.disabled = false;
+      startButton.textContent = 'Comprar com PIX';
+      alert('Ocorreu um erro ao processar seu pagamento. Por favor, tente novamente.');
+    }
+  });
+});
+</script>

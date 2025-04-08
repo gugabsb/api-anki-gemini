@@ -1,3 +1,4 @@
+import { formToJSON } from 'axios';
 import { createClient } from 'contentful';
 import * as dotenv from 'dotenv';
 
@@ -20,7 +21,8 @@ export default async function() {
         return [];
     }
     // Adicione no final da função, antes do return
-    console.log('Dados do Contentful:', entries.items.map(d => d.fields.title));
+    //console.log('Dados do Contentful:', entries.items.map(d => d.fields.title));
+    //console.log('Dados do Contentful:', entries.items);
     return entries.items;
   } catch (error) {
     console.error('Erro ao buscar dados do Contentful:', error);

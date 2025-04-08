@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redefinir Senha | Estude Com Anki - MPU 2025</title>
+  <meta name="description" content="Decks otimizados para o concurso do MPU 2025 usando o método científico de repetição espaçada">
+  <style>
+    :root {
+      --azul-primario: #01BBFE;
+      --cinza-escuro: #363636;
+      --cinza-medio: #4F4F4F;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--cinza-escuro);
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+    .container.header{
+      background-image: url('/assets/images/logo-eca-50px-ppt.png');
+      background-repeat: no-repeat;
+      background-position: right;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .deck-card {
+      background: var(--cinza-medio);
+      border-left: 4px solid var(--azul-primario);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .dashboard {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+
+  .dashboard-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem;
+  }
+  
+  .decks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+  
+  .deck-card {
+    border: 1px solid #4F4F4F;
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: transform 0.2s;
+  }
+  
+  .deck-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-left: 1rem;
+  }
+  
+  .btn-logout {
+    background: #FF3B30;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .bt-login{
+    float: right;
+  }
+
+  /* Loader para botão */
+  .loader {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .deck-card {
+      padding: 1rem;
+    }
+    
+    .purchase-button {
+      padding: 0.5rem 1rem;
+    }
+  }
+  </style>
+
+<!-- Configuração centralizada do Supabase -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script>
+  // Singleton pattern robusto
+  window.supabaseClient = {
+    _instance: null,
+    
+    init: function() {
+      if (!this._instance) {
+        this._instance = supabase.createClient(
+          'https://plupzqjkynaprsluelwt.supabase.co',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsdXB6cWpreW5hcHJzbHVlbHd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwMjgyMzksImV4cCI6MjA1OTYwNDIzOX0.GDJmALkTV7J6bYWtJyjEKq5XeX-nL5dIDm-us3ntRLI'
+        );
+        
+        // Verificação crítica
+        if (!this._instance.auth) {
+          console.error('Módulo auth não carregado');
+          throw new Error('Falha na inicialização do Supabase');
+        }
+      }
+      return this._instance;
+    }
+  };
+
+  // Pré-inicialização
+  document.addEventListener('DOMContentLoaded', () => {
+    try {
+      window.supabaseClient.init();
+    } catch (error) {
+      console.error('Erro na inicialização:', error);
+    }
+  });
+</script>
+
+</head>
+<body>
+  <button id="login" onclick="location.href='/auth/login'" class="bt-login">Login</button>
+
+  <header style="background: linear-gradient(to right, var(--cinza-escuro), var(--cinza-medio)); padding: 20px 0; text-align: center;">
+    <div class="container header">
+      <h1>Estude Com Anki</h1>
+      <p>Decks otimizados para sua aprovação no concurso de 04/05/2025</p>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 40px 0;">
+    
+<div class="auth-container">
+    <h2>Redefinir a senha</h2>
+    <form id="resetForm">
+        <div class="form-group">
+            <label for="new-password">Nova senha:</label>
+            <input type="password" id="new-password" placeholder="(mínimo 6 caracteres)" minlength="6" required/>
+        </div>
+        <button type="submit" class="btn-submit">Atualizar</button>
+        <p id="msg" class="msg"></p>
+    </form>
+</div>
+
+
+<script>
+  document.getElementById('resetForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const newPassword = document.getElementById('new-password').value;
+    const supabase = window.supabaseClient.init();
+
+    try {
+        const { data, error } = await supabase.auth.updateUser({
+            password: newPassword
+        });
+
+        if (error) throw error;
+    
+        document.getElementById("msg").innerHTML = "Senha atualizada com sucesso!";
+        alert('Senha atualizada com sucesso!');
+        window.location.href = "/auth/login";
+    
+    } catch (error) {
+        document.getElementById("msg").innerHTML = error.message;
+        console.error('Erro na reset de senha:', error);
+    }
+  });
+</script>
+
+<style>
+form {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Container Principal */
+.auth-container {
+  max-width: 480px;
+  margin: 2rem auto;
+  background: #2d2d2d;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  border: 1px solid #4F4F4F;
+}
+
+/* Título */
+.auth-container h2 {
+  color: #01BBFE;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+/* Grupos de Campos */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* Labels */
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #e0e0e0;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* Campos de Input */
+.form-group input {
+  width:100%;
+  padding: 0.5rem 0 0.5rem 0;
+  background: #363636;
+  border: 1px solid #4F4F4F;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #01BBFE;
+  box-shadow: 0 0 0 2px rgba(1, 187, 254, 0.2);
+}
+
+/* Botão de Submit */
+.btn-submit {
+  width: 100%;
+  padding: 0.5rem;
+  background: #01BBFE;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 0.5rem;
+}
+
+.btn-submit:hover {
+  background: #0095d9;
+}
+
+/* Link de Login */
+.auth-link {
+  text-align: center;
+  margin-top: 1.5rem;
+  color: #b0b0b0;
+  font-size: 0.9rem;
+}
+
+.auth-link a {
+  color: #01BBFE;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-link a:hover {
+  text-decoration: underline;
+}
+
+/* Validação */
+input:invalid {
+  border-color: #ff3b30;
+}
+
+input:valid {
+  border-color: #4CAF50;
+}
+
+.msg{
+  color: orange;
+  text-align: center;
+  padding: 1rem;
+}
+/* Responsivo */
+@media (max-width: 600px) {
+  .auth-container {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  
+  .auth-container h2 {
+    font-size: 1.5rem;
+  }
+}
+</style>
+
+  </main>
+
+  <footer style="background: var(--cinza-medio); padding: 20px; text-align: center;">
+    <p>© 2025 Estude Com Anki - Todos os direitos reservados</p>
+  </footer>
+</body>
+</html>

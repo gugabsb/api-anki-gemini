@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estude Com Anki - MPU 2025</title>
+  <meta name="description" content="Decks otimizados para o concurso do MPU 2025 usando o método científico de repetição espaçada">
+  <style>
+    :root {
+      --azul-primario: #01BBFE;
+      --cinza-escuro: #363636;
+      --cinza-medio: #4F4F4F;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--cinza-escuro);
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+    .container.header{
+      background-image: url('/assets/images/logo-eca-50px-ppt.png');
+      background-repeat: no-repeat;
+      background-position: right;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .deck-card {
+      background: var(--cinza-medio);
+      border-left: 4px solid var(--azul-primario);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .dashboard {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+
+  .dashboard-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem;
+  }
+  
+  .decks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+  
+  .deck-card {
+    border: 1px solid #4F4F4F;
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: transform 0.2s;
+  }
+  
+  .deck-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-left: 1rem;
+  }
+  
+  .btn-logout {
+    background: #FF3B30;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .bt-login{
+    float: right;
+  }
+
+  /* Loader para botão */
+  .loader {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .deck-card {
+      padding: 1rem;
+    }
+    
+    .purchase-button {
+      padding: 0.5rem 1rem;
+    }
+  }
+  </style>
+
+<!-- Configuração centralizada do Supabase -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script>
+  // Singleton pattern robusto
+  window.supabaseClient = {
+    _instance: null,
+    
+    init: function() {
+      if (!this._instance) {
+        this._instance = supabase.createClient(
+          'https://plupzqjkynaprsluelwt.supabase.co',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsdXB6cWpreW5hcHJzbHVlbHd0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwMjgyMzksImV4cCI6MjA1OTYwNDIzOX0.GDJmALkTV7J6bYWtJyjEKq5XeX-nL5dIDm-us3ntRLI'
+        );
+        
+        // Verificação crítica
+        if (!this._instance.auth) {
+          console.error('Módulo auth não carregado');
+          throw new Error('Falha na inicialização do Supabase');
+        }
+      }
+      return this._instance;
+    }
+  };
+
+  // Pré-inicialização
+  document.addEventListener('DOMContentLoaded', () => {
+    try {
+      window.supabaseClient.init();
+    } catch (error) {
+      console.error('Erro na inicialização:', error);
+    }
+  });
+</script>
+
+</head>
+<body>
+  <button id="login" onclick="location.href='/auth/login'" class="bt-login">Login</button>
+
+  <header style="background: linear-gradient(to right, var(--cinza-escuro), var(--cinza-medio)); padding: 20px 0; text-align: center;">
+    <div class="container header">
+      <h1>Estude Com Anki</h1>
+      <p>Decks otimizados para sua aprovação no concurso de 04/05/2025</p>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 40px 0;">
+    
+
+
+
+<script>
+console.log("Debug Eleventy:", {
+  deckid: "",
+  decks: [
+  {
+    "metadata": {
+      "tags": [],
+      "concepts": []
+    },
+    "sys": {
+      "space": {
+        "sys": {
+          "type": "Link",
+          "linkType": "Space",
+          "id": "htr81xo4v7n5"
+        }
+      },
+      "id": "3BohdDq3fVVtkeVcwO8bN",
+      "type": "Entry",
+      "createdAt": "2025-04-06T02:44:03.141Z",
+      "updatedAt": "2025-04-08T17:23:55.134Z",
+      "environment": {
+        "sys": {
+          "id": "master",
+          "type": "Link",
+          "linkType": "Environment"
+        }
+      },
+      "publishedVersion": 8,
+      "revision": 3,
+      "contentType": {
+        "sys": {
+          "type": "Link",
+          "linkType": "ContentType",
+          "id": "flashcardDeck"
+        }
+      },
+      "locale": "en-US"
+    },
+    "fields": {
+      "title": "Teste 1",
+      "description": {
+        "data": {},
+        "content": [
+          {
+            "data": {},
+            "content": [
+              {
+                "data": {},
+                "marks": [],
+                "value": "Testando!",
+                "nodeType": "text"
+              }
+            ],
+            "nodeType": "paragraph"
+          }
+        ],
+        "nodeType": "document"
+      },
+      "price": 100,
+      "image": {
+        "metadata": {
+          "tags": [],
+          "concepts": []
+        },
+        "sys": {
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "htr81xo4v7n5"
+            }
+          },
+          "id": "5USOLiFdSCmYOyUKixz187",
+          "type": "Asset",
+          "createdAt": "2025-04-06T02:43:51.860Z",
+          "updatedAt": "2025-04-06T02:43:51.860Z",
+          "environment": {
+            "sys": {
+              "id": "master",
+              "type": "Link",
+              "linkType": "Environment"
+            }
+          },
+          "publishedVersion": 11,
+          "revision": 1,
+          "locale": "en-US"
+        },
+        "fields": {
+          "title": "Test",
+          "description": "Test desc",
+          "file": {
+            "url": "//images.ctfassets.net/htr81xo4v7n5/5USOLiFdSCmYOyUKixz187/46646a67a8034e6df2947b8b8f5ca27b/anki-tablet.jpg",
+            "details": {
+              "size": 791441,
+              "image": {
+                "width": 1600,
+                "height": 2560
+              }
+            },
+            "fileName": "anki-tablet.jpg",
+            "contentType": "image/jpeg"
+          }
+        }
+      },
+      "deckId": 1
+    }
+  },
+  {
+    "metadata": {
+      "tags": [],
+      "concepts": []
+    },
+    "sys": {
+      "space": {
+        "sys": {
+          "type": "Link",
+          "linkType": "Space",
+          "id": "htr81xo4v7n5"
+        }
+      },
+      "id": "2TpuYwupAN2mAjMCwVtEig",
+      "type": "Entry",
+      "createdAt": "2025-04-08T17:03:35.240Z",
+      "updatedAt": "2025-04-08T17:23:55.065Z",
+      "environment": {
+        "sys": {
+          "id": "master",
+          "type": "Link",
+          "linkType": "Environment"
+        }
+      },
+      "publishedVersion": 22,
+      "revision": 2,
+      "contentType": {
+        "sys": {
+          "type": "Link",
+          "linkType": "ContentType",
+          "id": "flashcardDeck"
+        }
+      },
+      "locale": "en-US"
+    },
+    "fields": {
+      "title": "MPU 2025 - A03 - ANALISTA JURÍDICO/ SUPORTE E INFRAESTRUTURA ",
+      "description": {
+        "data": {},
+        "content": [
+          {
+            "data": {},
+            "content": [
+              {
+                "data": {},
+                "marks": [],
+                "value": "DDescrição Do deck..",
+                "nodeType": "text"
+              }
+            ],
+            "nodeType": "paragraph"
+          },
+          {
+            "data": {},
+            "content": [
+              {
+                "data": {},
+                "marks": [],
+                "value": "",
+                "nodeType": "text"
+              }
+            ],
+            "nodeType": "paragraph"
+          }
+        ],
+        "nodeType": "document"
+      },
+      "price": 10,
+      "image": {
+        "metadata": {
+          "tags": [],
+          "concepts": []
+        },
+        "sys": {
+          "space": {
+            "sys": {
+              "type": "Link",
+              "linkType": "Space",
+              "id": "htr81xo4v7n5"
+            }
+          },
+          "id": "5USOLiFdSCmYOyUKixz187",
+          "type": "Asset",
+          "createdAt": "2025-04-06T02:43:51.860Z",
+          "updatedAt": "2025-04-06T02:43:51.860Z",
+          "environment": {
+            "sys": {
+              "id": "master",
+              "type": "Link",
+              "linkType": "Environment"
+            }
+          },
+          "publishedVersion": 11,
+          "revision": 1,
+          "locale": "en-US"
+        },
+        "fields": {
+          "title": "Test",
+          "description": "Test desc",
+          "file": {
+            "url": "//images.ctfassets.net/htr81xo4v7n5/5USOLiFdSCmYOyUKixz187/46646a67a8034e6df2947b8b8f5ca27b/anki-tablet.jpg",
+            "details": {
+              "size": 791441,
+              "image": {
+                "width": 1600,
+                "height": 2560
+              }
+            },
+            "fileName": "anki-tablet.jpg",
+            "contentType": "image/jpeg"
+          }
+        }
+      },
+      "deckId": 2
+    }
+  }
+]
+});
+</script>
+
+
+  <div class="error">
+    <h2>Deck não encontrado</h2>
+    <p>ID procurado: </p>
+    <p>Total de decks: 2</p>
+    <a href="/">Voltar</a>
+  </div>
+
+  </main>
+
+  <footer style="background: var(--cinza-medio); padding: 20px; text-align: center;">
+    <p>© 2025 Estude Com Anki - Todos os direitos reservados</p>
+  </footer>
+</body>
+</html>
