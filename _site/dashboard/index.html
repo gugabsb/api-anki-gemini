@@ -127,6 +127,12 @@
 
   <main class="container" style="padding: 40px 0;">
     
+<div id="verify-alert" style="display: none; background: #ffeb3b; padding: 1rem; margin: 1rem 0;">
+  Por favor, verifique seu email para ativar sua conta.
+  <button onclick="resendVerification()">Reenviar email</button>
+</div>
+
+
 <div class="dashboard-container">
   <h1>Bem-vindo à sua Área</h1>
   
@@ -142,6 +148,21 @@
 </div>
 
 <script>
+  async function resendVerification() {
+  const supabase = window.supabaseClient.init();
+  const { error } = await supabase.auth.resend({
+    type: 'signup',
+    email: (await supabase.auth.getUser()).data.user.email
+  });
+  
+  if (error) {
+    alert('Erro ao reenviar: ' + error.message);
+  } else {
+    alert('Email de verificação reenviado!');
+  }
+}
+
+
   // Função de download melhorada
   async function downloadDeck(deckId) {
     try {
@@ -170,11 +191,23 @@
   }
 
   // Inicialização da página
-  (async function() {
-    try {
-      const supabase = window.supabaseClient.init();
-      const { data: { user }, error: authError } = await supabase.auth.getUser();
-      
+(async function() {
+  try {
+    const supabase = window.supabaseClient.init();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    
+    // Verificação robusta de erro
+    if (authError || !user) {
+      console.error('Erro de autenticação:', authError);
+      window.location.href = `/auth/login?error=${encodeURIComponent(authError?.message || 'Não autenticado')}`;
+      return;
+    }
+
+    // Verificação de email (se necessário)
+    if (!user.email_confirmed_at && user.email !== 'gugajp@outlook.com') {
+      document.getElementById('verify-alert').style.display = 'block';
+    }
+
       if (authError || !user) throw new Error('Não autenticado');
 
       // Exibe dados do usuário
@@ -216,11 +249,11 @@
         window.location.href = '/auth/login';
       });
 
-    } catch (error) {
-      console.error('Erro no dashboard:', error);
-      window.location.href = `/auth/login?error=${encodeURIComponent(error.message)}`;
-    }
-  })();
+  } catch (error) { // Agora a variável error está definida corretamente
+    console.error('Erro no dashboard:', error);
+    window.location.href = `/auth/login?error=${encodeURIComponent(error.message)}`;
+  }
+})();
 </script>
 
 <style>
