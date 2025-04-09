@@ -128,8 +128,9 @@ title: "Login"
       console.error('Erro no login com Google:', error);
       document.getElementById('error-message').textContent = 'Erro ao entrar com Google: ' + error.message;
     } else {
-      console.log("Sucesso login!")
-      window.location.href = '/dashboard';
+      const params = new URLSearchParams(window.location.search);
+      const redirect = params.get('redirect') || '/dashboard';
+      window.location.href = redirect;
     }
   };
 
@@ -147,7 +148,9 @@ title: "Login"
       console.error('Erro no login com email/senha:', error);
       document.getElementById('error-message').textContent = 'Erro ao entrar: ' + error.message;
     } else {
-      window.location.href = '/dashboard';
+      const params = new URLSearchParams(window.location.search);
+      const redirect = params.get('redirect') || '/dashboard';
+      window.location.href = redirect;
     }
   });
 </script>

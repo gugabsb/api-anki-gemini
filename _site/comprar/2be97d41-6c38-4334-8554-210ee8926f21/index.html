@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Decks Disponíveis | Estude Com Anki - MPU 2025</title>
+  <title>Estude Com Anki - MPU 2025</title>
   <meta name="description" content="Decks otimizados para o concurso do MPU 2025 usando o método científico de repetição espaçada">
   <style>
     :root {
@@ -168,107 +168,97 @@
   <main class="container" style="padding: 40px 0;">
     
 
-  <h2 style="color: #01BBFE; margin-bottom: 30px;">ESCOLHA SEU DECK</h2>
 
-    <!-- Note o .items aqui -->
-    <div class="deck-card">
-      <h3>MPU-2025	- T03 - TÉCNICO DO MPU | POLÍCIA INSTITUCIONAL</h3>
-      
-      
-        <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/s3/deck4.png" 
-             alt="MPU-2025	- T03 - TÉCNICO DO MPU | POLÍCIA INSTITUCIONAL"
-             style="max-width: 100%; margin-bottom: 15px;">
-      
-      
-      <p>Deck para o concurso do MPU, para o cargo de T03 - TÉCNICO DO MPU | POLÍCIA INSTITUCIONAL</p>
-      <p style="font-weight: bold; color: var(--azul-primario);">
-        R$ 1
-      </p>
-      
-      <a href="/comprar/2be97d41-6c38-4334-8554-210ee8926f21/" 
-         class="buy-button">
-         COMPRAR AGORA
-      </a>
-    </div>
-    <!-- Note o .items aqui -->
-    <div class="deck-card">
-      <h3>MPU-2025 - A02 - ANALISTA DO MPU / ATUARIAL</h3>
-      
-      
-        <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/s3/deck3.png" 
-             alt="MPU-2025 - A02 - ANALISTA DO MPU / ATUARIAL"
-             style="max-width: 100%; margin-bottom: 15px;">
-      
-      
-      <p>Deck para o concurso do MPU, para o cargo de ANALISTA DO MPU | ATUARIAL</p>
-      <p style="font-weight: bold; color: var(--azul-primario);">
-        R$ 1
-      </p>
-      
-      <a href="/comprar/9c2638ef-5fa8-49cc-99f5-2d96a0439424/" 
-         class="buy-button">
-         COMPRAR AGORA
-      </a>
-    </div>
-    <!-- Note o .items aqui -->
-    <div class="deck-card">
-      <h3>MPU-2025 - A01 - ANALISTA DO MPU / ARQUIVOLOGIA</h3>
-      
-      
-        <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/s3/deck2.png" 
-             alt="MPU-2025 - A01 - ANALISTA DO MPU / ARQUIVOLOGIA"
-             style="max-width: 100%; margin-bottom: 15px;">
-      
-      
-      <p>Deck para o concurso do MPU, para o cargo de ANALISTA DO MPU | ARQUIVOLOGIA</p>
-      <p style="font-weight: bold; color: var(--azul-primario);">
-        R$ 1
-      </p>
-      
-      <a href="/comprar/e9d7a7fb-67c6-4a5e-9d63-f05539f33d04/" 
-         class="buy-button">
-         COMPRAR AGORA
-      </a>
-    </div>
-    <!-- Note o .items aqui -->
-    <div class="deck-card">
-      <h3>MPU-2025	- A32 - ANALISTA DO MPU | SUPORTE E INFRAESTRUTURA</h3>
-      
-      
-        <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/s3/mpu-infra.png" 
-             alt="MPU-2025	- A32 - ANALISTA DO MPU | SUPORTE E INFRAESTRUTURA"
-             style="max-width: 100%; margin-bottom: 15px;">
-      
-      
-      <p>Deck para o concurso do MPU, para o cargo de ANALISTA DO MPU | SUPORTE E INFRAESTRUTURA</p>
-      <p style="font-weight: bold; color: var(--azul-primario);">
-        R$ 2
-      </p>
-      
-      <a href="/comprar/e5dc3d41-4a36-435b-b8b8-65df45eb77ff/" 
-         class="buy-button">
-         COMPRAR AGORA
-      </a>
-    </div>
-  
 
+
+
+<div class="deck-container">
+    <h1>MPU-2025	- T03 - TÉCNICO DO MPU | POLÍCIA INSTITUCIONAL</h1>
+    
+    
+    
+      <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/s3/deck4.png" 
+           alt="MPU-2025	- T03 - TÉCNICO DO MPU | POLÍCIA INSTITUCIONAL"
+           class="deck-image">
+    
+    
+    <p>Deck para o concurso do MPU, para o cargo de T03 - TÉCNICO DO MPU | POLÍCIA INSTITUCIONAL</p>
+    <p>Preço: R$ 1</p>
+    
+    <button id="buy-button">
+      Comprar com PIX
+    </button>
+</div>
+<div id="qrcodepix" class="qrcodepix">
+
+</div>
+<script>
+(async function() {
+  const supabase = window.supabaseClient.init();
+  const { data: { user }, error } = await supabase.auth.getUser();
+  if (!user || error) {
+    const returnTo = encodeURIComponent(window.location.pathname);
+    window.location.href = `/auth/login/?redirect=${returnTo}`;
+    return;
+  }
+
+  const user_id = user.id;
+  const user_email = user.email;
+  const deck_id = '2be97d41-6c38-4334-8554-210ee8926f21';
+  const deck_price = '1';
+  const deck_name = 'MPU-2025	- T03 - TÉCNICO DO MPU | POLÍCIA INSTITUCIONAL';
+
+  document.getElementById('buy-button').addEventListener('click', async () => {
+    try {
+      const res = await fetch('/.netlify/functions/create-pix-payment-mp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ deck_id, deck_price, deck_name, user_id, user_email })
+      });
+
+      const text = await res.text();
+      const data = JSON.parse(text);
+
+      const img = document.createElement('img');
+      img.src = `data:image/png;base64,${data.qr_code_base64}`;
+      document.getElementById('qrcodepix').appendChild(img);
+      alert('Escaneie o QR Code para pagar com PIX!');
+    } catch (err) {
+      console.error('Erro ao criar pagamento:', err);
+      alert('Erro ao gerar QR Code de pagamento.');
+    }
+  });
+
+  setInterval(async () => {
+    try {
+      const { data: result } = await supabase
+        .from('user_decks')
+        .select('deck_id')
+        .eq('user_id', user_id)
+        .eq('deck_id', deck_id);
+
+      if (result && result.length > 0) {
+        alert('✅ Pagamento confirmado! Deck liberado 🎉');
+        window.location.href = '/dashboard';
+      }
+    } catch (e) {
+      console.error('Erro no polling do pagamento:', e);
+    }
+  }, 5000);
+})();
+</script>
 
 <style>
-  .buy-button {
-    background: #01BBFE; 
-    color: #363636; 
-    padding: 10px 20px; 
-    display: inline-block; 
-    margin-top: 10px; 
-    text-decoration: none;
-    border-radius: 4px;
-    transition: all 0.3s;
-  }
-  .buy-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  }
+    .qrcodepix img{
+        width: 200px;
+        height: 200px;
+    }
+    .qrcodepix {
+        text-align: center;
+    }
 </style>
+
+
   </main>
 
   <footer style="background: var(--cinza-medio); padding: 20px; text-align: center;">
