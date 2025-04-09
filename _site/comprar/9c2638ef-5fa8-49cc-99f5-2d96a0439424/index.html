@@ -167,33 +167,98 @@
 
   <main class="container" style="padding: 40px 0;">
     
+
+
+
+
+
+<div class="deck-container">
+    <h1>MPU-2025 - A02 - ANALISTA DO MPU / ATUARIAL</h1>
+    
+    
+    
+      <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/s3/deck3.png" 
+           alt="MPU-2025 - A02 - ANALISTA DO MPU / ATUARIAL"
+           class="deck-image">
+    
+    
+    <p>Deck para o concurso do MPU, para o cargo de ANALISTA DO MPU | ATUARIAL</p>
+    <p>Preço: R$ 1</p>
+    
+    <button id="buy-button">
+      Comprar com PIX
+    </button>
+</div>
+<div id="qrcodepix" class="qrcodepix">
+
+</div>
 <script>
-  if (window.location.pathname.includes('/auth/callback')) {
-  const codeVerifier = localStorage.getItem('oauth_code_verifier');
-  if (codeVerifier) {
-    const url = new URL(window.location.href);
-    url.searchParams.set('code_verifier', codeVerifier);
-    window.location.href = url.toString();
-  }
-}
-
-(async function () {
+(async function() {
   const supabase = window.supabaseClient.init();
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) {
-    window.location.href = '/auth/login';
+  const { data: { user }, error } = await supabase.auth.getUser();
+  if (!user || error) {
+    const returnTo = encodeURIComponent(window.location.pathname);
+    window.location.href = `/auth/login/?redirect=${returnTo}`;
     return;
   }
 
-  // Recupera o ?redirect=... da URL
-  const params = new URLSearchParams(window.location.search);
-  const redirect = params.get('redirect') || '/dashboard';
+  const user_id = user.id;
+  const user_email = user.email;
+  const deck_id = '9c2638ef-5fa8-49cc-99f5-2d96a0439424';
+  const deck_price = '1';
+  const deck_name = 'MPU-2025 - A02 - ANALISTA DO MPU / ATUARIAL';
 
-  // Redireciona para onde ele estava
-  window.location.href = redirect;
+  document.getElementById('buy-button').addEventListener('click', async () => {
+    try {
+      const res = await fetch('/.netlify/functions/create-pix-payment-mp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ deck_id, deck_price, deck_name, user_id, user_email })
+      });
+
+      const text = await res.text();
+      const data = JSON.parse(text);
+
+      const img = document.createElement('img');
+      img.src = `data:image/png;base64,${data.qr_code_base64}`;
+      document.getElementById('qrcodepix').appendChild(img);
+      alert('Escaneie o QR Code para pagar com PIX!');
+    } catch (err) {
+      console.error('Erro ao criar pagamento:', err);
+      alert('Erro ao gerar QR Code de pagamento.');
+    }
+  });
+
+  setInterval(async () => {
+    try {
+      const { data: result } = await supabase
+        .from('user_decks')
+        .select('deck_id')
+        .eq('user_id', user_id)
+        .eq('deck_id', deck_id);
+
+      if (result && result.length > 0) {
+        alert('✅ Pagamento confirmado! Deck liberado 🎉');
+        window.location.href = '/dashboard';
+      }
+    } catch (e) {
+      console.error('Erro no polling do pagamento:', e);
+    }
+  }, 5000);
 })();
 </script>
+
+<style>
+    .qrcodepix img{
+        width: 200px;
+        height: 200px;
+    }
+    .qrcodepix {
+        text-align: center;
+    }
+</style>
+
+
   </main>
 
   <footer style="background: var(--cinza-medio); padding: 20px; text-align: center;">
