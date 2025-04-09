@@ -72,6 +72,8 @@ title: "Área do Aluno"
     const supabase = window.supabaseClient.init();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     
+    console.error("AQUI");
+
     // Verificação robusta de erro
     if (authError || !user) {
       console.error('Erro de autenticação:', authError);
@@ -80,7 +82,7 @@ title: "Área do Aluno"
     }
 
     // Verificação de email (se necessário)
-    if (!user.email_confirmed_at && user.email !== 'gugajp@outlook.com') {
+    if (!user.email_confirmed_at) {
       document.getElementById('verify-alert').style.display = 'block';
     }
 
@@ -93,31 +95,32 @@ title: "Área do Aluno"
           `<img src="${user.user_metadata.avatar_url}" alt="Avatar" class="avatar">` : ''}
       `;
 
-      // Carrega decks
-      const { data: decks, error: decksError } = await supabase
-        .from('user_decks')
-        .select('id, name, description, created_at')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
+     // Carrega decks do usuário
+    const { data: decks, error: decksError } = await supabase
+      .from('user_decks')
+      .select('deck_id, decks(title, description, file_path), purchased_at')
+      .eq('user_id', user.id)
+      .order('purchased_at', { ascending: false });
 
-      if (decksError) throw decksError;
+    if (decksError) throw decksError;
 
-      const decksContainer = document.getElementById('decks-list');
-      decksContainer.innerHTML = decks.length > 0 
-        ? decks.map(deck => `
-            <div class="deck-card">
-              <h3>${deck.name}</h3>
-              <p>${deck.description || 'Sem descrição'}</p>
-              <button 
-                onclick="downloadDeck('${deck.id}')" 
-                class="btn-download"
-                data-id="${deck.id}"
-              >
-                Baixar
-              </button>
-            </div>
-          `).join('')
-        : '<p>Nenhum deck disponível ainda.</p>';
+    const decksContainer = document.getElementById('decks-list');
+    decksContainer.innerHTML = decks.length > 0 
+      ? decks.map(deck => `
+          <div class="deck-card">
+            <h3>${deck.decks?.title || 'Deck sem nome'}</h3>
+            <p>${deck.decks?.description || 'Sem descrição'}</p>
+            <button 
+              onclick="downloadDeck('${deck.deck_id}')" 
+              class="btn-download"
+              data-id="${deck.deck_id}"
+            >
+              Baixar
+            </button>
+          </div>
+        `).join('')
+      : '<p>Nenhum deck disponível ainda.</p>';
+
 
       // Logout
       document.getElementById('logout-btn').addEventListener('click', async () => {

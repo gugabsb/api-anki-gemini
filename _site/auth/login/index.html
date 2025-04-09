@@ -292,6 +292,7 @@
       console.error('Erro no login com Google:', error);
       document.getElementById('error-message').textContent = 'Erro ao entrar com Google: ' + error.message;
     } else {
+      console.log("Sucesso login!")
       window.location.href = '/dashboard';
     }
   };

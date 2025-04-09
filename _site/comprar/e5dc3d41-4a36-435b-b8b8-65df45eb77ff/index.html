@@ -177,17 +177,17 @@
     
     
     
-      <img src="https://plupzqjkynaprsluelwt.supabase.co/mpu-infra.png" 
+      <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/s3/mpu-infra.png" 
            alt="MPU-2025	- A32 - ANALISTA DO MPU | SUPORTE E INFRAESTRUTURA"
            class="deck-image">
     
     
     <p>Deck para o concurso do MPU, para o cargo de ANALISTA DO MPU | SUPORTE E INFRAESTRUTURA</p>
-    <p>Preço: R$ 49.99</p>
+    <p>Preço: R$ 2</p>
     
     <button id="buy-button" onclick="comprarDeck(
     'e5dc3d41-4a36-435b-b8b8-65df45eb77ff',
-    '49.99',
+    '2',
     'MPU-2025	- A32 - ANALISTA DO MPU | SUPORTE E INFRAESTRUTURA',
     'da7bb259-1ce4-42e4-b3d1-ed18ae34648a',
     'gugabsb@gmail.com'
@@ -200,6 +200,7 @@
 </div>
 <script>
 
+    
 async function comprarDeck(deck_id, deck_price, deck_name, user_id, user_email) {
     const supabase = window.supabaseClient.init();
     const user = await supabase.auth.getUser();
@@ -230,9 +231,10 @@ async function comprarDeck(deck_id, deck_price, deck_name, user_id, user_email) 
     .qrcodepix img{
         width: 200px;
         height: 200px;
+    }
+    .qrcodepix {
         text-align: center;
     }
-
 </style>
 
 

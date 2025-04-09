@@ -13,35 +13,20 @@ permalink: auth/callback/
   }
 }
 
-  (async function() {
-    try {
-      // 1. Inicialização garantida
-      const supabase = window.supabaseClient.init();
-      
-      // 2. Processamento do callback OAuth
-      const hash = window.location.hash.substring(1);
-      const params = new URLSearchParams(hash);
-      
-      // 3. Validação dos tokens
-      if (!params.get('access_token')) {
-        throw new Error('Token de acesso não encontrado na URL');
-      }
+(async function () {
+  const supabase = window.supabaseClient.init();
+  const { data: { user } } = await supabase.auth.getUser();
 
-      // 4. Configuração da sessão
-      const { error } = await supabase.auth.setSession({
-        access_token: params.get('access_token'),
-        refresh_token: params.get('refresh_token')
-      });
+  if (!user) {
+    window.location.href = '/auth/login';
+    return;
+  }
 
-      if (error) throw error;
-      
-      // 5. Redirecionamento seguro
-      window.location.replace('/dashboard'); // Evita histórico de navegação
-      
-    } catch (error) {
-      console.error('Erro no processamento:', error);
-      window.location.replace('/auth/login?error=' + 
-        encodeURIComponent(error.message));
-    }
-  })();
+  // Recupera o ?redirect=... da URL
+  const params = new URLSearchParams(window.location.search);
+  const redirect = params.get('redirect') || '/dashboard';
+
+  // Redireciona para onde ele estava
+  window.location.href = redirect;
+})();
 </script>

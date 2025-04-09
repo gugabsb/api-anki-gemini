@@ -43,7 +43,8 @@ exports.handler = async (event) => {
       return { statusCode: 200, body: `Pagamento ainda não aprovado (${payment.status})` };
     }
 
-    const { deckId, userId } = payment.metadata || {};
+    const deckId = payment.metadata?.deck_id;
+    const userId = payment.metadata?.user_id;
 
     if (!deckId || !userId) {
       console.error('⚠️ Metadados ausentes:', payment.metadata);

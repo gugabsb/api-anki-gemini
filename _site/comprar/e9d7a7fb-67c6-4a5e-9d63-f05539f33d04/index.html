@@ -172,45 +172,71 @@
 
 
 
-<pre>aq:{
-  &quot;items&quot;: [
-    {
-      &quot;sys&quot;: {
-        &quot;id&quot;: &quot;e5dc3d41-4a36-435b-b8b8-65df45eb77ff&quot;
-      },
-      &quot;fields&quot;: {
-        &quot;title&quot;: &quot;MPU-2025&#92;t- A32 - ANALISTA DO MPU | SUPORTE E INFRAESTRUTURA&quot;,
-        &quot;description&quot;: &quot;Deck para o concurso do MPU, para o cargo de ANALISTA DO MPU | SUPORTE E INFRAESTRUTURA&quot;,
-        &quot;price&quot;: 49.99,
-        &quot;filePath&quot;: &quot;exemplo.apkg&quot;,
-        &quot;image&quot;: {
-          &quot;fields&quot;: {
-            &quot;file&quot;: {
-              &quot;url&quot;: &quot;https://plupzqjkynaprsluelwt.supabase.co/mpu-infra.png&quot;
-            }
-          }
-        }
-      }
-    }
-  ]
-}</pre>
-
-
 <div class="deck-container">
-    <h1></h1>
+    <h1>MPU-2025 - A01 - ANALISTA DO MPU / ARQUIVOLOGIA</h1>
     
     
     
+      <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/s3/deck2.png" 
+           alt="MPU-2025 - A01 - ANALISTA DO MPU / ARQUIVOLOGIA"
+           class="deck-image">
     
-    <p></p>
-    <p>Preço: R$ </p>
     
-    <button id="buy-button" 
-            data-deck-id=""
-            data-deck-price="">
+    <p>Deck para o concurso do MPU, para o cargo de ANALISTA DO MPU | ARQUIVOLOGIA</p>
+    <p>Preço: R$ 1</p>
+    
+    <button id="buy-button" onclick="comprarDeck(
+    'e9d7a7fb-67c6-4a5e-9d63-f05539f33d04',
+    '1',
+    'MPU-2025 - A01 - ANALISTA DO MPU / ARQUIVOLOGIA',
+    'da7bb259-1ce4-42e4-b3d1-ed18ae34648a',
+    'gugabsb@gmail.com'
+    )">
       Comprar com PIX
     </button>
-  </div>
+</div>
+<div id="qrcodepix" class="qrcodepix">
+
+</div>
+<script>
+
+    
+async function comprarDeck(deck_id, deck_price, deck_name, user_id, user_email) {
+    const supabase = window.supabaseClient.init();
+    const user = await supabase.auth.getUser();
+    const res = await fetch('/.netlify/functions/create-pix-payment-mp', {
+        method: 'POST',
+        body: JSON.stringify({ deck_id, deck_price, deck_name, user_id, user_email }),
+        headers: { 'Content-Type': 'application/json' }
+    });
+
+    const text = await res.text(); // 👈 parse como texto primeiro
+    //console.log('🔍 Resposta bruta da função:', text);
+
+    try {
+    
+        const data = JSON.parse(text);
+        const img = document.createElement('img');
+        img.src = `data:image/png;base64,${data.qr_code_base64}`;
+        document.getElementById('qrcodepix').appendChild(img);
+        alert('Escaneie o QR Code para pagar com PIX!');
+    
+    } catch (err) {
+        console.error('Erro ao converter resposta em JSON:', err);
+    }
+
+}
+</script>
+<style>
+    .qrcodepix img{
+        width: 200px;
+        height: 200px;
+    }
+    .qrcodepix {
+        text-align: center;
+    }
+</style>
+
 
   </main>
 

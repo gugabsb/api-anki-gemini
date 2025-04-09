@@ -20,22 +20,9 @@ exports.handler = async (event) => {
       };
     }
 
-   // Adicione no início da função, antes da verificação do usuário
-    if (event.path.endsWith('/sample')) {
-        const { data: { signedUrl } } = await supabase
-        .storage
-        .from('decks')
-        .createSignedUrl('exemplo.apkg', 3600); // 1 hora de validade
-    
-        return {
-        statusCode: 302,
-        headers: { Location: signedUrl }
-        };
-    } 
-
     // 2. Verifica o usuário com o token
     const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-    
+
     if (authError || !user) {
       return {
         statusCode: 401,
@@ -43,50 +30,49 @@ exports.handler = async (event) => {
       };
     }
 
-    console.log("A1");
-
-    // 3. Processa o download (código existente)
     const deckId = event.path.split('/').pop();
+
     const { data: deck, error: deckError } = await supabase
-      .from('user_decks')
-      .select('file_path')
-      .eq('id', deckId)
-      .eq('user_id', user.id)
-      .single();
-
- 
-
+    .from('user_decks')
+    .select('user_id, deck_id, decks!deck(file_path)')
+    .eq('user_id', user.id)
+    .eq('deck_id', deckId)
+    .single();
+    
     if (deckError || !deck) {
       return {
         statusCode: 404,
         body: JSON.stringify({ error: 'Deck não encontrado' })
       };
     }
-    console.log("signedUrl::::")
-    //console.log(signedUrl)
 
-    //console.log("signedUrl>"+signedUrl);
-    console.log("deck.file_path>"+deck.file_path);
-
-    // 4. Gera URL assinada
-    const { data: { signedUrl }, error: urlError } = await supabase
+    const rawPath = deck.decks.file_path;
+    const cleanedPath = rawPath.replace(/^\/?decks\//, '');
+    //console.log('🧼 file_path limpo:', cleanedPath);
+    
+    const { data, error } = await supabase
       .storage
       .from('decks')
-      .createSignedUrl(deck.file_path, 900); // 15 minutos
-
-
-
-
-    if (urlError) throw urlError;
-
+      .createSignedUrl(cleanedPath, 900);
+    
+    if (!data || !data.signedUrl) {
+      console.error('❌ Signed URL não recebido:', data, error);
+      return {
+        statusCode: 500,
+        body: 'Erro ao gerar link de download do Supabase Storage'
+      };
+    }
+    
     return {
       statusCode: 302,
       headers: {
-        Location: signedUrl
+        Location: data.signedUrl
       }
     };
 
+
   } catch (error) {
+    console.log(error)
     return {
       statusCode: 500,
       body: JSON.stringify({
