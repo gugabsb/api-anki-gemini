@@ -15,17 +15,17 @@ permalink: "/comprar/{{ deckid.sys.id }}/"
 
 {% if currentDeck %}
 <div class="deck-container">
-    <div class="content">
+    <div class="col1">
       {% if currentDeck.fields.image %}
       <img src="{{ currentDeck.fields.image.fields.file.url }}" 
            alt="{{ currentDeck.fields.title }}"
-           class="image">
+           class="image"/>
       {% endif %}
     </div>  
 
-    <div class="content">
+    <div class="col2">
       <h2  class="title">{{ currentDeck.fields.title }}</h2>
-      <ul>
+      <ul class="icon-list">
         <li>
           <b>Material focado na na sua prova</b><br>
           Elaborado com as questões anteriores da banca e alinhada com o conteúdo programático do cargo.
@@ -42,7 +42,7 @@ permalink: "/comprar/{{ deckid.sys.id }}/"
   
     </div>
     
-    <div class="content">
+    <div class="col3">
       <p class="price">R$ {{ currentDeck.fields.price }}</p>
       <button id="buy-button" class="buy-button">
         Comprar com PIX
@@ -58,21 +58,33 @@ permalink: "/comprar/{{ deckid.sys.id }}/"
   <div class="desc">{{ currentDeck.fields.description }}</div>
 </div>  
 <script>
-  async function downloadDeck(deckId) {
-  try {
-    const supabase = window.supabaseClient.init();
-    const { data: { session } } = await supabase.auth.getSession();
-    
-    if (!session) throw new Error('Sessão inválida');
+// Função de download melhorada
+async function downloadDeck(deckId) {
+    try {
+      const supabase = window.supabaseClient.init();
+      const { data: { session }, error } = await supabase.auth.getSession();
+      
+      if (error || !session) throw new Error('Sessão inválida');
 
-    // Abre em nova aba ou faz download direto
-    window.open(`/.netlify/functions/download/${deckId}?token=${session.access_token}`, '_blank');
-    
-  } catch (error) {
-    console.error('Erro no download:', error);
-    alert(error.message || 'Erro ao baixar o deck');
+      const response = await fetch(`/.netlify/functions/download/${deckId}`, {
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok && response.redirected) {
+        window.location.href = response.url;
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Falha no download');
+      }
+    } catch (error) {
+      console.error('Erro no download:', error);
+      alert(error.message);
+    }
   }
-}
+
 
 
 (async function() {

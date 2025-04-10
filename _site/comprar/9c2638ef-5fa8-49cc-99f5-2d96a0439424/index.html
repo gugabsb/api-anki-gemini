@@ -8,10 +8,13 @@
   <style>
     :root {
       --azul-primario: #01BBFE;
+      --cinza-muito-escuro: #2d2d2d;
       --cinza-escuro: #363636;
       --cinza-medio: #4F4F4F;
       --texto-branco: #ffffff;
       --texto-cinza: #cccccc;
+      --vermelho-alerta: #FF3B30;
+      --verde-ok: #4CAF50;
     }
     body {
       font-family: 'Montserrat', sans-serif;
@@ -25,14 +28,16 @@
     }
     footer{
       background: var(--cinza-medio); 
-      padding: 20px; 
+      padding: 1rem; 
       text-align: center;
+      font-size: 0.9rem;
     }
     .container.header{
-      background-image: url('/src/assets/images/logo-eca-50px-ppt.png');
+      background-image: url('/src/assets/images/logo-estudecomanki-gt.png');
       background-repeat: no-repeat;
-      background-position: left 0px top 10px;
-      border: 0px solid red;
+      background-position: left 1rem top 1rem;
+      background-size: 300px 50px;
+      border: 0px solid var(--vermelho-alerta);
       height: 70px;
       margin: 0 auto;
       padding: 0;
@@ -41,27 +46,27 @@
       flex-wrap: nowrap;
     }
     .container.header .col1{
-      width: 60%; 
+      width: 50%; 
     }
     .container.header .col2{
-      width: 40%;
+      width: 50%;
       text-align: right;
-      padding-top: 25px;
     }
     .container.header h1{
-      margin: 20px 0 0 55px;
-      font-size: 1.2rem;
+      margin: 1rem 0 0 4rem;
+      font-size: 1rem;
       color: var(--azul-primario);
     }
     .container.header h2{
-      margin: 0px 0 0 55px;
-      font-size: 0.75rem;
-      font-weight:;
+      padding:0;
+      margin: 0 0 0 4rem;
+      font-size: 0.7rem;
       color: var(--texto-branco);
     }
 
     .container.header button{
-      background-color: var(--cinza-claro);
+      margin-top: 1.5rem;
+      background-color: var(--cinza-muito-escuro);
       color: var(--texto-branco);
       border-radius: 4px;
       padding: 8px;
@@ -70,15 +75,21 @@
     }
 
     .container.header button:hover{
-      background-color: var(--cinza-escuro);
-      color: var(--texto-branco);
+      background-color: var(--texto-branco);
+      color: var(--cinza-escuro);
+      cursor: pointer;
     }
 
     .container {
-      border: 0px solid red;
+      border: 0px solid var(--vermelho-alerta);
       max-width: 800px;
       margin: 0 auto;
       padding: 20px 0;
+    }
+    .container h2{
+      margin: 0 1rem 1rem 1rem;
+      font-size: 1rem;
+      color: var(--azul-primario);
     }
     .dashboard {
       max-width: 1200px;
@@ -106,7 +117,7 @@
   }
   
   .btn-logout {
-    background: #FF3B30;
+    background: var(--vermelho-alerta);
     color: white;
     padding: 0.75rem 1.5rem;
     border: none;
@@ -159,12 +170,12 @@
   .auth-link {
     text-align: center;
     margin-top: 1.5rem;
-    color: #b0b0b0;
+    color: var(--texto-cinza);
     font-size: 0.9rem;
   }
 
   .auth-link a {
-    color: #01BBFE;
+    color: var(--azul-primario);
     text-decoration: none;
     font-weight: 500;
   }
@@ -189,7 +200,7 @@
     background: #2d2d2d;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-    border: 1px solid #4F4F4F;
+    border: 1px solid var(--cinza-medio);
   }
 
   form {
@@ -199,7 +210,7 @@
 
   /* Título */
   .auth-container h2 {
-    color: #01BBFE;
+    color: var(--azul-primario);
     text-align: center;
     margin-bottom: 1.5rem;
     font-size: 1.2rem;
@@ -224,10 +235,10 @@
   .form-group input {
     width:100%;
     padding: 0.5rem 0 0.5rem 0;
-    background: #363636;
-    border: 1px solid #4F4F4F;
+    background: var(--cinza-escuro);
+    border: 1px solid var(--cinza-medio);
     border-radius: 8px;
-    color: #ffffff;
+    color: var(--texto-branco);
     font-size: 1rem;
     transition: all 0.3s ease;
     text-align: center;
@@ -235,7 +246,7 @@
 
   .form-group input:focus {
     outline: none;
-    border-color: #01BBFE;
+    border-color: var(--azul-primario);
     box-shadow: 0 0 0 2px rgba(1, 187, 254, 0.2);
   }
 
@@ -258,11 +269,11 @@
 
   /* Validação */
   input:invalid {
-    border-color: #ff3b30;
+    border-color: var(--vermelho-alerta);
   }
 
   input:valid {
-    border-color: #4CAF50;
+    border-color: var(--verde-ok);
   }
 
   .msg{
@@ -270,19 +281,6 @@
     text-align: center;
     padding: 1rem;
   }
-  /* Responsivo */
-  @media (max-width: 600px) {
-    .auth-container {
-      padding: 1.5rem;
-      margin: 1rem;
-    }
-    
-    .auth-container h2 {
-      font-size: 1rem;
-    }
-  }
-
-
 
 /* dashboard */
 .dashboard-container {
@@ -334,17 +332,17 @@
   float:right;
 }
 .btn-logout:hover {
-  background: red;
+  background: var(--vermelho-alerta);
 }
 
 .btn-download {
   background: var(--azul-primario);
   color: var(--texto-branco);
-  padding: 0.5rem 1rem;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  margin: 1rem 1rem 1rem 0;
 }
 .btn-download:hover {
   background:var(--texto-branco);
@@ -353,20 +351,40 @@
 
 .deck-card {
   background-color: var(--cinza-medio);
-  border: 1px solid #4F4F4F;
+  border: 1px solid var(--cinza-medio);
   border-radius: 8px;
-  padding: 1.5rem;
+  padding: 0rem;
+  margin-bottom: 2rem;
   transition: transform 0.2s;
   display: flex;
   justify-content: flex-start;
-  margin-bottom: 2rem;
   width: 100%; 
 }
 
 .deck-card:hover {
-  border-color: var(--azul-primario);
+  border: 1px solid var(--azul-primario);
   background-color: var(--cinza-claro);
-  /*transform: translateY(-5px);*/
+}
+
+.deck-card .image{
+  border: 2px solid var(--cinza-escuro);
+  width: 65%;
+  height: 65%;
+  border-radius: 5px;
+  float: left;
+  margin: 1rem;
+  max-width: 200px;
+}
+.deck-card .content{
+  border: 0px solid silver;
+  margin: 1rem 1rem 1rem 0;
+  width: 100%;
+}
+.deck-card .title{
+  padding:0;
+  margin:0;
+  font-size: 1.25rem;
+  color: var(--azul-primario);
 }
 
 .deck-card .price{
@@ -375,105 +393,112 @@
   color: var(--azul-primario);
   background-color: var(--cinza-escuro);
   width: 100px;
-  padding: 20px;
+  padding: 1rem;
+  margin: 0;
   border-radius:10px;
-  text-align: left;
-}
-.deck-card .content{
-  border: 0px solid silver;
+  text-align: center;
 }
 .deck-card .desc{
   font-weight: normal;
   font-size: 1rem;
   color: var(--texto-branco);
 }
-.deck-card .image{
-  border: 2px solid var(--cinza-escuro);
-  width: 200px;
-  height: 288px;
 
-  border-radius: 5px;
-  float: left;
-  margin-right: 20px;
-  display: inline-block
-}
-
-.deck-card .title{
-  padding:0;
-  margin:0;
-  font-size: 1.25rem;
-  color: var(--azul-primario);
-}
 
 .deck-container {
   background-color: var(--cinza-medio);
-  border: 1px solid #4F4F4F;
+  border: 0px solid var(--texto-branco);
   border-radius: 8px;
-  padding: 1.5rem;
-  transition: transform 0.2s;
+  padding: 0;
+  margin:0;
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-start;
-  margin-bottom: 2rem;
-  width: 100%; 
+  width:100%;
 }
-.deck-container .content{
-  border-radius: 5px;
-  padding: 10px;
-  margin: 5px;
-  background-color: var(--cinza-escuro);
+.deck-container .col1
+{
+  width: 20%;
+  padding:1rem 0;
+  margin: 0;
+  background-color: var(--cinza-claro);
+  max-width: 200px;
+}
+.deck-container .col2{
+  width: 50%;
+  padding:1rem 0;
+  margin: 0;
+  background-color: var(--cinza-claro);
+}
+.deck-container .col3{
+  width: 30%;
+  padding:1rem 0;
+  margin: 0;
+  background-color:var(--cinza-claro);
   text-align: center;
 }
-.deck-container .image{
-  border: 5px solid var(--cinza-claro);
-  width: 200px;
-  height: 288px;
+
+.deck-container .col1 .image{
+  border: 1px solid var(--cinza-escuro);
   border-radius: 5px;
-  float: left;
+  width: 60%;
+  margin-left: 1rem;
 }
-.deck-container .title{
-  padding: 0;
+
+.deck-container .col2 .title{
+  font-size: 1.25rem;
+  padding: 1rem;
   margin: 0;
+  padding:0;
   color: var(--azul-primario);
 }
+
 .deck-container .price{
   font-weight: bold;
   font-size: 1.5rem;
-  width: 150px;
-  padding: 10px;
-  margin: 0;
+  padding: 1rem;
+  margin: 0 1rem 0 0;
   color: var(--azul-primario);
-  background-color: var(--cinza-medio);
+  background-color: var(--cinza-escuro);
   border-radius: 5px;
 }
-.deck-container .content ul li{
+.deck-container .col2 ul{
+  margin: 1rem 1rem 0 0;
+  padding: 0;
+}
+.deck-container .col2 ul li{
+  font-size: 0.9rem;
   margin: 0 0 10px;
   padding: 0;
   text-align: left;
-  list-style-type: square;
 }
 .conteudo {
   display: block;
   clear: both; 
-  border: 0px solid silver;
-  padding: 20px;
+  padding: 0;
+  margin: 1rem 0 1rem 0;
   width: 100%;
 }
 .conteudo h3{
   color: var(--azul-primario);
-  background-color: var(--cinza-escuro);
   font-weight: bold;
   font-size: 1.25rem;
+  padding: 0 1rem 0.5rem 1rem;
 }
-
+.conteudo .desc{
+  font-size: 0.7rem;
+  padding: 0 1rem 0.5rem 1rem;
+}
 
 /* COMPRAR */
 .qrcodepix img{
-  width: 200px;
-  height: 200px;
+  width: 170px;
+  height: 170px;
+  padding: 10px 10px 0px 0px;
 }
 .qrcodepix {
-  width: 150px;
-  height: 150px;
+  width: 170px;
+  height: 170px;
 }
 
 .buy-button {
@@ -483,12 +508,76 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  margin-top: 1rem;
+  margin: 1rem 1rem 1rem 0;
 }
 .buy-button:hover {
     background-color: var(--texto-branco);
     color: var(--cinza-escuro);
 }
+
+
+
+/* Ajuste para telas menores (mobile) */
+@media (max-width: 768px) {
+  footer p{
+    font-size: 0.75rem;
+  }
+  .deck-card .title{
+    font-size: 1rem;
+  }
+  .deck-card .desc{
+    font-size: 0.75rem;
+  }
+  .deck-card .price{
+    font-size: 1.25rem;
+  }
+
+  .conteudo {
+    font-size: 0.65rem;
+  }
+  .conteudo h3{
+    font-size: 1rem;
+  }
+
+  .container.header{
+    background-position: left 1rem top 1.5rem;
+    background-size: 170px 28px;
+    padding-right: 0.5rem;
+  }
+  .container.header button{
+    margin-top: 2rem;
+    margin-right: 0rem;
+    padding: 0.3rem;
+    font-size: 0.58rem;
+  }
+  .deck-container .col2 .title {
+    font-size: 0.8rem;
+  }
+  .deck-container .col2 ul li{
+    font-size: 0.63rem;
+    font-weight: normal;
+  }
+  ul.icon-list li::before {
+    content: "✓";
+    color: #2ecc71;
+    margin-right: 8px;
+  }
+  ul.icon-list {
+    list-style: none;
+    padding-left: 0;
+  }
+  .auth-container {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+    
+  .auth-container h2 {
+    font-size: 1rem;
+  }
+}
+
+
+
 </style>
 <link rel="icon" href="/src/assets/images/favicon.ico" type="image/x-icon">
 
@@ -531,14 +620,11 @@
   <header>
     <div class="container header">
       <div class="col1">
-        <h1>Estude Com Anki</h1>
-        <h2>Flashcards otimizados para sua aprovação!</h2>
       </div>
       <div class="col2">
         <button onclick="location.href='/'">Home</button>
-        <button>Concursos</button>
         <button onclick="location.href='/comprar'">Flashcards </button>
-        <button onclick="location.href='/auth/login'">Área do Aluno</button>
+        <button onclick="location.href='/dashboard'">Área do Aluno</button>
       </div>  
     </div>
   </header>
@@ -550,17 +636,17 @@
 
 
 <div class="deck-container">
-    <div class="content">
+    <div class="col1">
       
       <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/object/public/images//deck-images/9c2638ef-5fa8-49cc-99f5-2d96a0439424.png" 
            alt="MPU-2025 - A02 - ANALISTA DO MPU / ATUARIAL"
-           class="image">
+           class="image"/>
       
     </div>  
 
-    <div class="content">
+    <div class="col2">
       <h2  class="title">MPU-2025 - A02 - ANALISTA DO MPU / ATUARIAL</h2>
-      <ul>
+      <ul class="icon-list">
         <li>
           <b>Material focado na na sua prova</b><br>
           Elaborado com as questões anteriores da banca e alinhada com o conteúdo programático do cargo.
@@ -577,7 +663,7 @@
   
     </div>
     
-    <div class="content">
+    <div class="col3">
       <p class="price">R$ 50</p>
       <button id="buy-button" class="buy-button">
         Comprar com PIX
@@ -593,21 +679,33 @@
   <div class="desc">Deck para o concurso do MPU, para o cargo de ANALISTA DO MPU | ATUARIAL</div>
 </div>  
 <script>
-  async function downloadDeck(deckId) {
-  try {
-    const supabase = window.supabaseClient.init();
-    const { data: { session } } = await supabase.auth.getSession();
-    
-    if (!session) throw new Error('Sessão inválida');
+// Função de download melhorada
+async function downloadDeck(deckId) {
+    try {
+      const supabase = window.supabaseClient.init();
+      const { data: { session }, error } = await supabase.auth.getSession();
+      
+      if (error || !session) throw new Error('Sessão inválida');
 
-    // Abre em nova aba ou faz download direto
-    window.open(`/.netlify/functions/download/${deckId}?token=${session.access_token}`, '_blank');
-    
-  } catch (error) {
-    console.error('Erro no download:', error);
-    alert(error.message || 'Erro ao baixar o deck');
+      const response = await fetch(`/.netlify/functions/download/${deckId}`, {
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok && response.redirected) {
+        window.location.href = response.url;
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Falha no download');
+      }
+    } catch (error) {
+      console.error('Erro no download:', error);
+      alert(error.message);
+    }
   }
-}
+
 
 
 (async function() {
