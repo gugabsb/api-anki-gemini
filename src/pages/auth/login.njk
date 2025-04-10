@@ -3,122 +3,22 @@ layout: layouts/base.njk
 title: "Login"
 ---
 
-<h1>Entrar na Área do Aluno</h1>
-
-<!-- Login por Email/Senha -->
-<form id="email-login-form">
-  <label for="email">Email:</label><br>
-  <input type="email" id="email" required><br><br>
-
-  <label for="password">Senha:</label><br>
-  <input type="password" id="password" required><br><br>
-
-  <button type="submit" >Entrar</button>
-  <p class="auth-link">
-    <a href="#" onclick="resetPassword()">Esqueceu sua senha?</a>
-  </p>
-
-  <p class="auth-link" >
-    Não tem conta? <a href="/auth/signup">Cadastre-se</a>
-  </p>
-
-</form>
-
-
-<!-- Login com Google -->
-<div id="google-signin-container" style="position:block">
-  <div id="g_id_onload"
-       data-client_id="507152061466-a022pk2hegf7i8mvvdu0ob3m82akjgl8.apps.googleusercontent.com"
-       data-context="signin"
-       data-callback="handleCredentialResponse"
-       data-auto_prompt="false">
-  </div>
-
-  <div class="g_id_signin"
-       data-type="standard"
-       data-size="large"
-       data-theme="outline"
-       data-text="sign_in_with"
-       data-shape="rectangular"
-       data-logo_alignment="left">
-  </div>
-</div>
-<p id="error-message" style="color: red; margin-top: 1rem;"></p>
-
-<style>
-  #google-signin-container {
-    margin: 2rem 0;
-    display: flex;
-    justify-content: center;
-  }
-
-  form {
-    max-width: 400px;
-    margin: 0 auto;
-  }
-
-  input {
-    width: 100%;
-    padding: 0.5rem;
-    margin-top: 0.25rem;
-  }
-
-  button {
-    width:100px;
-    width:20%;
-    padding: 0.5rem;
-    margin-top: 0.25rem;
-    background: #01BBFE;
-    border: none;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-  }
-
-  h1 {
-    text-align: center;
-    margin: 2rem 0;
-  }
-  .auth-link {
-    text-align: center;
-    margin-top: 1.5rem;
-    color: #b0b0b0;
-    font-size: 0.9rem;
-  }
-
-  .auth-link a {
-    color: #01BBFE;
-    text-decoration: none;
-    font-weight: 500;
-  }
-
-  .auth-link a:hover {
-    text-decoration: underline;
-  }
-
-
-  .auth-link a:hover {
-    text-decoration: underline;
-  }  
-
-  .auth-divider {
-    display: flex;
-    align-items: center;
-    margin: 1.5rem 0;
-    color: #aaa;
-  }
-  </style>
-
-
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <script>
+  async function verificaLogin(){
+    const supabase = window.supabaseClient.init();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (user) {
+      window.location.href = `/dashboard`;
+    }
+  }
+  verificaLogin();
+
   // Google Login
   window.handleCredentialResponse = async function(response) {
     const id_token = response.credential;
     const supabase = window.supabaseClient.init();
-
     const { error } = await supabase.auth.signInWithIdToken({
       provider: 'google',
       token: id_token,
@@ -153,9 +53,7 @@ title: "Login"
       window.location.href = redirect;
     }
   });
-</script>
 
-<script>
   async function resetPassword() {
     const email = prompt("Digite seu email para redefinir a senha:");
     if (!email) return;
@@ -173,3 +71,44 @@ title: "Login"
     }
   }
 </script>
+
+
+<div class="auth-container">
+  <h2>Entrar na Área do Aluno</h2>
+  <form id="email-login-form">
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Senha:</label>
+      <input type="password" id="password" required>
+    </div>
+    <button type="submit" class="btn-submit">Entrar</button>
+    <p class="auth-link">
+      <a href="#" onclick="resetPassword()">Esqueceu sua senha?</a>
+    </p>
+    <p class="auth-link" >
+      Não tem conta? <a href="/auth/signup">Cadastre-se</a>
+    </p>    
+    <div id="google-signin-container" style="position:block">
+      <div id="g_id_onload"
+          data-client_id="507152061466-a022pk2hegf7i8mvvdu0ob3m82akjgl8.apps.googleusercontent.com"
+          data-context="signin"
+          data-callback="handleCredentialResponse"
+          data-auto_prompt="false">
+      </div>
+
+      <div class="g_id_signin"
+          data-type="standard"
+          data-size="large"
+          data-theme="outline"
+          data-text="sign_in_with"
+          data-shape="rectangular"
+          data-logo_alignment="left">
+      </div>
+    </div>
+    <p id="error-message" style="color: red; margin-top: 1rem;"></p>
+  </form>
+</div>
+

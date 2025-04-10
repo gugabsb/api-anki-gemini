@@ -10,6 +10,8 @@
       --azul-primario: #01BBFE;
       --cinza-escuro: #363636;
       --cinza-medio: #4F4F4F;
+      --texto-branco: #ffffff;
+      --texto-cinza: #cccccc;
     }
     body {
       font-family: 'Montserrat', sans-serif;
@@ -18,22 +20,65 @@
       margin: 0;
       padding: 0;
     }
+    header{
+      background: linear-gradient(to right, var(--cinza-escuro), var(--cinza-medio));
+    }
+    footer{
+      background: var(--cinza-medio); 
+      padding: 20px; 
+      text-align: center;
+    }
     .container.header{
-      background-image: url('/assets/images/logo-eca-50px-ppt.png');
+      background-image: url('/src/assets/images/logo-eca-50px-ppt.png');
       background-repeat: no-repeat;
-      background-position: right;
+      background-position: left 0px top 10px;
+      border: 0px solid red;
+      height: 70px;
+      margin: 0 auto;
+      padding: 0;
+      max-width: 800px;
+      display: flex;
+      flex-wrap: nowrap;
+    }
+    .container.header .col1{
+      width: 60%; 
+    }
+    .container.header .col2{
+      width: 40%;
+      text-align: right;
+      padding-top: 25px;
+    }
+    .container.header h1{
+      margin: 20px 0 0 55px;
+      font-size: 1.2rem;
+      color: var(--azul-primario);
+    }
+    .container.header h2{
+      margin: 0px 0 0 55px;
+      font-size: 0.75rem;
+      font-weight:;
+      color: var(--texto-branco);
+    }
+
+    .container.header button{
+      background-color: var(--cinza-claro);
+      color: var(--texto-branco);
+      border-radius: 4px;
+      padding: 8px;
+      border: 0px solid silver;
+      font-weight: normal;
+    }
+
+    .container.header button:hover{
+      background-color: var(--cinza-escuro);
+      color: var(--texto-branco);
     }
 
     .container {
-      max-width: 1200px;
+      border: 0px solid red;
+      max-width: 800px;
       margin: 0 auto;
-      padding: 0 20px;
-    }
-    .deck-card {
-      background: var(--cinza-medio);
-      border-left: 4px solid var(--azul-primario);
-      padding: 20px;
-      margin-bottom: 20px;
+      padding: 20px 0;
     }
     .dashboard {
       max-width: 1200px;
@@ -53,24 +98,6 @@
     padding: 1rem;
   }
   
-  .decks-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin: 2rem 0;
-  }
-  
-  .deck-card {
-    border: 1px solid #4F4F4F;
-    border-radius: 8px;
-    padding: 1.5rem;
-    transition: transform 0.2s;
-  }
-  
-  .deck-card:hover {
-    transform: translateY(-5px);
-  }
-  
   .avatar {
     width: 50px;
     height: 50px;
@@ -87,7 +114,7 @@
     cursor: pointer;
   }
 
-  .bt-login{
+  .btn-login{
     float: right;
   }
 
@@ -118,7 +145,352 @@
       padding: 0.5rem 1rem;
     }
   }
-  </style>
+
+
+  /* LOGIN */
+  
+  #google-signin-container {
+    margin: 2rem 0;
+    display: flex;
+    justify-content: center;
+  }
+
+
+  .auth-link {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: #b0b0b0;
+    font-size: 0.9rem;
+  }
+
+  .auth-link a {
+    color: #01BBFE;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .auth-link a:hover {
+    text-decoration: underline;
+  }
+  .auth-link a:hover {
+    text-decoration: underline;
+  }  
+  .auth-divider {
+    display: flex;
+    align-items: center;
+    margin: 1.5rem 0;
+    color: #aaa;
+  }
+  
+  /* Container Principal */
+  .auth-container {
+    max-width: 480px;
+    margin: 2rem auto;
+    background: #2d2d2d;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    border: 1px solid #4F4F4F;
+  }
+
+  form {
+    margin: 40px;
+    border: 0px solid #000;
+  }
+
+  /* Título */
+  .auth-container h2 {
+    color: #01BBFE;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  /* Grupos de Campos */
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  /* Labels */
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #e0e0e0;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  /* Campos de Input */
+  .form-group input {
+    width:100%;
+    padding: 0.5rem 0 0.5rem 0;
+    background: #363636;
+    border: 1px solid #4F4F4F;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    text-align: center;
+  }
+
+  .form-group input:focus {
+    outline: none;
+    border-color: #01BBFE;
+    box-shadow: 0 0 0 2px rgba(1, 187, 254, 0.2);
+  }
+
+  /* Botão de Submit */
+  .btn-submit {
+    width: 100%;
+    background: var(--azul-primario);
+    color: var(--texto-branco);
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 1rem;
+  }
+
+  .btn-submit:hover {
+    background:var(--texto-branco);
+    color: var(--cinza-escuro);
+  }
+
+  /* Validação */
+  input:invalid {
+    border-color: #ff3b30;
+  }
+
+  input:valid {
+    border-color: #4CAF50;
+  }
+
+  .msg{
+    color: orange;
+    text-align: center;
+    padding: 1rem;
+  }
+  /* Responsivo */
+  @media (max-width: 600px) {
+    .auth-container {
+      padding: 1.5rem;
+      margin: 1rem;
+    }
+    
+    .auth-container h2 {
+      font-size: 1rem;
+    }
+  }
+
+
+
+/* dashboard */
+.dashboard-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.decks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  margin:0;
+}
+.deck-card-dash{
+  padding: 0px;
+  width: 100%;
+  background-color: var(--cinza-medio);
+}
+.deck-card-dash img{
+  float: left;
+  margin: 10px 10px 10px 10px;
+  width:80px;
+}
+.dashboard-container h2{
+  color: var(--azul-primario);
+}
+.deck-card-dash h3{
+  font-size: 1rem;
+  margin: 10px 10px 0 0;
+  padding: 0;
+  color: var(--texto-branco);
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-left: 1rem;
+}
+
+.btn-logout {
+  background: var(--cinza-escuro);
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float:right;
+}
+.btn-logout:hover {
+  background: red;
+}
+
+.btn-download {
+  background: var(--azul-primario);
+  color: var(--texto-branco);
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+.btn-download:hover {
+  background:var(--texto-branco);
+  color: var(--cinza-escuro);
+}
+
+.deck-card {
+  background-color: var(--cinza-medio);
+  border: 1px solid #4F4F4F;
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: transform 0.2s;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 2rem;
+  width: 100%; 
+}
+
+.deck-card:hover {
+  border-color: var(--azul-primario);
+  background-color: var(--cinza-claro);
+  /*transform: translateY(-5px);*/
+}
+
+.deck-card .price{
+  font-weight: bold;
+  font-size: 1.5rem; 
+  color: var(--azul-primario);
+  background-color: var(--cinza-escuro);
+  width: 100px;
+  padding: 20px;
+  border-radius:10px;
+  text-align: left;
+}
+.deck-card .content{
+  border: 0px solid silver;
+}
+.deck-card .desc{
+  font-weight: normal;
+  font-size: 1rem;
+  color: var(--texto-branco);
+}
+.deck-card .image{
+  border: 2px solid var(--cinza-escuro);
+  width: 200px;
+  height: 288px;
+
+  border-radius: 5px;
+  float: left;
+  margin-right: 20px;
+  display: inline-block
+}
+
+.deck-card .title{
+  padding:0;
+  margin:0;
+  font-size: 1.25rem;
+  color: var(--azul-primario);
+}
+
+.deck-container {
+  background-color: var(--cinza-medio);
+  border: 1px solid #4F4F4F;
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: transform 0.2s;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 2rem;
+  width: 100%; 
+}
+.deck-container .content{
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px;
+  background-color: var(--cinza-escuro);
+  text-align: center;
+}
+.deck-container .image{
+  border: 5px solid var(--cinza-claro);
+  width: 200px;
+  height: 288px;
+  border-radius: 5px;
+  float: left;
+}
+.deck-container .title{
+  padding: 0;
+  margin: 0;
+  color: var(--azul-primario);
+}
+.deck-container .price{
+  font-weight: bold;
+  font-size: 1.5rem;
+  width: 150px;
+  padding: 10px;
+  margin: 0;
+  color: var(--azul-primario);
+  background-color: var(--cinza-medio);
+  border-radius: 5px;
+}
+.deck-container .content ul li{
+  margin: 0 0 10px;
+  padding: 0;
+  text-align: left;
+  list-style-type: square;
+}
+.conteudo {
+  display: block;
+  clear: both; 
+  border: 0px solid silver;
+  padding: 20px;
+  width: 100%;
+}
+.conteudo h3{
+  color: var(--azul-primario);
+  background-color: var(--cinza-escuro);
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+
+/* COMPRAR */
+.qrcodepix img{
+  width: 200px;
+  height: 200px;
+}
+.qrcodepix {
+  width: 150px;
+  height: 150px;
+}
+
+.buy-button {
+  background: var(--azul-primario);
+  color: var(--texto-branco);
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+.buy-button:hover {
+    background-color: var(--texto-branco);
+    color: var(--cinza-escuro);
+}
+</style>
+<link rel="icon" href="/src/assets/images/favicon.ico" type="image/x-icon">
 
 <!-- Configuração centralizada do Supabase -->
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
@@ -156,43 +528,88 @@
 
 </head>
 <body>
-  <button id="login" onclick="location.href='/auth/login'" class="bt-login">Login</button>
-
-  <header style="background: linear-gradient(to right, var(--cinza-escuro), var(--cinza-medio)); padding: 20px 0; text-align: center;">
+  <header>
     <div class="container header">
-      <h1>Estude Com Anki</h1>
-      <p>Decks otimizados para sua aprovação no concurso de 04/05/2025</p>
+      <div class="col1">
+        <h1>Estude Com Anki</h1>
+        <h2>Flashcards otimizados para sua aprovação!</h2>
+      </div>
+      <div class="col2">
+        <button onclick="location.href='/'">Home</button>
+        <button>Concursos</button>
+        <button onclick="location.href='/comprar'">Flashcards </button>
+        <button onclick="location.href='/auth/login'">Área do Aluno</button>
+      </div>  
     </div>
   </header>
 
-  <main class="container" style="padding: 40px 0;">
+  <main class="container">
     
-
 
 
 
 
 <div class="deck-container">
-    <h1>MPU-2025 - A01 - ANALISTA DO MPU / ARQUIVOLOGIA</h1>
-    
-    
-    
-      <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/s3/deck2.png" 
+    <div class="content">
+      
+      <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/object/public/images//deck-images/e9d7a7fb-67c6-4a5e-9d63-f05539f33d04.png" 
            alt="MPU-2025 - A01 - ANALISTA DO MPU / ARQUIVOLOGIA"
-           class="deck-image">
+           class="image">
+      
+    </div>  
+
+    <div class="content">
+      <h2  class="title">MPU-2025 - A01 - ANALISTA DO MPU / ARQUIVOLOGIA</h2>
+      <ul>
+        <li>
+          <b>Material focado na na sua prova</b><br>
+          Elaborado com as questões anteriores da banca e alinhada com o conteúdo programático do cargo.
+        </li>
+        <li>          
+        <b>Material Digital</b><br>
+        Não se limite a sua mesa de estudos! Estude do seu jeito, em qualquer lugar e a qualquer hora.
+        </li>
+        <li>
+        <b>Atualização até a data da prova</b><br>
+        Até o dia da sua prova você terá acesso às atualizações dos Decks gratuitamente.
+        </li>
+      <ul>
+  
+    </div>
     
-    
-    <p>Deck para o concurso do MPU, para o cargo de ANALISTA DO MPU | ARQUIVOLOGIA</p>
-    <p>Preço: R$ 1</p>
-    
-    <button id="buy-button">
-      Comprar com PIX
-    </button>
-</div>
-<div id="qrcodepix" class="qrcodepix">
+    <div class="content">
+      <p class="price">R$ 50</p>
+      <button id="buy-button" class="buy-button">
+        Comprar com PIX
+      </button><br>
+      <div id="qrcodepix" class="qrcodepix"></div>
+    </div>
 
 </div>
+
+
+<div class="conteudo">
+  <h3>Conteúdo do Deck</h3>
+  <div class="desc">Deck para o concurso do MPU, para o cargo de ANALISTA DO MPU | ARQUIVOLOGIA</div>
+</div>  
 <script>
+  async function downloadDeck(deckId) {
+  try {
+    const supabase = window.supabaseClient.init();
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (!session) throw new Error('Sessão inválida');
+
+    // Abre em nova aba ou faz download direto
+    window.open(`/.netlify/functions/download/${deckId}?token=${session.access_token}`, '_blank');
+    
+  } catch (error) {
+    console.error('Erro no download:', error);
+    alert(error.message || 'Erro ao baixar o deck');
+  }
+}
+
+
 (async function() {
   const supabase = window.supabaseClient.init();
   const { data: { user }, error } = await supabase.auth.getUser();
@@ -205,11 +622,46 @@
   const user_id = user.id;
   const user_email = user.email;
   const deck_id = 'e9d7a7fb-67c6-4a5e-9d63-f05539f33d04';
-  const deck_price = '1';
+  const deck_price = '50';
   const deck_name = 'MPU-2025 - A01 - ANALISTA DO MPU / ARQUIVOLOGIA';
+  const buyButton = document.getElementById('buy-button');
+  let paymentCheckInterval = null;
 
-  document.getElementById('buy-button').addEventListener('click', async () => {
+  // Função para verificar se o usuário já possui o deck
+  async function checkDeckOwnership() {
     try {
+      const { data: result } = await supabase
+        .from('user_decks')
+        .select('deck_id')
+        .eq('user_id', user_id)
+        .eq('deck_id', deck_id);
+
+      return result && result.length > 0;
+    } catch (e) {
+      console.error('Erro ao verificar deck:', e);
+      return false;
+    }
+  }
+
+  // Função para transformar o botão em download
+  function setupDownloadButton() {
+    buyButton.textContent = "Download";
+    buyButton.className = "btn-download";
+    buyButton.removeEventListener("click", handleBuyClick);
+    buyButton.addEventListener('click', () => downloadDeck(deck_id));
+  }
+
+  // Verificação inicial (quando a página carrega)
+  const hasDeck = await checkDeckOwnership();
+  if (hasDeck) {
+    setupDownloadButton();
+    return; // Sai da função se o usuário já tem o deck
+  }
+
+  // Função de compra (só executa se o usuário não tiver o deck)
+  async function handleBuyClick() {
+    try {
+      // Gera o QR Code PIX
       const res = await fetch('/.netlify/functions/create-pix-payment-mp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -223,45 +675,49 @@
       img.src = `data:image/png;base64,${data.qr_code_base64}`;
       document.getElementById('qrcodepix').appendChild(img);
       alert('Escaneie o QR Code para pagar com PIX!');
+
+      // SÓ AQUI INICIA A VERIFICAÇÃO PERIÓDICA
+      startPaymentChecking();
     } catch (err) {
       console.error('Erro ao criar pagamento:', err);
       alert('Erro ao gerar QR Code de pagamento.');
     }
-  });
+  }
 
-  setInterval(async () => {
-    try {
-      const { data: result } = await supabase
-        .from('user_decks')
-        .select('deck_id')
-        .eq('user_id', user_id)
-        .eq('deck_id', deck_id);
-
-      if (result && result.length > 0) {
-        alert('✅ Pagamento confirmado! Deck liberado 🎉');
-        window.location.href = '/dashboard';
-      }
-    } catch (e) {
-      console.error('Erro no polling do pagamento:', e);
+  // Função que inicia a verificação periódica
+  function startPaymentChecking() {
+    // Limpa qualquer intervalo existente (por segurança)
+    if (paymentCheckInterval) {
+      clearInterval(paymentCheckInterval);
     }
-  }, 5000);
+
+    // Configura o novo intervalo
+    paymentCheckInterval = setInterval(async () => {
+      const hasDeck = await checkDeckOwnership();
+      if (hasDeck) {
+        setupDownloadButton();
+        clearInterval(paymentCheckInterval); // Para a verificação
+      }
+    }, 5000); // Verifica a cada 5 segundos
+
+    // Timeout de segurança (30 minutos)
+    setTimeout(() => {
+      if (paymentCheckInterval) {
+        clearInterval(paymentCheckInterval);
+        console.log('Tempo máximo de verificação expirado');
+      }
+    }, 1800000);
+  }
+
+  // Configura o botão inicialmente para compra
+  buyButton.addEventListener('click', handleBuyClick);
 })();
 </script>
-
-<style>
-    .qrcodepix img{
-        width: 200px;
-        height: 200px;
-    }
-    .qrcodepix {
-        text-align: center;
-    }
-</style>
 
 
   </main>
 
-  <footer style="background: var(--cinza-medio); padding: 20px; text-align: center;">
+  <footer>
     <p>© 2025 Estude Com Anki - Todos os direitos reservados</p>
   </footer>
 </body>

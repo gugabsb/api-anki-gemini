@@ -6,6 +6,9 @@ const supabase = createClient(
 );
 
 export default async function() {
+  
+  //return { items: [] };
+
   try {
     const { data: decks, error } = await supabase
       .from('decks')
@@ -35,7 +38,7 @@ export default async function() {
           image: deck.image_path ? { 
             fields: { 
               file: { 
-                url: `${process.env.SUPABASE_STORAGE_URL}/${deck.image_path}` 
+                url: `${process.env.SUPABASE_STORAGE_IMAGE_URL}${deck.image_path}` 
               } 
             } 
           } : null

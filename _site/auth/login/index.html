@@ -10,6 +10,8 @@
       --azul-primario: #01BBFE;
       --cinza-escuro: #363636;
       --cinza-medio: #4F4F4F;
+      --texto-branco: #ffffff;
+      --texto-cinza: #cccccc;
     }
     body {
       font-family: 'Montserrat', sans-serif;
@@ -18,22 +20,65 @@
       margin: 0;
       padding: 0;
     }
+    header{
+      background: linear-gradient(to right, var(--cinza-escuro), var(--cinza-medio));
+    }
+    footer{
+      background: var(--cinza-medio); 
+      padding: 20px; 
+      text-align: center;
+    }
     .container.header{
-      background-image: url('/assets/images/logo-eca-50px-ppt.png');
+      background-image: url('/src/assets/images/logo-eca-50px-ppt.png');
       background-repeat: no-repeat;
-      background-position: right;
+      background-position: left 0px top 10px;
+      border: 0px solid red;
+      height: 70px;
+      margin: 0 auto;
+      padding: 0;
+      max-width: 800px;
+      display: flex;
+      flex-wrap: nowrap;
+    }
+    .container.header .col1{
+      width: 60%; 
+    }
+    .container.header .col2{
+      width: 40%;
+      text-align: right;
+      padding-top: 25px;
+    }
+    .container.header h1{
+      margin: 20px 0 0 55px;
+      font-size: 1.2rem;
+      color: var(--azul-primario);
+    }
+    .container.header h2{
+      margin: 0px 0 0 55px;
+      font-size: 0.75rem;
+      font-weight:;
+      color: var(--texto-branco);
+    }
+
+    .container.header button{
+      background-color: var(--cinza-claro);
+      color: var(--texto-branco);
+      border-radius: 4px;
+      padding: 8px;
+      border: 0px solid silver;
+      font-weight: normal;
+    }
+
+    .container.header button:hover{
+      background-color: var(--cinza-escuro);
+      color: var(--texto-branco);
     }
 
     .container {
-      max-width: 1200px;
+      border: 0px solid red;
+      max-width: 800px;
       margin: 0 auto;
-      padding: 0 20px;
-    }
-    .deck-card {
-      background: var(--cinza-medio);
-      border-left: 4px solid var(--azul-primario);
-      padding: 20px;
-      margin-bottom: 20px;
+      padding: 20px 0;
     }
     .dashboard {
       max-width: 1200px;
@@ -53,24 +98,6 @@
     padding: 1rem;
   }
   
-  .decks-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin: 2rem 0;
-  }
-  
-  .deck-card {
-    border: 1px solid #4F4F4F;
-    border-radius: 8px;
-    padding: 1.5rem;
-    transition: transform 0.2s;
-  }
-  
-  .deck-card:hover {
-    transform: translateY(-5px);
-  }
-  
   .avatar {
     width: 50px;
     height: 50px;
@@ -87,7 +114,7 @@
     cursor: pointer;
   }
 
-  .bt-login{
+  .btn-login{
     float: right;
   }
 
@@ -118,7 +145,352 @@
       padding: 0.5rem 1rem;
     }
   }
-  </style>
+
+
+  /* LOGIN */
+  
+  #google-signin-container {
+    margin: 2rem 0;
+    display: flex;
+    justify-content: center;
+  }
+
+
+  .auth-link {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: #b0b0b0;
+    font-size: 0.9rem;
+  }
+
+  .auth-link a {
+    color: #01BBFE;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .auth-link a:hover {
+    text-decoration: underline;
+  }
+  .auth-link a:hover {
+    text-decoration: underline;
+  }  
+  .auth-divider {
+    display: flex;
+    align-items: center;
+    margin: 1.5rem 0;
+    color: #aaa;
+  }
+  
+  /* Container Principal */
+  .auth-container {
+    max-width: 480px;
+    margin: 2rem auto;
+    background: #2d2d2d;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    border: 1px solid #4F4F4F;
+  }
+
+  form {
+    margin: 40px;
+    border: 0px solid #000;
+  }
+
+  /* Título */
+  .auth-container h2 {
+    color: #01BBFE;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  /* Grupos de Campos */
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  /* Labels */
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #e0e0e0;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  /* Campos de Input */
+  .form-group input {
+    width:100%;
+    padding: 0.5rem 0 0.5rem 0;
+    background: #363636;
+    border: 1px solid #4F4F4F;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    text-align: center;
+  }
+
+  .form-group input:focus {
+    outline: none;
+    border-color: #01BBFE;
+    box-shadow: 0 0 0 2px rgba(1, 187, 254, 0.2);
+  }
+
+  /* Botão de Submit */
+  .btn-submit {
+    width: 100%;
+    background: var(--azul-primario);
+    color: var(--texto-branco);
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 1rem;
+  }
+
+  .btn-submit:hover {
+    background:var(--texto-branco);
+    color: var(--cinza-escuro);
+  }
+
+  /* Validação */
+  input:invalid {
+    border-color: #ff3b30;
+  }
+
+  input:valid {
+    border-color: #4CAF50;
+  }
+
+  .msg{
+    color: orange;
+    text-align: center;
+    padding: 1rem;
+  }
+  /* Responsivo */
+  @media (max-width: 600px) {
+    .auth-container {
+      padding: 1.5rem;
+      margin: 1rem;
+    }
+    
+    .auth-container h2 {
+      font-size: 1rem;
+    }
+  }
+
+
+
+/* dashboard */
+.dashboard-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.decks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  margin:0;
+}
+.deck-card-dash{
+  padding: 0px;
+  width: 100%;
+  background-color: var(--cinza-medio);
+}
+.deck-card-dash img{
+  float: left;
+  margin: 10px 10px 10px 10px;
+  width:80px;
+}
+.dashboard-container h2{
+  color: var(--azul-primario);
+}
+.deck-card-dash h3{
+  font-size: 1rem;
+  margin: 10px 10px 0 0;
+  padding: 0;
+  color: var(--texto-branco);
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-left: 1rem;
+}
+
+.btn-logout {
+  background: var(--cinza-escuro);
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float:right;
+}
+.btn-logout:hover {
+  background: red;
+}
+
+.btn-download {
+  background: var(--azul-primario);
+  color: var(--texto-branco);
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+.btn-download:hover {
+  background:var(--texto-branco);
+  color: var(--cinza-escuro);
+}
+
+.deck-card {
+  background-color: var(--cinza-medio);
+  border: 1px solid #4F4F4F;
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: transform 0.2s;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 2rem;
+  width: 100%; 
+}
+
+.deck-card:hover {
+  border-color: var(--azul-primario);
+  background-color: var(--cinza-claro);
+  /*transform: translateY(-5px);*/
+}
+
+.deck-card .price{
+  font-weight: bold;
+  font-size: 1.5rem; 
+  color: var(--azul-primario);
+  background-color: var(--cinza-escuro);
+  width: 100px;
+  padding: 20px;
+  border-radius:10px;
+  text-align: left;
+}
+.deck-card .content{
+  border: 0px solid silver;
+}
+.deck-card .desc{
+  font-weight: normal;
+  font-size: 1rem;
+  color: var(--texto-branco);
+}
+.deck-card .image{
+  border: 2px solid var(--cinza-escuro);
+  width: 200px;
+  height: 288px;
+
+  border-radius: 5px;
+  float: left;
+  margin-right: 20px;
+  display: inline-block
+}
+
+.deck-card .title{
+  padding:0;
+  margin:0;
+  font-size: 1.25rem;
+  color: var(--azul-primario);
+}
+
+.deck-container {
+  background-color: var(--cinza-medio);
+  border: 1px solid #4F4F4F;
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: transform 0.2s;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 2rem;
+  width: 100%; 
+}
+.deck-container .content{
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px;
+  background-color: var(--cinza-escuro);
+  text-align: center;
+}
+.deck-container .image{
+  border: 5px solid var(--cinza-claro);
+  width: 200px;
+  height: 288px;
+  border-radius: 5px;
+  float: left;
+}
+.deck-container .title{
+  padding: 0;
+  margin: 0;
+  color: var(--azul-primario);
+}
+.deck-container .price{
+  font-weight: bold;
+  font-size: 1.5rem;
+  width: 150px;
+  padding: 10px;
+  margin: 0;
+  color: var(--azul-primario);
+  background-color: var(--cinza-medio);
+  border-radius: 5px;
+}
+.deck-container .content ul li{
+  margin: 0 0 10px;
+  padding: 0;
+  text-align: left;
+  list-style-type: square;
+}
+.conteudo {
+  display: block;
+  clear: both; 
+  border: 0px solid silver;
+  padding: 20px;
+  width: 100%;
+}
+.conteudo h3{
+  color: var(--azul-primario);
+  background-color: var(--cinza-escuro);
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+
+/* COMPRAR */
+.qrcodepix img{
+  width: 200px;
+  height: 200px;
+}
+.qrcodepix {
+  width: 150px;
+  height: 150px;
+}
+
+.buy-button {
+  background: var(--azul-primario);
+  color: var(--texto-branco);
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+.buy-button:hover {
+    background-color: var(--texto-branco);
+    color: var(--cinza-escuro);
+}
+</style>
+<link rel="icon" href="/src/assets/images/favicon.ico" type="image/x-icon">
 
 <!-- Configuração centralizada do Supabase -->
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
@@ -156,133 +528,39 @@
 
 </head>
 <body>
-  <button id="login" onclick="location.href='/auth/login'" class="bt-login">Login</button>
-
-  <header style="background: linear-gradient(to right, var(--cinza-escuro), var(--cinza-medio)); padding: 20px 0; text-align: center;">
+  <header>
     <div class="container header">
-      <h1>Estude Com Anki</h1>
-      <p>Decks otimizados para sua aprovação no concurso de 04/05/2025</p>
+      <div class="col1">
+        <h1>Estude Com Anki</h1>
+        <h2>Flashcards otimizados para sua aprovação!</h2>
+      </div>
+      <div class="col2">
+        <button onclick="location.href='/'">Home</button>
+        <button>Concursos</button>
+        <button onclick="location.href='/comprar'">Flashcards </button>
+        <button onclick="location.href='/auth/login'">Área do Aluno</button>
+      </div>  
     </div>
   </header>
 
-  <main class="container" style="padding: 40px 0;">
+  <main class="container">
     
-<h1>Entrar na Área do Aluno</h1>
-
-<!-- Login por Email/Senha -->
-<form id="email-login-form">
-  <label for="email">Email:</label><br>
-  <input type="email" id="email" required><br><br>
-
-  <label for="password">Senha:</label><br>
-  <input type="password" id="password" required><br><br>
-
-  <button type="submit" >Entrar</button>
-  <p class="auth-link">
-    <a href="#" onclick="resetPassword()">Esqueceu sua senha?</a>
-  </p>
-
-  <p class="auth-link" >
-    Não tem conta? <a href="/auth/signup">Cadastre-se</a>
-  </p>
-
-</form>
-
-
-<!-- Login com Google -->
-<div id="google-signin-container" style="position:block">
-  <div id="g_id_onload"
-       data-client_id="507152061466-a022pk2hegf7i8mvvdu0ob3m82akjgl8.apps.googleusercontent.com"
-       data-context="signin"
-       data-callback="handleCredentialResponse"
-       data-auto_prompt="false">
-  </div>
-
-  <div class="g_id_signin"
-       data-type="standard"
-       data-size="large"
-       data-theme="outline"
-       data-text="sign_in_with"
-       data-shape="rectangular"
-       data-logo_alignment="left">
-  </div>
-</div>
-<p id="error-message" style="color: red; margin-top: 1rem;"></p>
-
-<style>
-  #google-signin-container {
-    margin: 2rem 0;
-    display: flex;
-    justify-content: center;
-  }
-
-  form {
-    max-width: 400px;
-    margin: 0 auto;
-  }
-
-  input {
-    width: 100%;
-    padding: 0.5rem;
-    margin-top: 0.25rem;
-  }
-
-  button {
-    width:100px;
-    width:20%;
-    padding: 0.5rem;
-    margin-top: 0.25rem;
-    background: #01BBFE;
-    border: none;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-  }
-
-  h1 {
-    text-align: center;
-    margin: 2rem 0;
-  }
-  .auth-link {
-    text-align: center;
-    margin-top: 1.5rem;
-    color: #b0b0b0;
-    font-size: 0.9rem;
-  }
-
-  .auth-link a {
-    color: #01BBFE;
-    text-decoration: none;
-    font-weight: 500;
-  }
-
-  .auth-link a:hover {
-    text-decoration: underline;
-  }
-
-
-  .auth-link a:hover {
-    text-decoration: underline;
-  }  
-
-  .auth-divider {
-    display: flex;
-    align-items: center;
-    margin: 1.5rem 0;
-    color: #aaa;
-  }
-  </style>
-
-
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <script>
+  async function verificaLogin(){
+    const supabase = window.supabaseClient.init();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (user) {
+      window.location.href = `/dashboard`;
+    }
+  }
+  verificaLogin();
+
   // Google Login
   window.handleCredentialResponse = async function(response) {
     const id_token = response.credential;
     const supabase = window.supabaseClient.init();
-
     const { error } = await supabase.auth.signInWithIdToken({
       provider: 'google',
       token: id_token,
@@ -317,9 +595,7 @@
       window.location.href = redirect;
     }
   });
-</script>
 
-<script>
   async function resetPassword() {
     const email = prompt("Digite seu email para redefinir a senha:");
     if (!email) return;
@@ -338,9 +614,50 @@
   }
 </script>
 
+
+<div class="auth-container">
+  <h2>Entrar na Área do Aluno</h2>
+  <form id="email-login-form">
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Senha:</label>
+      <input type="password" id="password" required>
+    </div>
+    <button type="submit" class="btn-submit">Entrar</button>
+    <p class="auth-link">
+      <a href="#" onclick="resetPassword()">Esqueceu sua senha?</a>
+    </p>
+    <p class="auth-link" >
+      Não tem conta? <a href="/auth/signup">Cadastre-se</a>
+    </p>    
+    <div id="google-signin-container" style="position:block">
+      <div id="g_id_onload"
+          data-client_id="507152061466-a022pk2hegf7i8mvvdu0ob3m82akjgl8.apps.googleusercontent.com"
+          data-context="signin"
+          data-callback="handleCredentialResponse"
+          data-auto_prompt="false">
+      </div>
+
+      <div class="g_id_signin"
+          data-type="standard"
+          data-size="large"
+          data-theme="outline"
+          data-text="sign_in_with"
+          data-shape="rectangular"
+          data-logo_alignment="left">
+      </div>
+    </div>
+    <p id="error-message" style="color: red; margin-top: 1rem;"></p>
+  </form>
+</div>
+
+
   </main>
 
-  <footer style="background: var(--cinza-medio); padding: 20px; text-align: center;">
+  <footer>
     <p>© 2025 Estude Com Anki - Todos os direitos reservados</p>
   </footer>
 </body>

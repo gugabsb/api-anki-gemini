@@ -10,32 +10,71 @@ pagination:
 permalink: "/comprar/{{ deckid.sys.id }}/"
 ---
 
-
 {# Filtro para encontrar o deck pelo ID #}
 {% set currentDeck = deckid %}
 
 {% if currentDeck %}
 <div class="deck-container">
-    <h1>{{ currentDeck.fields.title }}</h1>
-    
-    {# Imagem (com fallback) #}
-    {% if currentDeck.fields.image %}
+    <div class="content">
+      {% if currentDeck.fields.image %}
       <img src="{{ currentDeck.fields.image.fields.file.url }}" 
            alt="{{ currentDeck.fields.title }}"
-           class="deck-image">
-    {% endif %}
+           class="image">
+      {% endif %}
+    </div>  
+
+    <div class="content">
+      <h2  class="title">{{ currentDeck.fields.title }}</h2>
+      <ul>
+        <li>
+          <b>Material focado na na sua prova</b><br>
+          Elaborado com as questões anteriores da banca e alinhada com o conteúdo programático do cargo.
+        </li>
+        <li>          
+        <b>Material Digital</b><br>
+        Não se limite a sua mesa de estudos! Estude do seu jeito, em qualquer lugar e a qualquer hora.
+        </li>
+        <li>
+        <b>Atualização até a data da prova</b><br>
+        Até o dia da sua prova você terá acesso às atualizações dos Decks gratuitamente.
+        </li>
+      <ul>
+  
+    </div>
     
-    <p>{{ currentDeck.fields.description }}</p>
-    <p>Preço: R$ {{ currentDeck.fields.price }}</p>
-    
-    <button id="buy-button">
-      Comprar com PIX
-    </button>
-</div>
-<div id="qrcodepix" class="qrcodepix">
+    <div class="content">
+      <p class="price">R$ {{ currentDeck.fields.price }}</p>
+      <button id="buy-button" class="buy-button">
+        Comprar com PIX
+      </button><br>
+      <div id="qrcodepix" class="qrcodepix"></div>
+    </div>
 
 </div>
+
+
+<div class="conteudo">
+  <h3>Conteúdo do Deck</h3>
+  <div class="desc">{{ currentDeck.fields.description }}</div>
+</div>  
 <script>
+  async function downloadDeck(deckId) {
+  try {
+    const supabase = window.supabaseClient.init();
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (!session) throw new Error('Sessão inválida');
+
+    // Abre em nova aba ou faz download direto
+    window.open(`/.netlify/functions/download/${deckId}?token=${session.access_token}`, '_blank');
+    
+  } catch (error) {
+    console.error('Erro no download:', error);
+    alert(error.message || 'Erro ao baixar o deck');
+  }
+}
+
+
 (async function() {
   const supabase = window.supabaseClient.init();
   const { data: { user }, error } = await supabase.auth.getUser();
@@ -50,9 +89,44 @@ permalink: "/comprar/{{ deckid.sys.id }}/"
   const deck_id = '{{ currentDeck.sys.id }}';
   const deck_price = '{{ currentDeck.fields.price }}';
   const deck_name = '{{ currentDeck.fields.title }}';
+  const buyButton = document.getElementById('buy-button');
+  let paymentCheckInterval = null;
 
-  document.getElementById('buy-button').addEventListener('click', async () => {
+  // Função para verificar se o usuário já possui o deck
+  async function checkDeckOwnership() {
     try {
+      const { data: result } = await supabase
+        .from('user_decks')
+        .select('deck_id')
+        .eq('user_id', user_id)
+        .eq('deck_id', deck_id);
+
+      return result && result.length > 0;
+    } catch (e) {
+      console.error('Erro ao verificar deck:', e);
+      return false;
+    }
+  }
+
+  // Função para transformar o botão em download
+  function setupDownloadButton() {
+    buyButton.textContent = "Download";
+    buyButton.className = "btn-download";
+    buyButton.removeEventListener("click", handleBuyClick);
+    buyButton.addEventListener('click', () => downloadDeck(deck_id));
+  }
+
+  // Verificação inicial (quando a página carrega)
+  const hasDeck = await checkDeckOwnership();
+  if (hasDeck) {
+    setupDownloadButton();
+    return; // Sai da função se o usuário já tem o deck
+  }
+
+  // Função de compra (só executa se o usuário não tiver o deck)
+  async function handleBuyClick() {
+    try {
+      // Gera o QR Code PIX
       const res = await fetch('/.netlify/functions/create-pix-payment-mp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -66,40 +140,44 @@ permalink: "/comprar/{{ deckid.sys.id }}/"
       img.src = `data:image/png;base64,${data.qr_code_base64}`;
       document.getElementById('qrcodepix').appendChild(img);
       alert('Escaneie o QR Code para pagar com PIX!');
+
+      // SÓ AQUI INICIA A VERIFICAÇÃO PERIÓDICA
+      startPaymentChecking();
     } catch (err) {
       console.error('Erro ao criar pagamento:', err);
       alert('Erro ao gerar QR Code de pagamento.');
     }
-  });
+  }
 
-  setInterval(async () => {
-    try {
-      const { data: result } = await supabase
-        .from('user_decks')
-        .select('deck_id')
-        .eq('user_id', user_id)
-        .eq('deck_id', deck_id);
-
-      if (result && result.length > 0) {
-        alert('✅ Pagamento confirmado! Deck liberado 🎉');
-        window.location.href = '/dashboard';
-      }
-    } catch (e) {
-      console.error('Erro no polling do pagamento:', e);
+  // Função que inicia a verificação periódica
+  function startPaymentChecking() {
+    // Limpa qualquer intervalo existente (por segurança)
+    if (paymentCheckInterval) {
+      clearInterval(paymentCheckInterval);
     }
-  }, 5000);
+
+    // Configura o novo intervalo
+    paymentCheckInterval = setInterval(async () => {
+      const hasDeck = await checkDeckOwnership();
+      if (hasDeck) {
+        setupDownloadButton();
+        clearInterval(paymentCheckInterval); // Para a verificação
+      }
+    }, 5000); // Verifica a cada 5 segundos
+
+    // Timeout de segurança (30 minutos)
+    setTimeout(() => {
+      if (paymentCheckInterval) {
+        clearInterval(paymentCheckInterval);
+        console.log('Tempo máximo de verificação expirado');
+      }
+    }, 1800000);
+  }
+
+  // Configura o botão inicialmente para compra
+  buyButton.addEventListener('click', handleBuyClick);
 })();
 </script>
-
-<style>
-    .qrcodepix img{
-        width: 200px;
-        height: 200px;
-    }
-    .qrcodepix {
-        text-align: center;
-    }
-</style>
 
 {% else %}
   <div class="error">

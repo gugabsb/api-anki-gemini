@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Área do Aluno | Estude Com Anki - MPU 2025</title>
+  <title>Decks Disponíveis - Estude Com Anki | Estude Com Anki - MPU 2025</title>
   <meta name="description" content="Decks otimizados para o concurso do MPU 2025 usando o método científico de repetição espaçada">
   <style>
     :root {
@@ -545,137 +545,78 @@
 
   <main class="container">
     
-<div id="verify-alert" style="display: none; background: #ffeb3b; padding: 1rem; margin: 1rem 0;">
-  Por favor, verifique seu email para ativar sua conta.
-  <button onclick="resendVerification()">Reenviar email</button>
-</div>
 
-
-<div class="dashboard-container">
-  <h1>Bem-vindo à área do aluno</h1>
-  <button id="logout-btn" class="btn-logout">Sair</button>
-  <div id="user-data">
-    <!-- Dados serão carregados via JS -->
-  </div>  
-
-  <h2>Decks adquiridos:</h2>
-
-  <div id="decks-list" class="decks-grid">
-    <!-- Decks serão carregados aqui -->
-  </div>
-
-
-</div>
-
-<script>
-  async function resendVerification() {
-  const supabase = window.supabaseClient.init();
-  const { error } = await supabase.auth.resend({
-    type: 'signup',
-    email: (await supabase.auth.getUser()).data.user.email
-  });
-  
-  if (error) {
-    alert('Erro ao reenviar: ' + error.message);
-  } else {
-    alert('Email de verificação reenviado!');
-  }
-}
-
-
-  // Função de download melhorada
-  async function downloadDeck(deckId) {
-    try {
-      const supabase = window.supabaseClient.init();
-      const { data: { session }, error } = await supabase.auth.getSession();
+  <h2 style="color: #01BBFE; margin-bottom: 30px;">ESCOLHA SEU DECK</h2>
+    <!-- Note o .items aqui -->
+    <div class="deck-card">
       
-      if (error || !session) throw new Error('Sessão inválida');
+        <img class="image" src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/object/public/images//deck-images/2be97d41-6c38-4334-8554-210ee8926f21.png" 
+             alt="MPU-2025	- T03 - TÉCNICO DO MPU | POLÍCIA INSTITUCIONAL">
+      
+      <div class="content">
+        <h3 class="title">MPU-2025	- T03 - TÉCNICO DO MPU | POLÍCIA INSTITUCIONAL</h3>      
+        <p class="desc">Deck para o concurso do MPU, para o cargo de T03 - TÉCNICO DO MPU | POLÍCIA INSTITUCIONAL</p>
+        <p class="price">
+          R$ 50
+        </p>
+        <button id="buy-button" class="buy-button" onclick="location.href='/comprar/2be97d41-6c38-4334-8554-210ee8926f21/'">
+          COMPRAR AGORA 
+        </button><br>
+      </div>
+    </div>
+    <!-- Note o .items aqui -->
+    <div class="deck-card">
+      
+        <img class="image" src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/object/public/images//deck-images/9c2638ef-5fa8-49cc-99f5-2d96a0439424.png" 
+             alt="MPU-2025 - A02 - ANALISTA DO MPU / ATUARIAL">
+      
+      <div class="content">
+        <h3 class="title">MPU-2025 - A02 - ANALISTA DO MPU / ATUARIAL</h3>      
+        <p class="desc">Deck para o concurso do MPU, para o cargo de ANALISTA DO MPU | ATUARIAL</p>
+        <p class="price">
+          R$ 50
+        </p>
+        <button id="buy-button" class="buy-button" onclick="location.href='/comprar/9c2638ef-5fa8-49cc-99f5-2d96a0439424/'">
+          COMPRAR AGORA 
+        </button><br>
+      </div>
+    </div>
+    <!-- Note o .items aqui -->
+    <div class="deck-card">
+      
+        <img class="image" src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/object/public/images//deck-images/e9d7a7fb-67c6-4a5e-9d63-f05539f33d04.png" 
+             alt="MPU-2025 - A01 - ANALISTA DO MPU / ARQUIVOLOGIA">
+      
+      <div class="content">
+        <h3 class="title">MPU-2025 - A01 - ANALISTA DO MPU / ARQUIVOLOGIA</h3>      
+        <p class="desc">Deck para o concurso do MPU, para o cargo de ANALISTA DO MPU | ARQUIVOLOGIA</p>
+        <p class="price">
+          R$ 50
+        </p>
+        <button id="buy-button" class="buy-button" onclick="location.href='/comprar/e9d7a7fb-67c6-4a5e-9d63-f05539f33d04/'">
+          COMPRAR AGORA 
+        </button><br>
+      </div>
+    </div>
+    <!-- Note o .items aqui -->
+    <div class="deck-card">
+      
+        <img class="image" src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/object/public/images//deck-images/e5dc3d41-4a36-435b-b8b8-65df45eb77ff.png" 
+             alt="MPU-2025	- A32 - ANALISTA DO MPU | SUPORTE E INFRAESTRUTURA">
+      
+      <div class="content">
+        <h3 class="title">MPU-2025	- A32 - ANALISTA DO MPU | SUPORTE E INFRAESTRUTURA</h3>      
+        <p class="desc">Deck para o concurso do MPU, para o cargo de ANALISTA DO MPU | SUPORTE E INFRAESTRUTURA</p>
+        <p class="price">
+          R$ 50
+        </p>
+        <button id="buy-button" class="buy-button" onclick="location.href='/comprar/e5dc3d41-4a36-435b-b8b8-65df45eb77ff/'">
+          COMPRAR AGORA 
+        </button><br>
+      </div>
+    </div>
+  
 
-      const response = await fetch(`/.netlify/functions/download/${deckId}`, {
-        headers: {
-          'Authorization': `Bearer ${session.access_token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (response.ok && response.redirected) {
-        window.location.href = response.url;
-      } else {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Falha no download');
-      }
-    } catch (error) {
-      console.error('Erro no download:', error);
-      alert(error.message);
-    }
-  }
-
-  // Inicialização da página
-(async function() {
-  try {
-    const supabase = window.supabaseClient.init();
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    if (authError || !user) {
-      console.error('Erro de autenticação:', authError);
-      window.location.href = `/auth/login?error=${encodeURIComponent(authError?.message || 'Não autenticado')}`;
-      return;
-    }
-
-    // Verificação de email (se necessário)
-    if (!user.email_confirmed_at) {
-      document.getElementById('verify-alert').style.display = 'block';
-    }
-
-      if (authError || !user) throw new Error('Não autenticado');
-
-      // Exibe dados do usuário
-      document.getElementById('user-data').innerHTML = `
-        <p>Logado como: <strong>${user.email}</strong></p>
-        ${user.user_metadata?.avatar_url ? 
-          `<img src="${user.user_metadata.avatar_url}" alt="Avatar" class="avatar">` : ''}
-      `;
-
-     // Carrega decks do usuário
-    const { data: decks, error: decksError } = await supabase
-      .from('user_decks')
-      .select('deck_id, decks(title, description, file_path, image_path), purchased_at')
-      .eq('user_id', user.id)
-      .order('purchased_at', { ascending: false });
-
-    if (decksError) throw decksError;
-
-    const decksContainer = document.getElementById('decks-list');
-    decksContainer.innerHTML = decks.length > 0 
-      ? decks.map(deck => `
-          <div class="deck-card-dash">
-            <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/object/public/images/${deck.decks?.image_path}" 
-                alt="${deck.decks?.title}"
-                class="image">
-            <h3>${deck.decks?.title || 'Deck sem nome'}</h3>
-            <button 
-              onclick="downloadDeck('${deck.deck_id}')" 
-              class="btn-download"
-              data-id="${deck.deck_id}"
-            >
-              Baixar
-            </button>
-          </div>
-        `).join('')
-      : '<p>Nenhum deck disponível ainda.</p>';
-
-
-      // Logout
-      document.getElementById('logout-btn').addEventListener('click', async () => {
-        await supabase.auth.signOut();
-        window.location.href = '/auth/login';
-      });
-
-  } catch (error) { // Agora a variável error está definida corretamente
-    console.error('Erro no dashboard:', error);
-    window.location.href = `/auth/login?error=${encodeURIComponent(error.message)}`;
-  }
-})();
-</script>
   </main>
 
   <footer>

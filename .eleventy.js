@@ -18,20 +18,6 @@ export default function(eleventyConfig) {
       return property.split('.').reduce((obj, key) => obj?.[key], item);
     });
   });
-
-  eleventyConfig.addFilter("findById", function(arr, id) {
-    console.log("LOG|XXXXXXXXXXXXXXXXXXXXXX");
-
-    if (!Array.isArray(arr)) {
-      console.error('Dados inválidos:', arr);
-      return null;
-    }
- 
-    console.log(arr);
-    console.log(id);
-    
-    return arr.find(item => item.sys.id === id);
-  });
   
   eleventyConfig.addFilter("dump", function(obj) {
     return JSON.stringify(obj, null, 2);
