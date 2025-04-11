@@ -13,7 +13,7 @@ title: "Decks Disponíveis - Estude Com Anki"
       {% endif %}
       <div class="content">
         <h3 class="title">{{ deck.fields.title }}</h3>      
-        <p class="desc">{{ deck.fields.description }}</p>
+        <p class="desc">{{ deck.fields.content }}</p>
         <p class="price">
           R$ {{ deck.fields.price | default("49,90") }},00
         </p>

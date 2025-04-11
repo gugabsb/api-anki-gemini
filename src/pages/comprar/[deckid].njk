@@ -54,9 +54,73 @@ permalink: "/comprar/{{ deckid.sys.id }}/"
 
 <div class="conteudo">
   <h3>Conteúdo do Deck</h3>
-  <div class="desc">{{ currentDeck.fields.description }}</div>
-</div>  
+  <div class="desc" id="deck-desc" data-markdown="{{ currentDeck.fields.description | escape }}"></div>
+</div>
+
+<style>
+
+  /* Estilos para o conteúdo Markdown renderizado */
+.desc {
+  line-height: 1.6;
+  color: var(--texto-cinza);
+}
+
+.desc h1, .desc h2, .desc h3, .desc h4 {
+  font-size: 1rem;
+  margin-bottom: 0.5em;
+  color: var(--texto-branco);
+}
+
+.desc li {
+  margin-bottom: 0.5em;
+  list-style-type: square;
+}
+
+.desc strong {
+  font-weight: bold;
+}
+
+.desc em {
+  font-style: italic;
+}
+
+.desc code {
+  background-color: #f5f5f5;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-family: monospace;
+}
+
+.desc pre {
+  background-color: #f5f5f5;
+  padding: 1em;
+  border-radius: 3px;
+  overflow-x: auto;
+}
+
+.desc blockquote {
+  border-left: 4px solid #ddd;
+  padding-left: 1em;
+  color: #666;
+  margin-left: 0;
+}
+</style>  
+
 <script>
+  document.addEventListener('DOMContentLoaded', function() {
+  const descElement = document.getElementById('deck-desc');
+  if (descElement) {
+    try {
+      const rawMarkdown = descElement.getAttribute('data-markdown');
+      const unsafeHtml = marked.parse(rawMarkdown);
+      descElement.innerHTML = DOMPurify.sanitize(unsafeHtml);
+    } catch (e) {
+      console.error('Erro ao renderizar markdown:', e);
+      descElement.innerHTML = '<p>Conteúdo não disponível</p>';
+    }
+  }
+});
+
 // Função de download melhorada
 async function downloadDeck(deckId) {
     try {
@@ -89,14 +153,6 @@ async function downloadDeck(deckId) {
 (async function() {
   const supabase = window.supabaseClient.init();
   const { data: { user }, error } = await supabase.auth.getUser();
-  if (!user || error) {
-    const returnTo = encodeURIComponent(window.location.pathname);
-    window.location.href = `/auth/login/?redirect=${returnTo}`;
-    return;
-  }
-
-  const user_id = user.id;
-  const user_email = user.email;
   const deck_id = '{{ currentDeck.sys.id }}';
   const deck_price = '{{ currentDeck.fields.price }}';
   const deck_name = '{{ currentDeck.fields.title }}';
@@ -106,13 +162,16 @@ async function downloadDeck(deckId) {
   // Função para verificar se o usuário já possui o deck
   async function checkDeckOwnership() {
     try {
-      const { data: result } = await supabase
-        .from('user_decks')
-        .select('deck_id')
-        .eq('user_id', user_id)
-        .eq('deck_id', deck_id);
-
-      return result && result.length > 0;
+      if (user && !error) {
+        const { data: result } = await supabase
+          .from('user_decks')
+          .select('deck_id')
+          .eq('user_id', user.id)
+          .eq('deck_id', deck_id);
+        return result && result.length > 0;
+      }else{
+        return false;
+      }
     } catch (e) {
       console.error('Erro ao verificar deck:', e);
       return false;
@@ -137,6 +196,14 @@ async function downloadDeck(deckId) {
   // Função de compra (só executa se o usuário não tiver o deck)
   async function handleBuyClick() {
     try {
+      if (!user || error) {
+        const returnTo = encodeURIComponent(window.location.pathname);
+        window.location.href = `/auth/login/?redirect=${returnTo}`;
+        return;
+      }
+      const user_id = user.id;
+      const user_email = user.email;
+      
       // Gera o QR Code PIX
       const res = await fetch('/.netlify/functions/create-pix-payment-mp', {
         method: 'POST',

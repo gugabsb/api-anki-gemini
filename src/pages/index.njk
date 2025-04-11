@@ -174,7 +174,7 @@ title: "Flashcards para sua aprovação em concurso público!"
     </div>
     <div class="decks-carousel" id="decksCarousel">
       {% for deck in decks.items %}
-        <div class="decks-cards" data-title="{{ deck.fields.title | lower }}" data-desc="{{ deck.fields.description | lower }}">
+        <div class="decks-cards" data-title="{{ deck.fields.title | lower }}" data-desc="{{ deck.fields.content | lower }}">
           {% if deck.fields.image %}
             <img src="{{ deck.fields.image.fields.file.url }}" 
                  alt="{{ deck.fields.title }}"
@@ -182,7 +182,7 @@ title: "Flashcards para sua aprovação em concurso público!"
           {% endif %}
           <div class="deck-content">
             <h3 class="deck-title">{{ deck.fields.title }}</h3>      
-            <p class="deck-desc">{{ deck.fields.description }}</p>
+            <p class="deck-desc">{{ deck.fields.content }}</p>
             <p class="deck-price">
               R$ {{ deck.fields.price | default("49,90") }},00
             </p>

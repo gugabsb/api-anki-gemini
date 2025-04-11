@@ -16,6 +16,7 @@ export default async function() {
         id,
         title,
         description,
+        content,
         price,
         file_path,
         image_path,
@@ -32,6 +33,7 @@ export default async function() {
         sys: { id: deck.id },
         fields: {
           title: deck.title,
+          content: deck.content,
           description: deck.description,
           price: deck.price,
           filePath: deck.file_path,

@@ -15,7 +15,7 @@
       --texto-branco: #ffffff;
       --texto-cinza: #cccccc;
       --vermelho-alerta: #FF3B30;
-      --verde-ok: #4CAF50;
+      --verde-ok: #46d369;
     }
     body {
       font-family: 'Montserrat', sans-serif;
@@ -55,7 +55,7 @@
       margin-top: 1.5rem;
       background-color: var(--cinza-muito-escuro);
       color: var(--texto-branco);
-      border-radius: 4px;
+      border-radius: 5px;
       padding: 8px;
       border: 0px solid silver;
       font-weight: normal;
@@ -114,15 +114,6 @@
     margin-left: 1rem;
   }
   
-  .btn-logout {
-    background: var(--vermelho-alerta);
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
   .btn-login{
     float: right;
   }
@@ -222,7 +213,7 @@
     padding: 0.5rem 0 0.5rem 0;
     background: var(--cinza-escuro);
     border: 1px solid var(--cinza-medio);
-    border-radius: 8px;
+    border-radius: 5px;
     color: var(--texto-branco);
     font-size: 1rem;
     transition: all 0.3s ease;
@@ -242,7 +233,7 @@
     color: var(--texto-branco);
     padding: 0.5rem 1rem;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
     margin-top: 1rem;
     font-weight: bold;
@@ -312,11 +303,11 @@
 }
 
 .btn-logout {
-  background: var(--cinza-escuro);
+  background: var(--cinza-muito-escuro);
   color: white;
   padding: 0.5rem 1rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
   float:right;
 }
@@ -328,7 +319,7 @@
   background: var(--azul-primario);
   color: var(--texto-branco);
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
   padding: 0.5rem 1rem;
   margin: 1rem 1rem 1rem 0;
@@ -343,7 +334,7 @@
 .deck-card {
   background-color: var(--cinza-medio);
   border: 1px solid var(--cinza-medio);
-  border-radius: 8px;
+  border-radius: 5px;
   padding: 0rem;
   margin-bottom: 2rem;
   transition: transform 0.2s;
@@ -354,7 +345,7 @@
 
 .deck-card:hover {
   border: 1px solid var(--azul-primario);
-  background-color: var(--cinza-claro);
+  background-color: var(--cinza-escuro);
 }
 
 .deck-card .image{
@@ -381,7 +372,7 @@
 .deck-card .price{
   font-weight: bold;
   font-size: 1.5rem; 
-  color: var(--azul-primario);
+  color: var(--verde-ok);
   background-color: var(--cinza-escuro);
   width: 100px;
   padding: 1rem;
@@ -396,7 +387,7 @@
 }
 
 .deck-container {
-  border-radius: 8px;
+  border-radius: 5px;
   background-color: var(--cinza-medio);
   border: 0px solid var(--texto-branco);
   padding: 0;
@@ -408,7 +399,7 @@
 }
 .deck-container, .deck-container * {
   box-sizing: border-box;
-  border-radius: 8px;
+  border-radius: 5px;
 }
 .deck-container .col1
 {
@@ -475,7 +466,7 @@
   font-size: 1.5rem;
   padding: 1rem;
   margin: 1rem 1rem 0 0;
-  color: var(--azul-primario);
+  color: var(--verde-ok);
   background-color: var(--cinza-escuro);
   border-radius: 5px;
 }
@@ -486,13 +477,14 @@
   margin: 1rem 0 1rem 0;
   width: 100%;
   background-color:var(--cinza-muito-escuro);
-  border-radius: 10px;
+  border-radius: 5px;
 }
 .conteudo h3{
   color: var(--azul-primario);
   font-weight: bold;
   font-size: 1.25rem;
   padding: 1rem 1rem 0 1rem;
+  margin:0;
 }
 .conteudo .desc{
   font-size: 0.8rem;
@@ -518,7 +510,7 @@
   color: var(--texto-branco);
   padding: 0.5rem 1rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
   margin: 1rem 1rem 1rem 0;
   text-transform: uppercase;
@@ -602,7 +594,8 @@
 
 </style>
 <link rel="icon" href="/src/assets/images/favicon.ico" type="image/x-icon">
-
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@2.3.3/dist/purify.min.js"></script>
 <!-- Configuração centralizada do Supabase -->
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>
@@ -695,9 +688,88 @@
 
 <div class="conteudo">
   <h3>Conteúdo do Deck</h3>
-  <div class="desc">Deck com mais de 1.450 flashcards de questões da banca FGV, alinhadas com conteúdo programático do edital.</div>
-</div>  
+  <div class="desc" id="deck-desc" data-markdown="### CARDS COMUNS A TODOS OS CARGOS
+- **Direito Ambiental**: 90 questões
+- **Direitos Humanos**: 150 questões
+- **Língua Portuguesa**: 171 questões
+- **Direito Administrativo**: 200 questões
+- **Administração Pública**: 197 questões
+- **Legislação Institucional do Ministério Público**: 46 questões
+
+### CARDS ESPECÍFICOS DO CARGO A32 - ANALISTA DO MPU | SUPORTE E INFRAESTRUTURA
+- **Redes de computadores**: 160 questões
+- **Segurança da Informação**: 169 questões
+- **Governança de tecnologia da informação**: 78 questões
+- **Computação em nuvem**: 33 questões
+- **Sistemas operacionais**: 57 questões
+- **Banco de dados**: 116 questões
+"></div>
+</div>
+
+<style>
+
+  /* Estilos para o conteúdo Markdown renderizado */
+.desc {
+  line-height: 1.6;
+  color: var(--texto-cinza);
+}
+
+.desc h1, .desc h2, .desc h3, .desc h4 {
+  font-size: 1rem;
+  margin-bottom: 0.5em;
+  color: var(--texto-branco);
+}
+
+.desc li {
+  margin-bottom: 0.5em;
+  list-style-type: square;
+}
+
+.desc strong {
+  font-weight: bold;
+}
+
+.desc em {
+  font-style: italic;
+}
+
+.desc code {
+  background-color: #f5f5f5;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-family: monospace;
+}
+
+.desc pre {
+  background-color: #f5f5f5;
+  padding: 1em;
+  border-radius: 3px;
+  overflow-x: auto;
+}
+
+.desc blockquote {
+  border-left: 4px solid #ddd;
+  padding-left: 1em;
+  color: #666;
+  margin-left: 0;
+}
+</style>  
+
 <script>
+  document.addEventListener('DOMContentLoaded', function() {
+  const descElement = document.getElementById('deck-desc');
+  if (descElement) {
+    try {
+      const rawMarkdown = descElement.getAttribute('data-markdown');
+      const unsafeHtml = marked.parse(rawMarkdown);
+      descElement.innerHTML = DOMPurify.sanitize(unsafeHtml);
+    } catch (e) {
+      console.error('Erro ao renderizar markdown:', e);
+      descElement.innerHTML = '<p>Conteúdo não disponível</p>';
+    }
+  }
+});
+
 // Função de download melhorada
 async function downloadDeck(deckId) {
     try {
@@ -730,14 +802,6 @@ async function downloadDeck(deckId) {
 (async function() {
   const supabase = window.supabaseClient.init();
   const { data: { user }, error } = await supabase.auth.getUser();
-  if (!user || error) {
-    const returnTo = encodeURIComponent(window.location.pathname);
-    window.location.href = `/auth/login/?redirect=${returnTo}`;
-    return;
-  }
-
-  const user_id = user.id;
-  const user_email = user.email;
   const deck_id = 'e5dc3d41-4a36-435b-b8b8-65df45eb77ff';
   const deck_price = '50';
   const deck_name = 'MPU-2025	- A32 - ANALISTA DO MPU | SUPORTE E INFRAESTRUTURA';
@@ -747,13 +811,16 @@ async function downloadDeck(deckId) {
   // Função para verificar se o usuário já possui o deck
   async function checkDeckOwnership() {
     try {
-      const { data: result } = await supabase
-        .from('user_decks')
-        .select('deck_id')
-        .eq('user_id', user_id)
-        .eq('deck_id', deck_id);
-
-      return result && result.length > 0;
+      if (user && !error) {
+        const { data: result } = await supabase
+          .from('user_decks')
+          .select('deck_id')
+          .eq('user_id', user.id)
+          .eq('deck_id', deck_id);
+        return result && result.length > 0;
+      }else{
+        return false;
+      }
     } catch (e) {
       console.error('Erro ao verificar deck:', e);
       return false;
@@ -778,6 +845,14 @@ async function downloadDeck(deckId) {
   // Função de compra (só executa se o usuário não tiver o deck)
   async function handleBuyClick() {
     try {
+      if (!user || error) {
+        const returnTo = encodeURIComponent(window.location.pathname);
+        window.location.href = `/auth/login/?redirect=${returnTo}`;
+        return;
+      }
+      const user_id = user.id;
+      const user_email = user.email;
+      
       // Gera o QR Code PIX
       const res = await fetch('/.netlify/functions/create-pix-payment-mp', {
         method: 'POST',
