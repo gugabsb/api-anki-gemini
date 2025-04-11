@@ -11,6 +11,7 @@
       --cinza-muito-escuro: #2d2d2d;
       --cinza-escuro: #363636;
       --cinza-medio: #4F4F4F;
+      --cinza-claro: #8f8f8f;
       --texto-branco: #ffffff;
       --texto-cinza: #cccccc;
       --vermelho-alerta: #FF3B30;
@@ -395,9 +396,9 @@
 }
 
 .deck-container {
+  border-radius: 8px;
   background-color: var(--cinza-medio);
   border: 0px solid var(--texto-branco);
-  border-radius: 8px;
   padding: 0;
   margin:0;
   display: flex;
@@ -407,25 +408,26 @@
 }
 .deck-container, .deck-container * {
   box-sizing: border-box;
+  border-radius: 8px;
 }
 .deck-container .col1
 {
   width: 30%;
   padding: 0;
   margin:0;
-  background-color: var(--cinza-claro);
+  background-color: var(--cinza-medio);
 }
 .deck-container .col2{
   width: 40%;
   padding: 0;
   margin:0;
-  background-color: var(--cinza-claro);
+  background-color: var(--cinza-medio);
 }
 .deck-container .col3{
   width: 30%;
   padding: 0;
   margin:0;
-  background-color:var(--cinza-claro);
+  background-color:var(--cinza-medio);
   text-align: center;
 }
 
@@ -737,6 +739,7 @@
       </div>
     </div>
   
+
 
   </main>
 

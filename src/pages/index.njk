@@ -7,6 +7,9 @@ title: "Flashcards para sua aprovação em concurso público!"
   <style>
     .decks-container {
       margin: 2rem 0;
+      padding: 1rem;
+      background-color: var(--cinza-muito-escuro);
+      border-radius: 5px;
     }
     
     .decks-title {
@@ -200,6 +203,76 @@ title: "Flashcards para sua aprovação em concurso público!"
       Nenhum deck encontrado com o termo pesquisado.
     </div>
   </div>
+
+  <div class="goods-content">
+    <h2>Por que estudar com Anki?</h2>
+    <p>São ínumeros os benefícios de estudar o fazer sua revisão de véspera com o Anki, veja algumas delas:</p>
+  
+    <div class="goods-grid">
+      <div class="goods-box"><span>🧠</span><p><b>Memorização Eficiente:</b> o Anki usa repetição espaçada cientificamente comprovada para ajudar a fixar conteúdos na memória de longo prazo, essencial para as vastas matérias de concursos.</p></div>
+      <div class="goods-box"><span>📝</span><p><b>Padrão de Questões na Ponta da Língua:</b> transformamos questões-chave de provas anteriores em flashcards inteligentes, para você reconhecer os padrões da banca e as "pegadinhas" recorrentes.</p></div>
+      <div class="goods-box"><span>🎯</span><p><b>Revisão Ativa do Estilo da Banca:</b> cada flashcard foi criado a partir de questões reais, treinando você para pensar como o examinador e antecipar os temas mais cobrados.</p></div>
+      <div class="goods-box"><span>🔁</span><p><b>Memorização dos Temas Recorrentes:</b> o Anki reforça automaticamente os tópicos que mais aparecem nas provas da sua banca, garantindo que você não esqueça o que realmente importa.</p></div>
+      <div class="goods-box"><span>⚡</span><p><b>Eficiência na Resolução de Questões:</b> combinamos a repetição espaçada com os modelos de perguntas da sua banca, para você ganhar velocidade e precisão na hora da prova.</p></div>
+      <div class="goods-box"><span>✍️</span><p><b>Análise de Erros Transformada em Revisão:</b> as questões que você mais erra em simulados viram flashcards prioritários no Anki, virando pontos fortes antes da prova.</p></div>
+      <div class="goods-box"><span>🔍</span><p><b>Foco nos Pontos Frágeis:</b> o algoritmo identifica automaticamente os tópicos que você mais erra e os revisa com maior frequência, otimizando seu tempo de estudo.</p></div>
+      <div class="goods-box"><span>📱</span><p><b>Revisão na Palma da Mão:</b> estude em qualquer lugar pelo celular, aproveitando filas, transporte ou intervalos para revisar flashcards e maximizar seu tempo.</p></div>
+      <div class="goods-box"><span>📊</span><p><b>Desempenho Mensurável:</b> acompanhe estatísticas detalhadas de seu progresso, identificando quais matérias precisam de mais atenção antes da prova.</p></div>
+      <div class="goods-box"><span>⏳</span><p><b>Economia de Tempo:</b> pare de reler matérias inteiras - o Anki mostra apenas o que você está prestes a esquecer, tornando suas revisões ultra-eficientes.</p></div>
+      <div class="goods-box"><span>🔄</span><p><b>Atualização Constante:</b> adicione novos conteúdos à sua rotina de revisão sem perder o controle do que já foi estudado anteriormente.</p></div>
+      <div class="goods-box"><span>🧘</span><p><b>Adaptação ao Seu Ritmo:</b> o Anki ajusta automaticamente a frequência de revisão baseado no seu desempenho individual, respeitando sua curva de aprendizado.</p></div>
+    </div>
+  </div>
+<style>
+  .goods-content {
+  padding: 1rem;
+}
+
+.goods-content h2 {
+  padding: 0;
+  margin: 0 0 0.5rem 0;
+}
+
+.goods-content p {
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.goods-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  margin: 0;
+}
+
+.goods-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  border: 0px solid silver;
+  background-color: var(--cinza-muito-escuro);
+  border-radius: 5px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.goods-box span {
+  font-size: 2rem; /* Tamanho aumentado do emoji */
+  line-height: 1;
+  margin-right: 0.5rem;
+  flex-shrink: 0; /* Impede que o emoji diminua */
+}
+
+.goods-box b {
+  color: var(--texto-branco);
+  margin-bottom: 0.3rem;
+}
+.goods-box p {
+  color: var(--texto-cinza);
+  margin-bottom: 0.3rem;
+}
+</style>
 
   <script>
     // Store original deck cards for filtering
