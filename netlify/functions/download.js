@@ -46,7 +46,7 @@ exports.handler = async (event) => {
       };
     }
 
-    const rawPath = deck.decks.file_path;
+    const rawPath = deck.decks.file_path + deck.deck_id + '.apkg';
     const cleanedPath = rawPath.replace(/^\/?decks\//, '');
     //console.log('🧼 file_path limpo:', cleanedPath);
     

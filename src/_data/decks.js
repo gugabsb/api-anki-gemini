@@ -38,7 +38,7 @@ export default async function() {
           image: deck.image_path ? { 
             fields: { 
               file: { 
-                url: `${process.env.SUPABASE_STORAGE_IMAGE_URL}${deck.image_path}` 
+                url: `${process.env.SUPABASE_STORAGE_IMAGE_URL}${deck.image_path}${deck.id}.png` 
               } 
             } 
           } : null

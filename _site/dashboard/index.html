@@ -729,7 +729,7 @@
     decksContainer.innerHTML = decks.length > 0 
       ? decks.map(deck => `
           <div class="deck-card-dash">
-            <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/object/public/images/${deck.decks?.image_path}" 
+            <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/object/public/images/${deck.decks?.image_path}${deck.deck_id}.png" 
                 alt="${deck.decks?.title}"
                 class="image">
             <h3>${deck.decks?.title || 'Deck sem nome'}</h3>
