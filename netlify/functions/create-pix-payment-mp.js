@@ -51,8 +51,6 @@ exports.handler = async (event) => {
         body: JSON.stringify({ error: 'QR Code não encontrado na resposta', data })
       };
     }
-
-
     await supabase.from('transactions').insert({
         payment_id: data.id,
         user_id: user_id,

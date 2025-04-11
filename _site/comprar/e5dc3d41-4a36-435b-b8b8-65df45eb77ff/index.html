@@ -12,6 +12,7 @@
       --cinza-escuro: #363636;
       --cinza-medio: #4F4F4F;
       --cinza-claro: #8f8f8f;
+      --texto-preto: #000000;
       --texto-branco: #ffffff;
       --texto-cinza: #cccccc;
       --vermelho-alerta: #FF3B30;
@@ -94,6 +95,7 @@
     max-width: 1200px;
     margin: 2rem auto;
     padding: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
   }
   .dashboard-container h1{
     margin: 1rem 1rem 1rem 0;
@@ -278,6 +280,7 @@
   width: 100%;
   background-color: var(--cinza-medio);
   border-radius: 5px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 }
 .deck-card-dash img{
   float: left;
@@ -341,6 +344,7 @@
   display: flex;
   justify-content: flex-start;
   width: 100%; 
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 }
 
 .deck-card:hover {
@@ -396,6 +400,7 @@
   flex-wrap: wrap;
   justify-content: flex-start;
   width:100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 }
 .deck-container, .deck-container * {
   box-sizing: border-box;
@@ -682,9 +687,23 @@
       </button>
       <div id="qrcodepix" class="qrcodepix"></div>
     </div>
-
 </div>
 
+<div id="pix-payment" class="pix-payment-container" style="display:none;">
+  <h3>Pagamento via PIX</h3>
+  <div class="pix-instructions">
+    <p>Escaneie o QR Code acima ou copie o código abaixo para pagar:</p>
+  </div>
+  <div class="pix-code-container">
+    <div id="pix-code" class="pix-code"></div>
+    <button class="copy-btn" title="Copiar código PIX">
+      <svg class="copy-icon" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z" />
+      </svg>
+    </button>
+  </div>
+  <p class="pix-instructions">Após o pagamento, seu acesso ao Deck será liberado automaticamente aqui e na Área do Aluno.</p>
+</div>
 
 <div class="conteudo">
   <h3>Conteúdo do Deck</h3>
@@ -707,6 +726,61 @@
 </div>
 
 <style>
+/* Adicione esses estilos */
+.pix-payment-container {
+	margin-top: 20px;
+	padding: 15px;
+	background: var(--cinza-claro);
+	border-radius: 5px;
+	border: 1px solid var(--cinza-claro);
+}
+.pix-payment-container h3 {
+  color: var(--texto-preto);
+}
+
+.pix-code-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+  padding: 12px;
+  background: var(--cinza-muito-escuro);
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.pix-code {
+  flex-grow: 1;
+  font-family: monospace;
+  word-break: break-all;
+  padding: 8px;
+  color: var(--texto-branco);
+}
+
+.copy-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--texto-cinza);
+  transition: color 0.2s;
+}
+
+.copy-btn:hover {
+  color: var(--verde-ok);
+}
+
+.copy-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.pix-instructions {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--texto-preto);
+}
+
+
 
   /* Estilos para o conteúdo Markdown renderizado */
 .desc {
@@ -770,7 +844,6 @@
   }
 });
 
-// Função de download melhorada
 async function downloadDeck(deckId) {
     try {
       const supabase = window.supabaseClient.init();
@@ -797,8 +870,6 @@ async function downloadDeck(deckId) {
     }
   }
 
-
-
 (async function() {
   const supabase = window.supabaseClient.init();
   const { data: { user }, error } = await supabase.auth.getUser();
@@ -808,7 +879,6 @@ async function downloadDeck(deckId) {
   const buyButton = document.getElementById('buy-button');
   let paymentCheckInterval = null;
 
-  // Função para verificar se o usuário já possui o deck
   async function checkDeckOwnership() {
     try {
       if (user && !error) {
@@ -827,7 +897,6 @@ async function downloadDeck(deckId) {
     }
   }
 
-  // Função para transformar o botão em download
   function setupDownloadButton() {
     buyButton.textContent = "Download";
     buyButton.className = "btn-download";
@@ -835,14 +904,12 @@ async function downloadDeck(deckId) {
     buyButton.addEventListener('click', () => downloadDeck(deck_id));
   }
 
-  // Verificação inicial (quando a página carrega)
   const hasDeck = await checkDeckOwnership();
   if (hasDeck) {
     setupDownloadButton();
-    return; // Sai da função se o usuário já tem o deck
+    return;
   }
 
-  // Função de compra (só executa se o usuário não tiver o deck)
   async function handleBuyClick() {
     try {
       if (!user || error) {
@@ -852,7 +919,7 @@ async function downloadDeck(deckId) {
       }
       const user_id = user.id;
       const user_email = user.email;
-      
+
       // Gera o QR Code PIX
       const res = await fetch('/.netlify/functions/create-pix-payment-mp', {
         method: 'POST',
@@ -863,36 +930,54 @@ async function downloadDeck(deckId) {
       const text = await res.text();
       const data = JSON.parse(text);
 
+      // Exibe QR Code
+      const qrContainer = document.getElementById('qrcodepix');
+      qrContainer.innerHTML = '';
       const img = document.createElement('img');
       img.src = `data:image/png;base64,${data.qr_code_base64}`;
-      document.getElementById('qrcodepix').appendChild(img);
-      alert('Escaneie o QR Code para pagar com PIX!');
+      img.alt = "QR Code para pagamento PIX";
+      qrContainer.appendChild(img);
 
-      // SÓ AQUI INICIA A VERIFICAÇÃO PERIÓDICA
+      // Exibe código PIX
+      const codeContainer = document.getElementById('pix-code');
+      codeContainer.textContent = data.qr_code;
+      document.getElementById('pix-payment').style.display = 'block';
+      document.querySelector('.copy-btn').addEventListener('click', () => {
+        navigator.clipboard.writeText(data.qr_code)
+          .then(() => {
+            const btn = document.querySelector('.copy-btn');
+            btn.innerHTML = '<svg class="copy-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" /></svg>';
+            btn.setAttribute('title', 'Código copiado!');
+            
+            setTimeout(() => {
+              btn.innerHTML = '<svg class="copy-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z" /></svg>';
+              btn.setAttribute('title', 'Copiar código PIX');
+            }, 2000);
+          })
+          .catch(err => {
+            console.error('Erro ao copiar:', err);
+            alert('Não foi possível copiar o código. Tente manualmente.');
+          });
+      });
+      document.getElementById('pix-payment').scrollIntoView({ behavior: 'smooth' });
       startPaymentChecking();
     } catch (err) {
       console.error('Erro ao criar pagamento:', err);
       alert('Erro ao gerar QR Code de pagamento.');
     }
   }
-
-  // Função que inicia a verificação periódica
   function startPaymentChecking() {
-    // Limpa qualquer intervalo existente (por segurança)
     if (paymentCheckInterval) {
       clearInterval(paymentCheckInterval);
     }
-
-    // Configura o novo intervalo
     paymentCheckInterval = setInterval(async () => {
       const hasDeck = await checkDeckOwnership();
       if (hasDeck) {
         setupDownloadButton();
-        clearInterval(paymentCheckInterval); // Para a verificação
+        clearInterval(paymentCheckInterval);
       }
-    }, 5000); // Verifica a cada 5 segundos
+    }, 5000);
 
-    // Timeout de segurança (30 minutos)
     setTimeout(() => {
       if (paymentCheckInterval) {
         clearInterval(paymentCheckInterval);
@@ -900,8 +985,6 @@ async function downloadDeck(deckId) {
       }
     }, 1800000);
   }
-
-  // Configura o botão inicialmente para compra
   buyButton.addEventListener('click', handleBuyClick);
 })();
 </script>
