@@ -94,6 +94,17 @@
     margin: 2rem auto;
     padding: 1rem;
   }
+  .dashboard-container h1{
+    margin: 1rem 1rem 1rem 0;
+    font-size: 1.5rem;
+    color: var(--texto-branco);
+  }
+  .dashboard-container h2{
+    margin: 1rem 1rem 1rem 0;
+    font-size: 1rem;
+    color: var(--azul-primario);
+  }
+
   
   .avatar {
     width: 50px;
@@ -233,6 +244,8 @@
     border-radius: 4px;
     cursor: pointer;
     margin-top: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
   }
 
   .btn-submit:hover {
@@ -272,11 +285,13 @@
   padding: 0px;
   width: 100%;
   background-color: var(--cinza-medio);
+  border-radius: 5px;
 }
 .deck-card-dash img{
   float: left;
   margin: 10px 10px 10px 10px;
   width:80px;
+  border-radius: 5px;
 }
 .dashboard-container h2{
   color: var(--azul-primario);
@@ -316,6 +331,8 @@
   cursor: pointer;
   padding: 0.5rem 1rem;
   margin: 1rem 1rem 1rem 0;
+  text-transform: uppercase;
+  font-weight: bold;
 }
 .btn-download:hover {
   background:var(--texto-branco);
@@ -376,7 +393,6 @@
   font-size: 1rem;
   color: var(--texto-branco);
 }
-
 
 .deck-container {
   background-color: var(--cinza-medio);
@@ -503,12 +519,19 @@
   border-radius: 4px;
   cursor: pointer;
   margin: 1rem 1rem 1rem 0;
+  text-transform: uppercase;
+  font-weight: bold;
 }
 .buy-button:hover {
     background-color: var(--texto-branco);
     color: var(--cinza-escuro);
 }
-
+.user-data{
+  background-color: var(--cinza-muito-escuro);
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+}
 
 
 /* Ajuste para telas menores (mobile) */
@@ -633,13 +656,14 @@
 
 
 <div class="dashboard-container">
-  <h1>Bem-vindo à área do aluno</h1>
   <button id="logout-btn" class="btn-logout">Sair</button>
-  <div id="user-data">
+  <div id="user-data" class="user-data">
     <!-- Dados serão carregados via JS -->
   </div>  
-
-  <h2>Decks adquiridos:</h2>
+  <br>
+  <h1>Bem-vindo à área do aluno</h1>
+  <br>
+  <h2>DECKS ADQUIRIDOS:</h2>
 
   <div id="decks-list" class="decks-grid">
     <!-- Decks serão carregados aqui -->
@@ -697,8 +721,8 @@
     const supabase = window.supabaseClient.init();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
-      console.error('Erro de autenticação:', authError);
-      window.location.href = `/auth/login?error=${encodeURIComponent(authError?.message || 'Não autenticado')}`;
+      console.error('Erro de autenticação::', authError);
+      window.location.href = `/auth/login/?error=session-missing`;
       return;
     }
 
@@ -748,12 +772,12 @@
       // Logout
       document.getElementById('logout-btn').addEventListener('click', async () => {
         await supabase.auth.signOut();
-        window.location.href = '/auth/login';
+        window.location.href = '/auth/login/';
       });
 
   } catch (error) { // Agora a variável error está definida corretamente
     console.error('Erro no dashboard:', error);
-    window.location.href = `/auth/login?error=${encodeURIComponent(error.message)}`;
+    window.location.href = `/auth/login/?error=${encodeURIComponent(error.message)}`;
   }
 })();
 </script>

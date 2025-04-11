@@ -10,13 +10,14 @@ title: "Área do Aluno"
 
 
 <div class="dashboard-container">
-  <h1>Bem-vindo à área do aluno</h1>
   <button id="logout-btn" class="btn-logout">Sair</button>
-  <div id="user-data">
+  <div id="user-data" class="user-data">
     <!-- Dados serão carregados via JS -->
   </div>  
-
-  <h2>Decks adquiridos:</h2>
+  <br>
+  <h1>Bem-vindo à área do aluno</h1>
+  <br>
+  <h2>DECKS ADQUIRIDOS:</h2>
 
   <div id="decks-list" class="decks-grid">
     <!-- Decks serão carregados aqui -->
@@ -74,8 +75,8 @@ title: "Área do Aluno"
     const supabase = window.supabaseClient.init();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
-      console.error('Erro de autenticação:', authError);
-      window.location.href = `/auth/login?error=${encodeURIComponent(authError?.message || 'Não autenticado')}`;
+      console.error('Erro de autenticação::', authError);
+      window.location.href = `/auth/login/?error=session-missing`;
       return;
     }
 
@@ -125,12 +126,12 @@ title: "Área do Aluno"
       // Logout
       document.getElementById('logout-btn').addEventListener('click', async () => {
         await supabase.auth.signOut();
-        window.location.href = '/auth/login';
+        window.location.href = '/auth/login/';
       });
 
   } catch (error) { // Agora a variável error está definida corretamente
     console.error('Erro no dashboard:', error);
-    window.location.href = `/auth/login?error=${encodeURIComponent(error.message)}`;
+    window.location.href = `/auth/login/?error=${encodeURIComponent(error.message)}`;
   }
 })();
 </script>

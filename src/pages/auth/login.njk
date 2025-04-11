@@ -50,7 +50,11 @@ title: "Login"
     if(params.toString().includes("comprar")){
       document.getElementById("titulo-form").textContent="Para comprar, faça o login!";
     }
-    
+    if(params.toString().includes("error")){
+      if(params.toString().includes("session-missing")){
+        document.getElementById("titulo-form").textContent="Faça o login novamente!";
+      }
+    }
   }
   verificaOrigem();
 
