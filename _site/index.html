@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flashcards para sua aprovação em concurso público! | Estude Com Anki - MPU 2025</title>
-  <meta name="description" content="Decks otimizados para o concurso do MPU 2025 usando o método científico de repetição espaçada">
+  <title>Flashcards para sua aprovação em concurso público! | Estude Com Anki</title>
+  <meta name="description" content="Flashcards em Anki para sua aprovação em concursos públicos, estude com o método científico de repetição espaçada!">
   <style>
     :root {
       --azul-primario: #01BBFE;
@@ -24,7 +24,8 @@
       padding: 0;
     }
     header{
-      background: linear-gradient(to right, var(--cinza-escuro), var(--cinza-medio));
+      background: linear-gradient(to top, var(--cinza-escuro), var(--cinza-medio));
+      padding: 0.5rem 0 0.5rem 0;
     }
     footer{
       background: var(--cinza-medio); 
@@ -46,25 +47,10 @@
       flex-wrap: nowrap;
     }
     .container.header .col1{
-      width: 50%; 
-    }
-    .container.header .col2{
-      width: 50%;
+      width: 100%;
       text-align: right;
     }
-    .container.header h1{
-      margin: 1rem 0 0 4rem;
-      font-size: 1rem;
-      color: var(--azul-primario);
-    }
-    .container.header h2{
-      padding:0;
-      margin: 0 0 0 4rem;
-      font-size: 0.7rem;
-      color: var(--texto-branco);
-    }
-
-    .container.header button{
+    .container.header .col1 button{
       margin-top: 1.5rem;
       background-color: var(--cinza-muito-escuro);
       color: var(--texto-branco);
@@ -80,14 +66,14 @@
       cursor: pointer;
     }
 
-    .container {
+    .container{
       border: 0px solid var(--vermelho-alerta);
       max-width: 800px;
-      margin: 0 auto;
-      padding: 20px 0;
+      margin: 1rem auto;
+      padding: 0;
     }
     .container h2{
-      margin: 0 1rem 1rem 1rem;
+      margin: 1rem 1rem 1rem 1rem;
       font-size: 1rem;
       color: var(--azul-primario);
     }
@@ -145,19 +131,6 @@
   @keyframes spin {
     to { transform: rotate(360deg); }
   }
-
-  /* Responsividade */
-  @media (max-width: 768px) {
-    .deck-card {
-      padding: 1rem;
-    }
-    
-    .purchase-button {
-      padding: 0.5rem 1rem;
-    }
-  }
-
-
   /* LOGIN */
   
   #google-signin-container {
@@ -212,7 +185,7 @@
   .auth-container h2 {
     color: var(--azul-primario);
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin: 1rem 0 1rem 0;
     font-size: 1.2rem;
     font-weight: 600;
   }
@@ -416,24 +389,26 @@
   justify-content: flex-start;
   width:100%;
 }
+.deck-container, .deck-container * {
+  box-sizing: border-box;
+}
 .deck-container .col1
 {
-  width: 20%;
-  padding:1rem 0;
-  margin: 0;
+  width: 30%;
+  padding: 0;
+  margin:0;
   background-color: var(--cinza-claro);
-  max-width: 200px;
 }
 .deck-container .col2{
-  width: 50%;
-  padding:1rem 0;
-  margin: 0;
+  width: 40%;
+  padding: 0;
+  margin:0;
   background-color: var(--cinza-claro);
 }
 .deck-container .col3{
   width: 30%;
-  padding:1rem 0;
-  margin: 0;
+  padding: 0;
+  margin:0;
   background-color:var(--cinza-claro);
   text-align: center;
 }
@@ -441,64 +416,83 @@
 .deck-container .col1 .image{
   border: 1px solid var(--cinza-escuro);
   border-radius: 5px;
-  width: 60%;
-  margin-left: 1rem;
+  width: 80%;
+  margin: 1rem;
+  max-width: 200px;
 }
 
 .deck-container .col2 .title{
   font-size: 1.25rem;
-  padding: 1rem;
-  margin: 0;
+  margin: 1rem 1rem 0 0;
   padding:0;
   color: var(--azul-primario);
 }
 
-.deck-container .price{
-  font-weight: bold;
-  font-size: 1.5rem;
-  padding: 1rem;
-  margin: 0 1rem 0 0;
-  color: var(--azul-primario);
-  background-color: var(--cinza-escuro);
-  border-radius: 5px;
-}
-.deck-container .col2 ul{
+.deck-container .col2 ul.icon-list{
   margin: 1rem 1rem 0 0;
   padding: 0;
 }
-.deck-container .col2 ul li{
+.deck-container .col2 ul.icon-list li{
   font-size: 0.9rem;
   margin: 0 0 10px;
   padding: 0;
   text-align: left;
+  color: var(--texto-cinza);
 }
+.deck-container .col2 ul.icon-list li b{
+  color: var(--texto-branco);
+}
+.deck-container .col2 ul.icon-list li::before {
+  content: "✓";
+  color: #2ecc71;
+  margin-right: 6px;
+}
+.deck-container .col2 ul.icon-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.deck-container .col3 .price{
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding: 1rem;
+  margin: 1rem 1rem 0 0;
+  color: var(--azul-primario);
+  background-color: var(--cinza-escuro);
+  border-radius: 5px;
+}
+
 .conteudo {
   display: block;
-  clear: both; 
   padding: 0;
   margin: 1rem 0 1rem 0;
   width: 100%;
+  background-color:var(--cinza-muito-escuro);
+  border-radius: 10px;
 }
 .conteudo h3{
   color: var(--azul-primario);
   font-weight: bold;
   font-size: 1.25rem;
-  padding: 0 1rem 0.5rem 1rem;
+  padding: 1rem 1rem 0 1rem;
 }
 .conteudo .desc{
-  font-size: 0.7rem;
-  padding: 0 1rem 0.5rem 1rem;
+  font-size: 0.8rem;
+  padding: 1rem;
 }
 
 /* COMPRAR */
-.qrcodepix img{
-  width: 170px;
-  height: 170px;
-  padding: 10px 10px 0px 0px;
-}
 .qrcodepix {
-  width: 170px;
-  height: 170px;
+  width: 100%;
+  text-align: center;
+  align-content: center;
+}
+.qrcodepix img{
+  width:100%;
+  max-width: 170px;
+  max-height: 170px;
+  padding: 0;
+  margin:0 1rem 0 0;
 }
 
 .buy-button {
@@ -521,6 +515,10 @@
 @media (max-width: 768px) {
   footer p{
     font-size: 0.75rem;
+  }
+  .deck-card .image{
+      width: 60%;
+      height: 60%;
   }
   .deck-card .title{
     font-size: 1rem;
@@ -557,15 +555,7 @@
     font-size: 0.63rem;
     font-weight: normal;
   }
-  ul.icon-list li::before {
-    content: "✓";
-    color: #2ecc71;
-    margin-right: 8px;
-  }
-  ul.icon-list {
-    list-style: none;
-    padding-left: 0;
-  }
+
   .auth-container {
     padding: 1.5rem;
     margin: 1rem;
@@ -573,6 +563,13 @@
     
   .auth-container h2 {
     font-size: 1rem;
+  }
+  .qrcodepix img{
+    width:80%;
+    max-width: 170px;
+    max-height: 170px;
+    padding: 0;
+    margin:0 1rem 0 0;
   }
 }
 
@@ -620,11 +617,9 @@
   <header>
     <div class="container header">
       <div class="col1">
-      </div>
-      <div class="col2">
-        <button onclick="location.href='/'">Home</button>
-        <button onclick="location.href='/comprar'">Flashcards </button>
-        <button onclick="location.href='/dashboard'">Área do Aluno</button>
+        <button onclick="location.href='/'">HOME</button>
+        <button onclick="location.href='/comprar'">FLASHCARDS </button>
+        <button onclick="location.href='/dashboard'">ÁREA DO ALUNO</button>
       </div>  
     </div>
   </header>
@@ -632,85 +627,324 @@
   <main class="container">
     
 
-  <h2>ESCOLHA SEU DECK</h2>
+  <style>
+    .decks-container {
+      margin: 2rem 0;
+    }
+    
+    .decks-title {
+      color: white;
+      font-size: 1.5rem;
+      margin: 0;
+      padding-top:1rem;
+    }
+    
+    .decks-carousel {
+      display: flex;
+      overflow-x: auto;
+      padding: 1rem;
+      scroll-behavior: smooth;
+      gap: 1rem;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    
+    .decks-carousel::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .decks-cards {
+      flex: 0 0 auto;
+      width: 200px;
+      transition: transform 0.2s;
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    .decks-cards:hover {
+      transform: scale(1.05);
+      z-index: 1;
+    }
+    
+    .decks-cards img {
+      width: 100%;
+      height: 90px;
+      object-fit: cover;
+      display: block;
+    }
+    
+    .deck-content {
+      padding: 1rem;
+      background: #141414;
+      background: linear-gradient(to top, var(--cinza-medio), var(--cinza-escuro));
+      color: white;
+    }
+    
+    .deck-title {
+      font-size: 1rem;
+      margin: 0.5rem 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .deck-desc {
+      font-size: 0.8rem;
+      color: #d2d2d2;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      height: 60px;
+      text-align: center;
+    }
+    
+    .deck-price {
+      color: #46d369;
+      font-weight: bold;
+      margin: 0.5rem 0;
+      text-align:center;
+      font-size: 1.25rem;
+    }
+    
+    .buy-button {
+      width: 100%;
+      padding: 0.5rem;
+      background: var(--azul-primario);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+    
+    .buy-button:hover {
+      background: var(--texto-branco);
+    }
+    
+    .carousel-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .carousel-nav {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .carousel-nav button {
+      background: rgba(255,255,255,0.3);
+      border: none;
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    
+    .carousel-nav button:hover {
+      background: rgba(255,255,255,0.5);
+    }
+    
+    .search-filter {
+      flex-grow: 1;
+      max-width: 260px;
+      margin-right: 1rem;
+    }
+    
+    .search-filter input {
+      width: 100%;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      border: none;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      outline: none;
+    }
+    
+    .search-filter input::placeholder {
+      color: rgba(255,255,255,0.7);
+    }
+    
+    .no-results {
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      width: 100%;
+    }
+  </style>
 
-    <!-- Note o .items aqui -->
-    <div class="deck-card">
-      
-        <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/object/public/images//deck-images/2be97d41-6c38-4334-8554-210ee8926f21.png" 
-             alt="MPU-2025	- T03 - TÉCNICO DO MPU | POLÍCIA INSTITUCIONAL"
-             class="image">
-      
-      <div class="content">
-        <h3 class="title">MPU-2025	- T03 - TÉCNICO DO MPU | POLÍCIA INSTITUCIONAL</h3>      
-        <p class="desc">Deck para o concurso do MPU, para o cargo de T03 - TÉCNICO DO MPU | POLÍCIA INSTITUCIONAL</p>
-        <p class="price">
-          R$ 50
-        </p>
-        <button onclick="location.href='/comprar/2be97d41-6c38-4334-8554-210ee8926f21/'" 
-          class="buy-button">
-          COMPRAR AGORA
-        </button>
+  <h2 class="decks-title">ESCOLHA SEU DECK</h2>
+  <div class="decks-container">
+    <div class="carousel-controls">
+      <div class="search-filter">
+        <input type="text" id="deckSearch" placeholder="Buscar decks..." oninput="filterDecks()">
+      </div>
+      <div class="carousel-nav">
+        <button class="prev-btn" onclick="scrollCarousel(-1)">❮</button>
+        <button class="next-btn" onclick="scrollCarousel(1)">❯</button>
       </div>
     </div>
-    <!-- Note o .items aqui -->
-    <div class="deck-card">
+    <div class="decks-carousel" id="decksCarousel">
       
-        <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/object/public/images//deck-images/9c2638ef-5fa8-49cc-99f5-2d96a0439424.png" 
-             alt="MPU-2025 - A02 - ANALISTA DO MPU / ATUARIAL"
-             class="image">
+        <div class="decks-cards" data-title="mpu-2025	- t03 - técnico do mpu | polícia institucional" data-desc="deck para o concurso do mpu, para o cargo de t03 - técnico do mpu | polícia institucional">
+          
+            <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/object/public/images//deck-images/2be97d41-6c38-4334-8554-210ee8926f21.png" 
+                 alt="MPU-2025	- T03 - TÉCNICO DO MPU | POLÍCIA INSTITUCIONAL"
+                 class="image">
+          
+          <div class="deck-content">
+            <h3 class="deck-title">MPU-2025	- T03 - TÉCNICO DO MPU | POLÍCIA INSTITUCIONAL</h3>      
+            <p class="deck-desc">Deck para o concurso do MPU, para o cargo de T03 - TÉCNICO DO MPU | POLÍCIA INSTITUCIONAL</p>
+            <p class="deck-price">
+              R$ 50,00
+            </p>
+            <button onclick="location.href='/comprar/2be97d41-6c38-4334-8554-210ee8926f21/'" 
+              class="buy-button">
+              COMPRAR AGORA
+            </button>
+          </div>
+        </div>
       
-      <div class="content">
-        <h3 class="title">MPU-2025 - A02 - ANALISTA DO MPU / ATUARIAL</h3>      
-        <p class="desc">Deck para o concurso do MPU, para o cargo de ANALISTA DO MPU | ATUARIAL</p>
-        <p class="price">
-          R$ 50
-        </p>
-        <button onclick="location.href='/comprar/9c2638ef-5fa8-49cc-99f5-2d96a0439424/'" 
-          class="buy-button">
-          COMPRAR AGORA
-        </button>
-      </div>
+        <div class="decks-cards" data-title="mpu-2025 - a02 - analista do mpu / atuarial" data-desc="deck para o concurso do mpu, para o cargo de analista do mpu | atuarial">
+          
+            <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/object/public/images//deck-images/9c2638ef-5fa8-49cc-99f5-2d96a0439424.png" 
+                 alt="MPU-2025 - A02 - ANALISTA DO MPU / ATUARIAL"
+                 class="image">
+          
+          <div class="deck-content">
+            <h3 class="deck-title">MPU-2025 - A02 - ANALISTA DO MPU / ATUARIAL</h3>      
+            <p class="deck-desc">Deck para o concurso do MPU, para o cargo de ANALISTA DO MPU | ATUARIAL</p>
+            <p class="deck-price">
+              R$ 50,00
+            </p>
+            <button onclick="location.href='/comprar/9c2638ef-5fa8-49cc-99f5-2d96a0439424/'" 
+              class="buy-button">
+              COMPRAR AGORA
+            </button>
+          </div>
+        </div>
+      
+        <div class="decks-cards" data-title="mpu-2025 - a01 - analista do mpu / arquivologia" data-desc="deck para o concurso do mpu, para o cargo de analista do mpu | arquivologia">
+          
+            <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/object/public/images//deck-images/e9d7a7fb-67c6-4a5e-9d63-f05539f33d04.png" 
+                 alt="MPU-2025 - A01 - ANALISTA DO MPU / ARQUIVOLOGIA"
+                 class="image">
+          
+          <div class="deck-content">
+            <h3 class="deck-title">MPU-2025 - A01 - ANALISTA DO MPU / ARQUIVOLOGIA</h3>      
+            <p class="deck-desc">Deck para o concurso do MPU, para o cargo de ANALISTA DO MPU | ARQUIVOLOGIA</p>
+            <p class="deck-price">
+              R$ 50,00
+            </p>
+            <button onclick="location.href='/comprar/e9d7a7fb-67c6-4a5e-9d63-f05539f33d04/'" 
+              class="buy-button">
+              COMPRAR AGORA
+            </button>
+          </div>
+        </div>
+      
+        <div class="decks-cards" data-title="mpu-2025	- a32 - analista do mpu | suporte e infraestrutura" data-desc="deck com mais de 1.450 questões da banca fgv. estude focado no conteúdo programático.">
+          
+            <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/object/public/images//deck-images/e5dc3d41-4a36-435b-b8b8-65df45eb77ff.png" 
+                 alt="MPU-2025	- A32 - ANALISTA DO MPU | SUPORTE E INFRAESTRUTURA"
+                 class="image">
+          
+          <div class="deck-content">
+            <h3 class="deck-title">MPU-2025	- A32 - ANALISTA DO MPU | SUPORTE E INFRAESTRUTURA</h3>      
+            <p class="deck-desc">Deck com mais de 1.450 questões da banca FGV. Estude focado no conteúdo programático.</p>
+            <p class="deck-price">
+              R$ 50,00
+            </p>
+            <button onclick="location.href='/comprar/e5dc3d41-4a36-435b-b8b8-65df45eb77ff/'" 
+              class="buy-button">
+              COMPRAR AGORA
+            </button>
+          </div>
+        </div>
+      
     </div>
-    <!-- Note o .items aqui -->
-    <div class="deck-card">
-      
-        <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/object/public/images//deck-images/e9d7a7fb-67c6-4a5e-9d63-f05539f33d04.png" 
-             alt="MPU-2025 - A01 - ANALISTA DO MPU / ARQUIVOLOGIA"
-             class="image">
-      
-      <div class="content">
-        <h3 class="title">MPU-2025 - A01 - ANALISTA DO MPU / ARQUIVOLOGIA</h3>      
-        <p class="desc">Deck para o concurso do MPU, para o cargo de ANALISTA DO MPU | ARQUIVOLOGIA</p>
-        <p class="price">
-          R$ 50
-        </p>
-        <button onclick="location.href='/comprar/e9d7a7fb-67c6-4a5e-9d63-f05539f33d04/'" 
-          class="buy-button">
-          COMPRAR AGORA
-        </button>
-      </div>
+    
+    <div id="noResults" class="no-results" style="display: none;">
+      Nenhum deck encontrado com o termo pesquisado.
     </div>
-    <!-- Note o .items aqui -->
-    <div class="deck-card">
+  </div>
+
+  <script>
+    // Store original deck cards for filtering
+    const originalDecks = Array.from(document.querySelectorAll('.decks-cards'));
+    const carousel = document.getElementById('decksCarousel');
+    const noResultsMessage = document.getElementById('noResults');
+    
+    function filterDecks() {
+      const searchTerm = document.getElementById('deckSearch').value.toLowerCase();
+      let hasResults = false;
       
-        <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/object/public/images//deck-images/e5dc3d41-4a36-435b-b8b8-65df45eb77ff.png" 
-             alt="MPU-2025	- A32 - ANALISTA DO MPU | SUPORTE E INFRAESTRUTURA"
-             class="image">
+      // Reset carousel first
+      carousel.innerHTML = '';
+      noResultsMessage.style.display = 'none';
       
-      <div class="content">
-        <h3 class="title">MPU-2025	- A32 - ANALISTA DO MPU | SUPORTE E INFRAESTRUTURA</h3>      
-        <p class="desc">Deck para o concurso do MPU, para o cargo de ANALISTA DO MPU | SUPORTE E INFRAESTRUTURA</p>
-        <p class="price">
-          R$ 50
-        </p>
-        <button onclick="location.href='/comprar/e5dc3d41-4a36-435b-b8b8-65df45eb77ff/'" 
-          class="buy-button">
-          COMPRAR AGORA
-        </button>
-      </div>
-    </div>
-  
+      originalDecks.forEach(deck => {
+        const title = deck.dataset.title;
+        const desc = deck.dataset.desc;
+        
+        if (title.includes(searchTerm) || desc.includes(searchTerm)) {
+          carousel.appendChild(deck.cloneNode(true));
+          hasResults = true;
+        }
+      });
+      
+      if (!hasResults && searchTerm.length > 0) {
+        noResultsMessage.style.display = 'block';
+      } else if (originalDecks.length === 0) {
+        // Show original "no decks available" message
+        carousel.innerHTML = '<div class="decks-cards" style="text-align: center; width: 100%;"><p>Nenhum deck disponível no momento. Volte em breve!</p></div>';
+      }
+    }
+    
+    function scrollCarousel(direction) {
+      const scrollAmount = 300;
+      
+      if (direction === 1) {
+        carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      } else {
+        carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      }
+    }
+    
+    // Optional: Add hover effects for the carousel
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    carousel.addEventListener('mousedown', (e) => {
+      isDown = true;
+      startX = e.pageX - carousel.offsetLeft;
+      scrollLeft = carousel.scrollLeft;
+    });
+
+    carousel.addEventListener('mouseleave', () => {
+      isDown = false;
+    });
+
+    carousel.addEventListener('mouseup', () => {
+      isDown = false;
+    });
+
+    carousel.addEventListener('mousemove', (e) => {
+      if(!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - carousel.offsetLeft;
+      const walk = (x - startX) * 2;
+      carousel.scrollLeft = scrollLeft - walk;
+    });
+  </script>
 
   </main>
 

@@ -8,29 +8,25 @@ title: "Flashcards para sua aprovação em concurso público!"
     .decks-container {
       margin: 2rem 0;
     }
-    
     .decks-title {
       color: white;
       font-size: 1.5rem;
-      margin: 0;
-      padding-top:1rem;
+      margin-bottom: 1rem;
     }
-    
     .decks-carousel {
       display: flex;
       overflow-x: auto;
       padding: 1rem;
       scroll-behavior: smooth;
       gap: 1rem;
-      -ms-overflow-style: none;
-      scrollbar-width: none;
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
     }
-    
     .decks-carousel::-webkit-scrollbar {
-      display: none;
+      display: none;  /* Hide scrollbar for Chrome, Safari and Opera */
     }
     
-    .decks-cards {
+    .deck-cards {
       flex: 0 0 auto;
       width: 200px;
       transition: transform 0.2s;
@@ -40,14 +36,14 @@ title: "Flashcards para sua aprovação em concurso público!"
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
     
-    .decks-cards:hover {
+    .deck-cards:hover {
       transform: scale(1.05);
       z-index: 1;
     }
     
-    .decks-cards img {
+    .deck-cards img {
       width: 100%;
-      height: 90px;
+      height: 100px;
       object-fit: cover;
       display: block;
     }
@@ -55,7 +51,6 @@ title: "Flashcards para sua aprovação em concurso público!"
     .deck-content {
       padding: 1rem;
       background: #141414;
-      background: linear-gradient(to top, var(--cinza-medio), var(--cinza-escuro));
       color: white;
     }
     
@@ -81,14 +76,15 @@ title: "Flashcards para sua aprovação em concurso público!"
     .deck-price {
       color: #46d369;
       font-weight: bold;
-      margin: 0.5rem 0;
-      text-align:center;
       font-size: 1.25rem;
+      margin: 0.5rem 0;
+      text-align: center;
     }
     
     .buy-button {
       width: 100%;
       padding: 0.5rem;
+      margin-top: 0.5rem;
       background: var(--azul-primario);
       color: white;
       border: none;
@@ -102,17 +98,10 @@ title: "Flashcards para sua aprovação em concurso público!"
       background: var(--texto-branco);
     }
     
-    .carousel-controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 1rem;
-      margin-bottom: 1rem;
-    }
-    
     .carousel-nav {
       display: flex;
-      gap: 0.5rem;
+      justify-content: flex-end;
+      padding: 0 1rem;
     }
     
     .carousel-nav button {
@@ -122,55 +111,24 @@ title: "Flashcards para sua aprovação em concurso público!"
       width: 30px;
       height: 30px;
       border-radius: 50%;
+      margin-left: 0.5rem;
       cursor: pointer;
     }
     
     .carousel-nav button:hover {
       background: rgba(255,255,255,0.5);
     }
-    
-    .search-filter {
-      flex-grow: 1;
-      max-width: 260px;
-      margin-right: 1rem;
-    }
-    
-    .search-filter input {
-      width: 100%;
-      padding: 0.5rem 1rem;
-      border-radius: 10px;
-      border: none;
-      background: rgba(255,255,255,0.2);
-      color: white;
-      outline: none;
-    }
-    
-    .search-filter input::placeholder {
-      color: rgba(255,255,255,0.7);
-    }
-    
-    .no-results {
-      color: white;
-      text-align: center;
-      padding: 2rem;
-      width: 100%;
-    }
   </style>
 
-  <h2 class="decks-title">ESCOLHA SEU DECK</h2>
   <div class="decks-container">
-    <div class="carousel-controls">
-      <div class="search-filter">
-        <input type="text" id="deckSearch" placeholder="Buscar decks..." oninput="filterDecks()">
-      </div>
-      <div class="carousel-nav">
-        <button class="prev-btn" onclick="scrollCarousel(-1)">❮</button>
-        <button class="next-btn" onclick="scrollCarousel(1)">❯</button>
-      </div>
+    <div class="carousel-nav">
+      <button class="prev-btn" onclick="scrollCarousel(-1)">❮</button>
+      <button class="next-btn" onclick="scrollCarousel(1)">❯</button>
     </div>
+    <h2 class="decks-title">ESCOLHA SEU DECK</h2>
     <div class="decks-carousel" id="decksCarousel">
       {% for deck in decks.items %}
-        <div class="decks-cards" data-title="{{ deck.fields.title | lower }}" data-desc="{{ deck.fields.description | lower }}">
+        <div class="deck-cards">
           {% if deck.fields.image %}
             <img src="{{ deck.fields.image.fields.file.url }}" 
                  alt="{{ deck.fields.title }}"
@@ -180,7 +138,7 @@ title: "Flashcards para sua aprovação em concurso público!"
             <h3 class="deck-title">{{ deck.fields.title }}</h3>      
             <p class="deck-desc">{{ deck.fields.description }}</p>
             <p class="deck-price">
-              R$ {{ deck.fields.price | default("49,90") }},00
+              R$ {{ deck.fields.price | default("49,90") }}
             </p>
             <button onclick="location.href='/comprar/{{ deck.sys.id }}/'" 
               class="buy-button">
@@ -189,60 +147,29 @@ title: "Flashcards para sua aprovação em concurso público!"
           </div>
         </div>
       {% else %}
-        <div class="decks-cards" style="text-align: center; width: 100%;">
+        <div class="deck-cards" style="text-align: center; width: 100%;">
           <p>Nenhum deck disponível no momento. Volte em breve!</p>
         </div>
       {% endfor %}
     </div>
-    
-    <div id="noResults" class="no-results" style="display: none;">
-      Nenhum deck encontrado com o termo pesquisado.
-    </div>
   </div>
 
   <script>
-    // Store original deck cards for filtering
-    const originalDecks = Array.from(document.querySelectorAll('.decks-cards'));
-    const carousel = document.getElementById('decksCarousel');
-    const noResultsMessage = document.getElementById('noResults');
-    
-    function filterDecks() {
-      const searchTerm = document.getElementById('deckSearch').value.toLowerCase();
-      let hasResults = false;
-      
-      // Reset carousel first
-      carousel.innerHTML = '';
-      noResultsMessage.style.display = 'none';
-      
-      originalDecks.forEach(deck => {
-        const title = deck.dataset.title;
-        const desc = deck.dataset.desc;
-        
-        if (title.includes(searchTerm) || desc.includes(searchTerm)) {
-          carousel.appendChild(deck.cloneNode(true));
-          hasResults = true;
-        }
-      });
-      
-      if (!hasResults && searchTerm.length > 0) {
-        noResultsMessage.style.display = 'block';
-      } else if (originalDecks.length === 0) {
-        // Show original "no decks available" message
-        carousel.innerHTML = '<div class="decks-cards" style="text-align: center; width: 100%;"><p>Nenhum deck disponível no momento. Volte em breve!</p></div>';
-      }
-    }
-    
     function scrollCarousel(direction) {
-      const scrollAmount = 300;
+      const carousel = document.getElementById('decksCarousel');
+      const scrollAmount = 300; // Adjust this value to change scroll distance
       
       if (direction === 1) {
+        // Scroll right
         carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
       } else {
+        // Scroll left
         carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
       }
     }
     
     // Optional: Add hover effects for the carousel
+    const carousel = document.getElementById('decksCarousel');
     let isDown = false;
     let startX;
     let scrollLeft;
@@ -265,7 +192,7 @@ title: "Flashcards para sua aprovação em concurso público!"
       if(!isDown) return;
       e.preventDefault();
       const x = e.pageX - carousel.offsetLeft;
-      const walk = (x - startX) * 2;
+      const walk = (x - startX) * 2; // Adjust scrolling speed
       carousel.scrollLeft = scrollLeft - walk;
     });
   </script>

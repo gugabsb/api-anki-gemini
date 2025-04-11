@@ -27,27 +27,26 @@ permalink: "/comprar/{{ deckid.sys.id }}/"
       <h2  class="title">{{ currentDeck.fields.title }}</h2>
       <ul class="icon-list">
         <li>
-          <b>Material focado na na sua prova</b><br>
+          <b>Material focado na prova</b><br>
           Elaborado com as questões anteriores da banca e alinhada com o conteúdo programático do cargo.
         </li>
         <li>          
-        <b>Material Digital</b><br>
-        Não se limite a sua mesa de estudos! Estude do seu jeito, em qualquer lugar e a qualquer hora.
+        <b>Método eficiente de estudo </b><br>
+        O método anki baseia-se na repetição espaçada, ou seja, na revisão do mesmo conteúdo em intervalos de tempo. 
         </li>
         <li>
-        <b>Atualização até a data da prova</b><br>
+        <b>Atualização até a prova</b><br>
         Até o dia da sua prova você terá acesso às atualizações dos Decks gratuitamente.
         </li>
       <ul>
-  
     </div>
     
     <div class="col3">
-      <p class="price">R$ {{ currentDeck.fields.price }}</p>
+      <p class="price">R$ {{ currentDeck.fields.price }},00</p>
       <button id="buy-button" class="buy-button">
         Comprar com PIX
-      </button><br>
-      <div id="qrcodepix" class="qrcodepix"></div>
+      </button>
+      <span id="qrcodepix" class="qrcodepix"></span>
     </div>
 
 </div>

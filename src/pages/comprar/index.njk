@@ -15,7 +15,7 @@ title: "Decks Disponíveis - Estude Com Anki"
         <h3 class="title">{{ deck.fields.title }}</h3>      
         <p class="desc">{{ deck.fields.description }}</p>
         <p class="price">
-          R$ {{ deck.fields.price | default("49,90") }}
+          R$ {{ deck.fields.price | default("49,90") }},00
         </p>
         <button id="buy-button" class="buy-button" onclick="location.href='/comprar/{{ deck.sys.id }}/'">
           COMPRAR AGORA 

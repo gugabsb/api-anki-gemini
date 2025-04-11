@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Estude Com Anki</title>
+  <title>Flashcards para sua aprovação em concurso público! | Estude Com Anki</title>
   <meta name="description" content="Flashcards em Anki para sua aprovação em concursos públicos, estude com o método científico de repetição espaçada!">
   <style>
     :root {
@@ -24,7 +24,7 @@
       padding: 0;
     }
     header{
-      background: linear-gradient(to top, var(--cinza-escuro), var(--cinza-medio));
+      background: linear-gradient(to right, var(--cinza-escuro), var(--cinza-medio));
       padding: 0.5rem 0 0.5rem 0;
     }
     footer{
@@ -389,26 +389,24 @@
   justify-content: flex-start;
   width:100%;
 }
-.deck-container, .deck-container * {
-  box-sizing: border-box;
-}
 .deck-container .col1
 {
-  width: 30%;
-  padding: 0;
-  margin:0;
+  width: 20%;
+  padding:1rem 0;
+  margin: 0;
   background-color: var(--cinza-claro);
+  max-width: 200px;
 }
 .deck-container .col2{
-  width: 40%;
-  padding: 0;
-  margin:0;
+  width: 50%;
+  padding:1rem 0;
+  margin: 0;
   background-color: var(--cinza-claro);
 }
 .deck-container .col3{
   width: 30%;
-  padding: 0;
-  margin:0;
+  padding:1rem 0;
+  margin: 0;
   background-color:var(--cinza-claro);
   text-align: center;
 }
@@ -416,69 +414,53 @@
 .deck-container .col1 .image{
   border: 1px solid var(--cinza-escuro);
   border-radius: 5px;
-  width: 80%;
-  margin: 1rem;
-  max-width: 200px;
+  width: 60%;
+  margin-left: 1rem;
 }
 
 .deck-container .col2 .title{
   font-size: 1.25rem;
-  margin: 1rem 1rem 0 0;
+  padding: 1rem;
+  margin: 0;
   padding:0;
   color: var(--azul-primario);
 }
 
-.deck-container .col2 ul.icon-list{
-  margin: 1rem 1rem 0 0;
-  padding: 0;
-}
-.deck-container .col2 ul.icon-list li{
-  font-size: 0.9rem;
-  margin: 0 0 10px;
-  padding: 0;
-  text-align: left;
-  color: var(--texto-cinza);
-}
-.deck-container .col2 ul.icon-list li b{
-  color: var(--texto-branco);
-}
-.deck-container .col2 ul.icon-list li::before {
-  content: "✓";
-  color: #2ecc71;
-  margin-right: 6px;
-}
-.deck-container .col2 ul.icon-list {
-  list-style: none;
-  padding-left: 0;
-}
-
-.deck-container .col3 .price{
+.deck-container .price{
   font-weight: bold;
   font-size: 1.5rem;
   padding: 1rem;
-  margin: 1rem 1rem 0 0;
+  margin: 0 1rem 0 0;
   color: var(--azul-primario);
   background-color: var(--cinza-escuro);
   border-radius: 5px;
 }
-
+.deck-container .col2 ul{
+  margin: 1rem 1rem 0 0;
+  padding: 0;
+}
+.deck-container .col2 ul li{
+  font-size: 0.9rem;
+  margin: 0 0 10px;
+  padding: 0;
+  text-align: left;
+}
 .conteudo {
   display: block;
+  clear: both; 
   padding: 0;
   margin: 1rem 0 1rem 0;
   width: 100%;
-  background-color:var(--cinza-muito-escuro);
-  border-radius: 10px;
 }
 .conteudo h3{
   color: var(--azul-primario);
   font-weight: bold;
   font-size: 1.25rem;
-  padding: 1rem 1rem 0 1rem;
+  padding: 0 1rem 0.5rem 1rem;
 }
 .conteudo .desc{
-  font-size: 0.8rem;
-  padding: 1rem;
+  font-size: 0.7rem;
+  padding: 0 1rem 0.5rem 1rem;
 }
 
 /* COMPRAR */
@@ -555,7 +537,15 @@
     font-size: 0.63rem;
     font-weight: normal;
   }
-
+  ul.icon-list li::before {
+    content: "✓";
+    color: #2ecc71;
+    margin-right: 8px;
+  }
+  ul.icon-list {
+    list-style: none;
+    padding-left: 0;
+  }
   .auth-container {
     padding: 1.5rem;
     margin: 1rem;
@@ -627,185 +617,251 @@
   <main class="container">
     
 
-
-
-
-<div class="deck-container">
-    <div class="col1">
-      
-      <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/object/public/images//deck-images/e9d7a7fb-67c6-4a5e-9d63-f05539f33d04.png" 
-           alt="MPU-2025 - A01 - ANALISTA DO MPU / ARQUIVOLOGIA"
-           class="image"/>
-      
-    </div>  
-
-    <div class="col2">
-      <h2  class="title">MPU-2025 - A01 - ANALISTA DO MPU / ARQUIVOLOGIA</h2>
-      <ul class="icon-list">
-        <li>
-          <b>Material focado na prova</b><br>
-          Elaborado com as questões anteriores da banca e alinhada com o conteúdo programático do cargo.
-        </li>
-        <li>          
-        <b>Método eficiente de estudo </b><br>
-        O método anki baseia-se na repetição espaçada, ou seja, na revisão do mesmo conteúdo em intervalos de tempo. 
-        </li>
-        <li>
-        <b>Atualização até a prova</b><br>
-        Até o dia da sua prova você terá acesso às atualizações dos Decks gratuitamente.
-        </li>
-      <ul>
-    </div>
+  <style>
+    .decks-container {
+      margin: 2rem 0;
+    }
+    .decks-title {
+      color: white;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .decks-carousel {
+      display: flex;
+      overflow-x: auto;
+      padding: 1rem;
+      scroll-behavior: smooth;
+      gap: 1rem;
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+    .decks-carousel::-webkit-scrollbar {
+      display: none;  /* Hide scrollbar for Chrome, Safari and Opera */
+    }
     
-    <div class="col3">
-      <p class="price">R$ 50,00</p>
-      <button id="buy-button" class="buy-button">
-        Comprar com PIX
-      </button>
-      <span id="qrcodepix" class="qrcodepix"></span>
+    .deck-cards {
+      flex: 0 0 auto;
+      width: 200px;
+      transition: transform 0.2s;
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    .deck-cards:hover {
+      transform: scale(1.05);
+      z-index: 1;
+    }
+    
+    .deck-cards img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      display: block;
+    }
+    
+    .deck-content {
+      padding: 1rem;
+      background: #141414;
+      color: white;
+    }
+    
+    .deck-title {
+      font-size: 1rem;
+      margin: 0.5rem 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .deck-desc {
+      font-size: 0.8rem;
+      color: #d2d2d2;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      height: 60px;
+      text-align: center;
+    }
+    
+    .deck-price {
+      color: #46d369;
+      font-weight: bold;
+      font-size: 1.25rem;
+      margin: 0.5rem 0;
+      text-align: center;
+    }
+    
+    .buy-button {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.5rem;
+      background: var(--azul-primario);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+    
+    .buy-button:hover {
+      background: var(--texto-branco);
+    }
+    
+    .carousel-nav {
+      display: flex;
+      justify-content: flex-end;
+      padding: 0 1rem;
+    }
+    
+    .carousel-nav button {
+      background: rgba(255,255,255,0.3);
+      border: none;
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin-left: 0.5rem;
+      cursor: pointer;
+    }
+    
+    .carousel-nav button:hover {
+      background: rgba(255,255,255,0.5);
+    }
+  </style>
+
+  <div class="decks-container">
+    <div class="carousel-nav">
+      <button class="prev-btn" onclick="scrollCarousel(-1)">❮</button>
+      <button class="next-btn" onclick="scrollCarousel(1)">❯</button>
     </div>
-
-</div>
-
-
-<div class="conteudo">
-  <h3>Conteúdo do Deck</h3>
-  <div class="desc">Deck para o concurso do MPU, para o cargo de ANALISTA DO MPU | ARQUIVOLOGIA</div>
-</div>  
-<script>
-// Função de download melhorada
-async function downloadDeck(deckId) {
-    try {
-      const supabase = window.supabaseClient.init();
-      const { data: { session }, error } = await supabase.auth.getSession();
+    <h2 class="decks-title">ESCOLHA SEU DECK</h2>
+    <div class="decks-carousel" id="decksCarousel">
       
-      if (error || !session) throw new Error('Sessão inválida');
+        <div class="deck-cards">
+          
+            <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/object/public/images//deck-images/2be97d41-6c38-4334-8554-210ee8926f21.png" 
+                 alt="MPU-2025	- T03 - TÉCNICO DO MPU | POLÍCIA INSTITUCIONAL"
+                 class="image">
+          
+          <div class="deck-content">
+            <h3 class="deck-title">MPU-2025	- T03 - TÉCNICO DO MPU | POLÍCIA INSTITUCIONAL</h3>      
+            <p class="deck-desc">Deck para o concurso do MPU, para o cargo de T03 - TÉCNICO DO MPU | POLÍCIA INSTITUCIONAL</p>
+            <p class="deck-price">
+              R$ 50
+            </p>
+            <button onclick="location.href='/comprar/2be97d41-6c38-4334-8554-210ee8926f21/'" 
+              class="buy-button">
+              COMPRAR AGORA
+            </button>
+          </div>
+        </div>
+      
+        <div class="deck-cards">
+          
+            <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/object/public/images//deck-images/9c2638ef-5fa8-49cc-99f5-2d96a0439424.png" 
+                 alt="MPU-2025 - A02 - ANALISTA DO MPU / ATUARIAL"
+                 class="image">
+          
+          <div class="deck-content">
+            <h3 class="deck-title">MPU-2025 - A02 - ANALISTA DO MPU / ATUARIAL</h3>      
+            <p class="deck-desc">Deck para o concurso do MPU, para o cargo de ANALISTA DO MPU | ATUARIAL</p>
+            <p class="deck-price">
+              R$ 50
+            </p>
+            <button onclick="location.href='/comprar/9c2638ef-5fa8-49cc-99f5-2d96a0439424/'" 
+              class="buy-button">
+              COMPRAR AGORA
+            </button>
+          </div>
+        </div>
+      
+        <div class="deck-cards">
+          
+            <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/object/public/images//deck-images/e9d7a7fb-67c6-4a5e-9d63-f05539f33d04.png" 
+                 alt="MPU-2025 - A01 - ANALISTA DO MPU / ARQUIVOLOGIA"
+                 class="image">
+          
+          <div class="deck-content">
+            <h3 class="deck-title">MPU-2025 - A01 - ANALISTA DO MPU / ARQUIVOLOGIA</h3>      
+            <p class="deck-desc">Deck para o concurso do MPU, para o cargo de ANALISTA DO MPU | ARQUIVOLOGIA</p>
+            <p class="deck-price">
+              R$ 50
+            </p>
+            <button onclick="location.href='/comprar/e9d7a7fb-67c6-4a5e-9d63-f05539f33d04/'" 
+              class="buy-button">
+              COMPRAR AGORA
+            </button>
+          </div>
+        </div>
+      
+        <div class="deck-cards">
+          
+            <img src="https://plupzqjkynaprsluelwt.supabase.co/storage/v1/object/public/images//deck-images/e5dc3d41-4a36-435b-b8b8-65df45eb77ff.png" 
+                 alt="MPU-2025	- A32 - ANALISTA DO MPU | SUPORTE E INFRAESTRUTURA"
+                 class="image">
+          
+          <div class="deck-content">
+            <h3 class="deck-title">MPU-2025	- A32 - ANALISTA DO MPU | SUPORTE E INFRAESTRUTURA</h3>      
+            <p class="deck-desc">Deck com mais de 1.450 questões da banca FGV. Estude focado no conteúdo programático.</p>
+            <p class="deck-price">
+              R$ 50
+            </p>
+            <button onclick="location.href='/comprar/e5dc3d41-4a36-435b-b8b8-65df45eb77ff/'" 
+              class="buy-button">
+              COMPRAR AGORA
+            </button>
+          </div>
+        </div>
+      
+    </div>
+  </div>
 
-      const response = await fetch(`/.netlify/functions/download/${deckId}`, {
-        headers: {
-          'Authorization': `Bearer ${session.access_token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (response.ok && response.redirected) {
-        window.location.href = response.url;
+  <script>
+    function scrollCarousel(direction) {
+      const carousel = document.getElementById('decksCarousel');
+      const scrollAmount = 300; // Adjust this value to change scroll distance
+      
+      if (direction === 1) {
+        // Scroll right
+        carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
       } else {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Falha no download');
+        // Scroll left
+        carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
       }
-    } catch (error) {
-      console.error('Erro no download:', error);
-      alert(error.message);
     }
-  }
+    
+    // Optional: Add hover effects for the carousel
+    const carousel = document.getElementById('decksCarousel');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
 
+    carousel.addEventListener('mousedown', (e) => {
+      isDown = true;
+      startX = e.pageX - carousel.offsetLeft;
+      scrollLeft = carousel.scrollLeft;
+    });
 
+    carousel.addEventListener('mouseleave', () => {
+      isDown = false;
+    });
 
-(async function() {
-  const supabase = window.supabaseClient.init();
-  const { data: { user }, error } = await supabase.auth.getUser();
-  if (!user || error) {
-    const returnTo = encodeURIComponent(window.location.pathname);
-    window.location.href = `/auth/login/?redirect=${returnTo}`;
-    return;
-  }
+    carousel.addEventListener('mouseup', () => {
+      isDown = false;
+    });
 
-  const user_id = user.id;
-  const user_email = user.email;
-  const deck_id = 'e9d7a7fb-67c6-4a5e-9d63-f05539f33d04';
-  const deck_price = '50';
-  const deck_name = 'MPU-2025 - A01 - ANALISTA DO MPU / ARQUIVOLOGIA';
-  const buyButton = document.getElementById('buy-button');
-  let paymentCheckInterval = null;
-
-  // Função para verificar se o usuário já possui o deck
-  async function checkDeckOwnership() {
-    try {
-      const { data: result } = await supabase
-        .from('user_decks')
-        .select('deck_id')
-        .eq('user_id', user_id)
-        .eq('deck_id', deck_id);
-
-      return result && result.length > 0;
-    } catch (e) {
-      console.error('Erro ao verificar deck:', e);
-      return false;
-    }
-  }
-
-  // Função para transformar o botão em download
-  function setupDownloadButton() {
-    buyButton.textContent = "Download";
-    buyButton.className = "btn-download";
-    buyButton.removeEventListener("click", handleBuyClick);
-    buyButton.addEventListener('click', () => downloadDeck(deck_id));
-  }
-
-  // Verificação inicial (quando a página carrega)
-  const hasDeck = await checkDeckOwnership();
-  if (hasDeck) {
-    setupDownloadButton();
-    return; // Sai da função se o usuário já tem o deck
-  }
-
-  // Função de compra (só executa se o usuário não tiver o deck)
-  async function handleBuyClick() {
-    try {
-      // Gera o QR Code PIX
-      const res = await fetch('/.netlify/functions/create-pix-payment-mp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ deck_id, deck_price, deck_name, user_id, user_email })
-      });
-
-      const text = await res.text();
-      const data = JSON.parse(text);
-
-      const img = document.createElement('img');
-      img.src = `data:image/png;base64,${data.qr_code_base64}`;
-      document.getElementById('qrcodepix').appendChild(img);
-      alert('Escaneie o QR Code para pagar com PIX!');
-
-      // SÓ AQUI INICIA A VERIFICAÇÃO PERIÓDICA
-      startPaymentChecking();
-    } catch (err) {
-      console.error('Erro ao criar pagamento:', err);
-      alert('Erro ao gerar QR Code de pagamento.');
-    }
-  }
-
-  // Função que inicia a verificação periódica
-  function startPaymentChecking() {
-    // Limpa qualquer intervalo existente (por segurança)
-    if (paymentCheckInterval) {
-      clearInterval(paymentCheckInterval);
-    }
-
-    // Configura o novo intervalo
-    paymentCheckInterval = setInterval(async () => {
-      const hasDeck = await checkDeckOwnership();
-      if (hasDeck) {
-        setupDownloadButton();
-        clearInterval(paymentCheckInterval); // Para a verificação
-      }
-    }, 5000); // Verifica a cada 5 segundos
-
-    // Timeout de segurança (30 minutos)
-    setTimeout(() => {
-      if (paymentCheckInterval) {
-        clearInterval(paymentCheckInterval);
-        console.log('Tempo máximo de verificação expirado');
-      }
-    }, 1800000);
-  }
-
-  // Configura o botão inicialmente para compra
-  buyButton.addEventListener('click', handleBuyClick);
-})();
-</script>
-
+    carousel.addEventListener('mousemove', (e) => {
+      if(!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - carousel.offsetLeft;
+      const walk = (x - startX) * 2; // Adjust scrolling speed
+      carousel.scrollLeft = scrollLeft - walk;
+    });
+  </script>
 
   </main>
 

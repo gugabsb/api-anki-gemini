@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Área do Aluno | Estude Com Anki - MPU 2025</title>
-  <meta name="description" content="Decks otimizados para o concurso do MPU 2025 usando o método científico de repetição espaçada">
+  <title>Área do Aluno | Estude Com Anki</title>
+  <meta name="description" content="Flashcards em Anki para sua aprovação em concursos públicos, estude com o método científico de repetição espaçada!">
   <style>
     :root {
       --azul-primario: #01BBFE;
@@ -24,7 +24,8 @@
       padding: 0;
     }
     header{
-      background: linear-gradient(to right, var(--cinza-escuro), var(--cinza-medio));
+      background: linear-gradient(to top, var(--cinza-escuro), var(--cinza-medio));
+      padding: 0.5rem 0 0.5rem 0;
     }
     footer{
       background: var(--cinza-medio); 
@@ -46,25 +47,10 @@
       flex-wrap: nowrap;
     }
     .container.header .col1{
-      width: 50%; 
-    }
-    .container.header .col2{
-      width: 50%;
+      width: 100%;
       text-align: right;
     }
-    .container.header h1{
-      margin: 1rem 0 0 4rem;
-      font-size: 1rem;
-      color: var(--azul-primario);
-    }
-    .container.header h2{
-      padding:0;
-      margin: 0 0 0 4rem;
-      font-size: 0.7rem;
-      color: var(--texto-branco);
-    }
-
-    .container.header button{
+    .container.header .col1 button{
       margin-top: 1.5rem;
       background-color: var(--cinza-muito-escuro);
       color: var(--texto-branco);
@@ -80,14 +66,14 @@
       cursor: pointer;
     }
 
-    .container {
+    .container{
       border: 0px solid var(--vermelho-alerta);
       max-width: 800px;
-      margin: 0 auto;
-      padding: 20px 0;
+      margin: 1rem auto;
+      padding: 0;
     }
     .container h2{
-      margin: 0 1rem 1rem 1rem;
+      margin: 1rem 1rem 1rem 1rem;
       font-size: 1rem;
       color: var(--azul-primario);
     }
@@ -145,19 +131,6 @@
   @keyframes spin {
     to { transform: rotate(360deg); }
   }
-
-  /* Responsividade */
-  @media (max-width: 768px) {
-    .deck-card {
-      padding: 1rem;
-    }
-    
-    .purchase-button {
-      padding: 0.5rem 1rem;
-    }
-  }
-
-
   /* LOGIN */
   
   #google-signin-container {
@@ -212,7 +185,7 @@
   .auth-container h2 {
     color: var(--azul-primario);
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin: 1rem 0 1rem 0;
     font-size: 1.2rem;
     font-weight: 600;
   }
@@ -416,24 +389,26 @@
   justify-content: flex-start;
   width:100%;
 }
+.deck-container, .deck-container * {
+  box-sizing: border-box;
+}
 .deck-container .col1
 {
-  width: 20%;
-  padding:1rem 0;
-  margin: 0;
+  width: 30%;
+  padding: 0;
+  margin:0;
   background-color: var(--cinza-claro);
-  max-width: 200px;
 }
 .deck-container .col2{
-  width: 50%;
-  padding:1rem 0;
-  margin: 0;
+  width: 40%;
+  padding: 0;
+  margin:0;
   background-color: var(--cinza-claro);
 }
 .deck-container .col3{
   width: 30%;
-  padding:1rem 0;
-  margin: 0;
+  padding: 0;
+  margin:0;
   background-color:var(--cinza-claro);
   text-align: center;
 }
@@ -441,64 +416,83 @@
 .deck-container .col1 .image{
   border: 1px solid var(--cinza-escuro);
   border-radius: 5px;
-  width: 60%;
-  margin-left: 1rem;
+  width: 80%;
+  margin: 1rem;
+  max-width: 200px;
 }
 
 .deck-container .col2 .title{
   font-size: 1.25rem;
-  padding: 1rem;
-  margin: 0;
+  margin: 1rem 1rem 0 0;
   padding:0;
   color: var(--azul-primario);
 }
 
-.deck-container .price{
-  font-weight: bold;
-  font-size: 1.5rem;
-  padding: 1rem;
-  margin: 0 1rem 0 0;
-  color: var(--azul-primario);
-  background-color: var(--cinza-escuro);
-  border-radius: 5px;
-}
-.deck-container .col2 ul{
+.deck-container .col2 ul.icon-list{
   margin: 1rem 1rem 0 0;
   padding: 0;
 }
-.deck-container .col2 ul li{
+.deck-container .col2 ul.icon-list li{
   font-size: 0.9rem;
   margin: 0 0 10px;
   padding: 0;
   text-align: left;
+  color: var(--texto-cinza);
 }
+.deck-container .col2 ul.icon-list li b{
+  color: var(--texto-branco);
+}
+.deck-container .col2 ul.icon-list li::before {
+  content: "✓";
+  color: #2ecc71;
+  margin-right: 6px;
+}
+.deck-container .col2 ul.icon-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.deck-container .col3 .price{
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding: 1rem;
+  margin: 1rem 1rem 0 0;
+  color: var(--azul-primario);
+  background-color: var(--cinza-escuro);
+  border-radius: 5px;
+}
+
 .conteudo {
   display: block;
-  clear: both; 
   padding: 0;
   margin: 1rem 0 1rem 0;
   width: 100%;
+  background-color:var(--cinza-muito-escuro);
+  border-radius: 10px;
 }
 .conteudo h3{
   color: var(--azul-primario);
   font-weight: bold;
   font-size: 1.25rem;
-  padding: 0 1rem 0.5rem 1rem;
+  padding: 1rem 1rem 0 1rem;
 }
 .conteudo .desc{
-  font-size: 0.7rem;
-  padding: 0 1rem 0.5rem 1rem;
+  font-size: 0.8rem;
+  padding: 1rem;
 }
 
 /* COMPRAR */
-.qrcodepix img{
-  width: 170px;
-  height: 170px;
-  padding: 10px 10px 0px 0px;
-}
 .qrcodepix {
-  width: 170px;
-  height: 170px;
+  width: 100%;
+  text-align: center;
+  align-content: center;
+}
+.qrcodepix img{
+  width:100%;
+  max-width: 170px;
+  max-height: 170px;
+  padding: 0;
+  margin:0 1rem 0 0;
 }
 
 .buy-button {
@@ -521,6 +515,10 @@
 @media (max-width: 768px) {
   footer p{
     font-size: 0.75rem;
+  }
+  .deck-card .image{
+      width: 60%;
+      height: 60%;
   }
   .deck-card .title{
     font-size: 1rem;
@@ -557,15 +555,7 @@
     font-size: 0.63rem;
     font-weight: normal;
   }
-  ul.icon-list li::before {
-    content: "✓";
-    color: #2ecc71;
-    margin-right: 8px;
-  }
-  ul.icon-list {
-    list-style: none;
-    padding-left: 0;
-  }
+
   .auth-container {
     padding: 1.5rem;
     margin: 1rem;
@@ -573,6 +563,13 @@
     
   .auth-container h2 {
     font-size: 1rem;
+  }
+  .qrcodepix img{
+    width:80%;
+    max-width: 170px;
+    max-height: 170px;
+    padding: 0;
+    margin:0 1rem 0 0;
   }
 }
 
@@ -620,11 +617,9 @@
   <header>
     <div class="container header">
       <div class="col1">
-      </div>
-      <div class="col2">
-        <button onclick="location.href='/'">Home</button>
-        <button onclick="location.href='/comprar'">Flashcards </button>
-        <button onclick="location.href='/dashboard'">Área do Aluno</button>
+        <button onclick="location.href='/'">HOME</button>
+        <button onclick="location.href='/comprar'">FLASHCARDS </button>
+        <button onclick="location.href='/dashboard'">ÁREA DO ALUNO</button>
       </div>  
     </div>
   </header>

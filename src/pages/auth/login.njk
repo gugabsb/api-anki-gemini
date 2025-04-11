@@ -4,7 +4,7 @@ title: "Login"
 ---
 
 <div class="auth-container">
-  <h2>Entrar na Área do Aluno</h2>
+  <h2 id="titulo-form">Entrar na Área do Aluno</h2>
   <form id="email-login-form">
     <div class="form-group">
       <label for="email">Email:</label>
@@ -45,6 +45,15 @@ title: "Login"
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <script>
+  async function verificaOrigem(){
+    const params = new URLSearchParams(window.location.search);
+    if(params.toString().includes("comprar")){
+      document.getElementById("titulo-form").textContent="Para comprar, faça o login!";
+    }
+    
+  }
+  verificaOrigem();
+
   async function verificaLogin(){
     const supabase = window.supabaseClient.init();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
